@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //test commit from yr
+    //test commit from second edward
     
     self.title = @"login";
     
