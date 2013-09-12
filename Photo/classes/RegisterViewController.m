@@ -7,12 +7,21 @@
 //
 
 #import "RegisterViewController.h"
+#import "MBProgressHUD.h"
 
 @interface RegisterViewController ()
 
 @end
 
 @implementation RegisterViewController
+@synthesize nameText = _nameText;
+@synthesize passwordText = _passwordText;
+@synthesize rePassword = _rePassword;
+@synthesize dateOfBirthText = _dateOfBirthText;
+@synthesize genderText = _genderText;
+@synthesize registerButton = _registerButton;
+@synthesize selectPicker =_selectPicker;
+@synthesize genderArray = _genderArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,6 +36,117 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+//    NSArray *array = [[NSArray alloc]initWithObjects:@"--Select Gender--",@"Male",@"Female", nil];
+    
+    self.genderArray = [[NSArray alloc]initWithObjects:@"--Select Gender--",@"Male",@"Female", nil];
+    self.selectPicker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 100)];
+    self.selectPicker.delegate = self;
+    self.selectPicker.dataSource = self;
+    self.selectPicker.showsSelectionIndicator = YES;
+    [self.view addSubview:self.selectPicker];
+    
+    
+    self.nameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 20, self.view.frame.size.width - 40, 40)];
+    self.nameText.placeholder = @"E-mail Name";
+    self.nameText.borderStyle = UITextBorderStyleLine;
+    self.nameText.delegate = self;
+    [self.view addSubview:self.nameText];
+    
+    self.passwordText = [[UITextField alloc]initWithFrame:CGRectMake(20, 80, self.view.frame.size.width - 40,40)];
+    self.passwordText.placeholder = @"Password";
+    self.passwordText.borderStyle =UITextBorderStyleLine;
+    self.passwordText.delegate = self;
+    [self.view addSubview:self.passwordText];
+    
+    self.rePassword = [[UITextField alloc]initWithFrame:CGRectMake(20, 140, self.view.frame.size.width - 40, 40)];
+    self.rePassword.placeholder = @"Re_type Password";
+    self.rePassword.borderStyle = UITextBorderStyleLine;
+    self.rePassword.delegate = self;
+    [self.view addSubview:self.rePassword];
+    
+    self.dateOfBirthText = [[UITextField alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width - 40, 40)];
+    self.dateOfBirthText.placeholder = @"Date of birth";
+    self.dateOfBirthText.borderStyle = UITextBorderStyleLine;
+    self.dateOfBirthText.delegate = self;
+    [self.view addSubview:self.dateOfBirthText];
+    
+    self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 260, self.view.frame.size.width - 40, 40)];
+    self.genderText.placeholder = @"Gender";
+    self.genderText.borderStyle = UITextBorderStyleLine;
+    self.genderText.inputView = self.selectPicker;
+    self.genderText.delegate = self;
+    [self.view addSubview:self.genderText];
+    
+    self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.registerButton setFrame:CGRectMake(20, 320, self.view.frame.size.width - 40, 40)];
+    [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
+    [self.registerButton addTarget:self action:@selector(registerClicked:) forControlEvents:UIControlEventTouchDragInside];
+    [self.view addSubview:self.registerButton];
+    
+    
+    
+}
+//registerButton
+-(void) registerClicked:(UIButton *)button {
+
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"注册中...";
+    [self.view addSubview:HUD];
+    [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
+    //    STreamUser *user = [[STreamUser alloc] init];
+    //    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+    //    [user signUp:self.name.text withPassword:self.password.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
+    //        if (succeed)
+    //            NSLog(@"userSignup passed OK");
+    //        else{
+    //
+    //        }
+    //    }];
+}
+- (void)test{
+    sleep(5);
+}
+//* UIPickerView
+-(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    if (self.genderText) {
+         return 1;
+    }
+    return 3;
+   
+}
+-(NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [self.genderArray count];
+}
+-(NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [self.genderArray objectAtIndex:row];
+}
+-(void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    self.genderText.text = [self.genderArray objectAtIndex:row];
+}
+//UITextFied
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self.nameText resignFirstResponder];
+    [self.passwordText resignFirstResponder];
+    [self.rePassword resignFirstResponder];
+    return YES;
+}
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if ([textField isEqual:self.dateOfBirthText]) {
+        [self.view setFrame:CGRectMake(0, -100, self.view.frame.size.width, self.view.frame.size.height)];
+        
+    }
+    if ([textField isEqual:self.genderText]) {
+    
+        [self.view setFrame:CGRectMake(0, -100, self.view.frame.size.width, self.view.frame.size.height)];
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning
