@@ -9,6 +9,7 @@
 #import "RegisterViewController.h"
 #import "MBProgressHUD.h"
 #import "PickerAlertView.h"
+#import <arcstreamsdk/STreamUser.h>
 @interface RegisterViewController ()
 
 @end
@@ -22,7 +23,7 @@
 @synthesize registerButton = _registerButton;
 @synthesize selectPicker =_selectPicker;
 @synthesize genderArray = _genderArray;
-
+@synthesize imageview =_imageview;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -37,7 +38,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-//    NSArray *array = [[NSArray alloc]initWithObjects:@"--Select Gender--",@"Male",@"Female", nil];
+    self.scrollview = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0,self.view.frame.size.width , self.view.frame.size.height)];
+    self.scrollview.delegate = self;
+    
+    [self.view addSubview:self.scrollview];
     
     self.genderArray = [[NSArray alloc]initWithObjects:@"--Select Gender--",@"Male",@"Female", nil];
     self.selectPicker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 100)];
@@ -45,7 +49,10 @@
     self.selectPicker.dataSource = self;
     self.selectPicker.showsSelectionIndicator = YES;
     [self.view addSubview:self.selectPicker];
-//
+
+//    self.imageview = [[UIImageView alloc]initWithFrame:CGRectMake(110, 20, 100, 100)];
+//    [self.view addSubview:self.imageview];
+    
     self.nameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 20, self.view.frame.size.width - 40, 40)];
     self.nameText.placeholder = @"E-mail Name";
     self.nameText.borderStyle = UITextBorderStyleLine;
@@ -86,7 +93,7 @@
     self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.registerButton setFrame:CGRectMake(20, 320, self.view.frame.size.width - 40, 40)];
     [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
-    [self.registerButton addTarget:self action:@selector(registerClicked:) forControlEvents:UIControlEventTouchDragInside];
+    [self.registerButton addTarget:self action:@selector(registerClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.registerButton];
     
     
@@ -94,21 +101,25 @@
 }
 //registerButton
 -(void) registerClicked:(UIButton *)button {
-
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"注册中...";
     [self.view addSubview:HUD];
     [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
-    //    STreamUser *user = [[STreamUser alloc] init];
-    //    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
-    //    [user signUp:self.name.text withPassword:self.password.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
-    //        if (succeed)
-    //            NSLog(@"userSignup passed OK");
-    //        else{
-    //
-    //        }
-    //    }];
+//    STreamUser *user = [[STreamUser alloc] init];
+//    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+//    [metaData setValue:self.nameText.text forKey:@"name"];
+//    [metaData setValue:self.passwordText.text forKey:@"password"];
+//    [metaData setValue:self.genderText.text forKey:@"gender"];
+//    [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
+//    
+//    [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
+//    if (succeed)
+//               NSLog(@"userSignup passed OK");
+//    else{
+//
+//        }
+//    }];
 }
 - (void)test{
     sleep(5);
@@ -140,15 +151,16 @@
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if ([textField isEqual:self.dateOfBirthText]) {
-        [self.view setFrame:CGRectMake(0, -100, self.view.frame.size.width, self.view.frame.size.height)];
-        
-    }
-    if ([textField isEqual:self.genderText]) {
+   
+    if ([textField isEqual: self.genderText]) {
     
         [self.view setFrame:CGRectMake(0, -100, self.view.frame.size.width, self.view.frame.size.height)];
         
+    }else{
+        [self.view setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+
     }
+    
 }
 
 - (void)pickerAction {
