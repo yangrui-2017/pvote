@@ -10,11 +10,20 @@
 #import "LoginViewController.h"
 #import <arcstreamsdk/STreamSession.h>
 #import <arcstreamsdk/STreamFile.h>
+#import <arcstreamsdk/STreamCategoryObject.h>
+#import <arcstreamsdk/STreamObject.h>
+#import "MBProgressHUD.h"
 
 @interface PhotoViewController ()
 {
    
     int clicked1;
+    NSData *imageData1;
+    NSData *imageData2;
+    STreamFile *file1;
+    STreamFile *file2;
+ 
+    
     
 }
 @end
@@ -40,10 +49,6 @@
 {
     [super viewDidLoad];
     clicked1 = 0;
-   
-    
-   
-	// Do any additional setup after loading the view.
     
     self.title = @"Create a Decision";
     
@@ -70,7 +75,7 @@
     
     
     
-       _message = [[UITextField alloc]initWithFrame:CGRectMake(20, 150, 280, 100)];
+    _message = [[UITextField alloc]initWithFrame:CGRectMake(20, 150, 280, 100)];
     _message.borderStyle =UITextBorderStyleLine;
     _message.backgroundColor = [UIColor grayColor];
     _message.delegate = self;
@@ -87,27 +92,50 @@
 }
 -(void) selectRightAction:(UIBarButtonItem *)item{
     
-            STreamFile * file = [[STreamFile alloc]init];
-            NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"two" ofType:@"jpg"];
-            //    NSLog(@"imsgePath = %@",imagePath);
-            [file postFile:imagePath finished:^(NSString *response){
-                NSLog(@"res:%@",response);
-            }byteSent:^(float percentage){
-                NSLog(@"total:%f",percentage);
-            }];
-            
-            NSString *test = _message.text;
-            NSData *data = [test dataUsingEncoding:NSUTF8StringEncoding];
-            NSMutableDictionary *metaData = [[NSMutableDictionary alloc]init];
-            [metaData setObject:@"a" forKey:@"c"];
-            [file setFileMetadata:metaData];
-            [file postData:data finished:^(NSString *response){
-                NSLog(@"res: %@", response);
-                
-            }byteSent:^(float percentage){
-                NSLog(@"total: %f", percentage);
-            }];
+    file1 = [[STreamFile alloc] init];
+    
+    [file1 postData:imageData1 finished:^(NSString *response){
+            NSLog(@"res: %@", response);
+        }byteSent:^(float percentage){
+            NSLog(@"total: %f", percentage);
+     }];
+    
+
+    file2 = [[STreamFile alloc] init];
+    
+    [file2 postData:imageData2 finished:^(NSString *response){
+        NSLog(@"res: %@", response);
+    }byteSent:^(float percentage){
+        NSLog(@"total: %f", percentage);
+    }];
+    
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:HUD];
+    HUD.labelText = @"提交中...";
+    [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
+    
     NSLog(@"提交成功");
+}
+
+- (void)test{
+    sleep(5);
+    NSString *file1Id = [file1 fileId];
+    NSString *file2Id = [file2 fileId];
+    while(file1Id == nil && file2Id == nil){
+        sleep(2);
+    }
+    
+    STreamObject *o1 = [[STreamObject alloc] init];
+    [o1 addStaff:@"file1" withObject:file1Id];
+    [o1 addStaff:@"file2" withObject:file2Id];
+    [o1 addStaff:@"message" withObject:_message.text];
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:@"test"];
+    NSMutableArray *na = [[NSMutableArray alloc] init];
+    [na addObject:o1];
+    [sco updateStreamCategoryObjects:na];
+    
+    
 }
 
 -(void) imageClicked:(UIImageView *)View{
@@ -124,11 +152,7 @@
         self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
         self.imagePicker.delegate = self;
    }
-//    if (View.tag == 10001) {
-//        frame = self.imageView.frame;
-//    }else{
-//         frame = self.imageView.frame;
-//    }
+
     clicked1 = 1;
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
@@ -155,30 +179,16 @@
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    if (clicked1 == 1)
+    if (clicked1 == 1){
        self.imageView.image = image;
-    else
+       imageData1 = UIImageJPEGRepresentation(image, 0.1);
+    }
+    else{
        self.imageView2.image = image;
+       imageData2 = UIImageJPEGRepresentation(image, 0.1);
+    }
     
     clicked1 = 0;
-    
-    NSData * imageData = UIImageJPEGRepresentation(image, 0.1);
-//    NSData * imageData = UIImagePNGRepresentation(image);
-//    STreamFile *file = [[STreamFile alloc] init];
-//    
-//    [file postData:imageData finished:^(NSString *response){
-//        
-//        NSLog(@"res: %@", response);
-    
-//
-//    }byteSent:^(float percentage){
-//        
-//        NSLog(@"total: %f", percentage);
-//        
-//    }]; 
-  
-    
-  //  self.imageView.contentMode =UIViewContentModeScaleAspectFill;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
