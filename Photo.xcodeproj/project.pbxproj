@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		035DADA117E1FA7A007A1C2E /* PickerAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 035DADA017E1FA7A007A1C2E /* PickerAlertView.m */; };
 		035E698517E13512001279F6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 035E698417E13512001279F6 /* MBProgressHUD.m */; };
 		03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE417E102FC00AE7E3B /* UIKit.framework */; };
 		03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE617E102FC00AE7E3B /* Foundation.framework */; };
@@ -47,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		035DAD9F17E1FA7A007A1C2E /* PickerAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PickerAlertView.h; path = classes/PickerAlertView.h; sourceTree = "<group>"; };
+		035DADA017E1FA7A007A1C2E /* PickerAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PickerAlertView.m; path = classes/PickerAlertView.m; sourceTree = "<group>"; };
 		035E698317E13506001279F6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		035E698417E13512001279F6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		03C49AE117E102FC00AE7E3B /* Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,6 +209,8 @@
 				03C49B2F17E1209B00AE7E3B /* LoginViewController.m */,
 				03C49B3417E145EE00AE7E3B /* RegisterViewController.h */,
 				03C49B3517E145EE00AE7E3B /* RegisterViewController.m */,
+				035DAD9F17E1FA7A007A1C2E /* PickerAlertView.h */,
+				035DADA017E1FA7A007A1C2E /* PickerAlertView.m */,
 				03C49B3117E133B400AE7E3B /* MainViewController.h */,
 				03C49B3217E133B400AE7E3B /* MainViewController.m */,
 			);
@@ -341,6 +346,7 @@
 				03C49B3317E133B400AE7E3B /* MainViewController.m in Sources */,
 				03C49B3617E145EE00AE7E3B /* RegisterViewController.m in Sources */,
 				035E698517E13512001279F6 /* MBProgressHUD.m in Sources */,
+				035DADA117E1FA7A007A1C2E /* PickerAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,7 @@
 
 #import "RegisterViewController.h"
 #import "MBProgressHUD.h"
-
+#import "PickerAlertView.h"
 @interface RegisterViewController ()
 
 @end
@@ -45,8 +45,7 @@
     self.selectPicker.dataSource = self;
     self.selectPicker.showsSelectionIndicator = YES;
     [self.view addSubview:self.selectPicker];
-    
-    
+//
     self.nameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 20, self.view.frame.size.width - 40, 40)];
     self.nameText.placeholder = @"E-mail Name";
     self.nameText.borderStyle = UITextBorderStyleLine;
@@ -71,11 +70,17 @@
     self.dateOfBirthText.delegate = self;
     [self.view addSubview:self.dateOfBirthText];
     
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	button.frame = CGRectMake(20, 200, self.view.frame.size.width - 40, 40);
+	[button addTarget:self action:@selector(pickerAction) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:button];
+    
     self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 260, self.view.frame.size.width - 40, 40)];
     self.genderText.placeholder = @"Gender";
     self.genderText.borderStyle = UITextBorderStyleLine;
     self.genderText.inputView = self.selectPicker;
     self.genderText.delegate = self;
+    
     [self.view addSubview:self.genderText];
     
     self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -111,15 +116,12 @@
 //* UIPickerView
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    if (self.genderText) {
-         return 1;
-    }
-    return 3;
-   
+    return 1;
 }
 -(NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     return [self.genderArray count];
+    
 }
 -(NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
@@ -147,6 +149,19 @@
         [self.view setFrame:CGRectMake(0, -100, self.view.frame.size.width, self.view.frame.size.height)];
         
     }
+}
+
+- (void)pickerAction {
+	PickerAlertView *pickerAlertView = [[PickerAlertView alloc] initWithTitle:@" " message:@" " delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+	[pickerAlertView show];
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(PickerAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	NSString *dateFromData = [NSString stringWithFormat:@"%@",alertView.datePickerView.date];
+	NSString *date = [dateFromData substringWithRange:NSMakeRange(0, 10)];
+	self.dateOfBirthText.text = date;
+	NSLog(@"date %@...%@",date,alertView.datePickerView.date);
 }
 
 - (void)didReceiveMemoryWarning

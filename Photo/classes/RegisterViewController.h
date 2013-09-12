@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface RegisterViewController : UIViewController<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
+@interface RegisterViewController : UIViewController<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate>
 
 @property (strong,nonatomic) UITextField *nameText;
 @property (strong,nonatomic) UITextField *passwordText;
@@ -17,6 +16,6 @@
 @property (strong,nonatomic) UITextField *dateOfBirthText;
 @property (strong,nonatomic) UIButton *registerButton;
 @property (strong,nonatomic) UIPickerView *selectPicker;
-@property(retain,nonatomic) NSArray *genderArray;
+@property (retain,nonatomic) NSArray *genderArray;
 
 @end
