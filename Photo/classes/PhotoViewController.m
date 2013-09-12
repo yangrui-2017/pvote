@@ -178,7 +178,7 @@
 //    }]; 
   
     
-    self.imageView.contentMode =UIViewContentModeScaleAspectFill;
+  //  self.imageView.contentMode =UIViewContentModeScaleAspectFill;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
