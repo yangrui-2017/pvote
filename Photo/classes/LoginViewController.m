@@ -11,6 +11,8 @@
 #import "RegisterViewController.h"
 #import "MainViewController.h"
 #import <arcstreamsdk/STreamUser.h>
+
+#import "MBProgressHUD.h"
 @interface LoginViewController ()
 
 @end
@@ -94,20 +96,32 @@
 }
 //registerButtonClicked
 -(void)registerButtonClicked{
-    STreamUser *user = [[STreamUser alloc] init];
-    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
     
-    [user signUp:self.name.text withPassword:self.password.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
-        
-        if (succeed)
-            NSLog(@"userSignup passed OK");
-        else{
-            
-        }
-        
-    }];
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:HUD];
+    HUD.labelText = @"注册中...";
+    [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
+//    STreamUser *user = [[STreamUser alloc] init];
+//    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+//    [user signUp:self.name.text withPassword:self.password.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
+//        if (succeed)
+//            NSLog(@"userSignup passed OK");
+//        else{
+//            
+//        }
+//    }];
     
 }
+
+- (void)test{
+    sleep(5);    
+    
+}
+
+
+
+
 //UITextFied
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.name resignFirstResponder];

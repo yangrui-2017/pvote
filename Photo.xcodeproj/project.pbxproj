@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		035E698517E13512001279F6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 035E698417E13512001279F6 /* MBProgressHUD.m */; };
 		03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE417E102FC00AE7E3B /* UIKit.framework */; };
 		03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE617E102FC00AE7E3B /* Foundation.framework */; };
 		03C49AE917E102FC00AE7E3B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE817E102FC00AE7E3B /* CoreGraphics.framework */; };
@@ -46,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		035E698317E13506001279F6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		035E698417E13512001279F6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		03C49AE117E102FC00AE7E3B /* Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C49AE417E102FC00AE7E3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03C49AE617E102FC00AE7E3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -195,6 +198,8 @@
 		03C49B1C17E1038C00AE7E3B /* classes */ = {
 			isa = PBXGroup;
 			children = (
+				035E698417E13512001279F6 /* MBProgressHUD.m */,
+				035E698317E13506001279F6 /* MBProgressHUD.h */,
 				03C49B1917E1036F00AE7E3B /* PhotoViewController.h */,
 				03C49B1A17E1036F00AE7E3B /* PhotoViewController.m */,
 				03C49B2E17E1209B00AE7E3B /* LoginViewController.h */,
@@ -335,6 +340,7 @@
 				03C49B3017E1209B00AE7E3B /* LoginViewController.m in Sources */,
 				03C49B3317E133B400AE7E3B /* MainViewController.m in Sources */,
 				03C49B3617E145EE00AE7E3B /* RegisterViewController.m in Sources */,
+				035E698517E13512001279F6 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -161,9 +161,8 @@
        self.imageView2.image = image;
     
     clicked1 = 0;
-   
     
-    // NSData * imageData = UIImageJPEGRepresentation(image, 1.0);
+    NSData * imageData = UIImageJPEGRepresentation(image, 0.1);
 //    NSData * imageData = UIImagePNGRepresentation(image);
 //    STreamFile *file = [[STreamFile alloc] init];
 //    
