@@ -15,6 +15,7 @@
 @interface LoginViewController ()
 {
     MBProgressHUD *HUD;
+    STreamUser *user;
 }
 @end
 
@@ -85,13 +86,24 @@
         HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"登录中...";
         [self.view addSubview:HUD];
-        [HUD showWhileExecuting:@selector(loginUser) onTarget:self withObject:nil animated:YES];
+        user = [[STreamUser alloc] init];
+        
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self loginUser];
+        } completionBlock:^{
+           if ([[user errorMessage] length] == 0) {
+               MainViewController *mainView = [[MainViewController alloc]init];
+               [self.navigationController pushViewController:mainView animated:YES];
+            }else{
+               UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"该用户不存在，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alertview show];
+            }
+        }];
     }
     
 }
 -(void)loginUser
 {
-    STreamUser *user = [[STreamUser alloc] init];
     [user logIn:self.name.text withPassword:self.password.text];
     NSString *error = [user errorMessage];
     NSLog(@"error = %@",error);
@@ -109,29 +121,9 @@
 		//调用封装好的数据库插入函数
 		if ([sqlSer insertTestList:sqlInsert]) {
             NSLog(@"插入数据成功");
-            //			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-            //															message:@"插入数据成功"
-            //														   delegate:self
-            //											      cancelButtonTitle:@"好"
-            //											      otherButtonTitles:nil];
-            //			[alert show];
 		}else {
             NSLog(@"插入数据失败");
-            //			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-            //															message:@"插入数据失败"
-            //														   delegate:self
-            //											      cancelButtonTitle:@"好"
-            //											      otherButtonTitles:nil];
-            //			[alert show];
         }
-        
-        MainViewController *mainView = [[MainViewController alloc]init];
-        [self.navigationController pushViewController:mainView animated:YES];
-        
-    }else{
-        HUD.mode = MBProgressHUDModeText;
-        HUD.labelText = @"该用户不存在，请先注册，谢谢";
-        sleep(3);
     }
 }
 
