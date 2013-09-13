@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface RegisterViewController : UIViewController<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate,UIScrollViewDelegate>
+@interface RegisterViewController : UIViewController<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (strong,nonatomic) UITextField *nameText;
 @property (strong,nonatomic) UITextField *passwordText;
@@ -15,8 +15,8 @@
 @property (strong,nonatomic) UITextField *genderText;
 @property (strong,nonatomic) UITextField *dateOfBirthText;
 @property (strong,nonatomic) UIButton *registerButton;
-@property (strong,nonatomic) UIPickerView *selectPicker;
 @property (retain,nonatomic) NSArray *genderArray;
-@property (strong,nonatomic) UIScrollView *scrollview;
 @property (strong,nonatomic) UIImageView *imageview;
+@property (strong,nonatomic) UITableView *myTableView;
+@property(nonatomic,retain)UIActionSheet* actionSheet;
 @end
