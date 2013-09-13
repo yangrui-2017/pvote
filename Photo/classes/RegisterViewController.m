@@ -10,6 +10,10 @@
 #import "MBProgressHUD.h"
 #import "PickerAlertView.h"
 #import <arcstreamsdk/STreamUser.h>
+#import <arcstreamsdk/STreamCategoryObject.h>
+#import <arcstreamsdk/STreamFile.h>
+
+
 @interface RegisterViewController ()
 {
     BOOL isAddImage;
@@ -153,18 +157,39 @@
 }
 - (void)registerUser{
     
-    STreamUser *user = [[STreamUser alloc] init];
-    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
-    [metaData setValue:self.nameText.text forKey:@"name"];
-    [metaData setValue:self.passwordText.text forKey:@"password"];
-    [metaData setValue:self.genderText.text forKey:@"gender"];
-    [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
+    NSData *postData = UIImageJPEGRepresentation(self.imageview.image, 0.1);
+    STreamFile *file = [[STreamFile alloc] init];
+    __block NSString *res;
+    [file postData:postData finished:^(NSString *response){
+        NSLog(@"res: %@", response);
+        res = response;
+    }byteSent:^(float percentage){
+        NSLog(@"total: %f", percentage);
+    }];
 
-    [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData];
+    while (res== nil){
+        sleep(3);
+    }
+    if ([res isEqualToString:@"ok"]){
+        STreamUser *user = [[STreamUser alloc] init];
+        NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+        [metaData setValue:self.nameText.text forKey:@"name"];
+        [metaData setValue:self.passwordText.text forKey:@"password"];
+        [metaData setValue:self.genderText.text forKey:@"gender"];
+        [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
+        [metaData setValue:[file fileId] forKey:@"profileImageId"];
+        [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData];
     
-    NSString *error = [user errorMessage];
-    
-    NSLog(@"%@", error);
+        NSString *error = [user errorMessage];
+        if ([error isEqualToString:@""]){
+           STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:self.nameText.text];
+           [sco createNewCategoryObject:^(BOOL succeed, NSString *objectId){}];
+        }else{
+        
+        }
+        NSLog(@"%@", error);
+        
+    }
     
 }
 //* UIPickerView
