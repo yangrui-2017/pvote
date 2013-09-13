@@ -52,6 +52,7 @@
     self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 80, 260, 40)];
     self.password.placeholder=@"Password";
     self.password.borderStyle = UITextBorderStyleLine;
+    [self.password setSecureTextEntry:YES];
     self.password.delegate =self;
     [self.view addSubview: self.password];
     //loginbutton 

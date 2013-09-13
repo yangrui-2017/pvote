@@ -13,6 +13,7 @@
 @interface RegisterViewController ()
 {
     BOOL isAddImage;
+    UIAlertView *alertview;
 }
 @end
 
@@ -86,11 +87,13 @@
         self.passwordText.placeholder = @"Password";
         self.passwordText.borderStyle =UITextBorderStyleLine;
         self.passwordText.delegate = self;
+        [self.passwordText setSecureTextEntry:YES];//
         [self.myTableView addSubview:self.passwordText];
         
         self.rePassword = [[UITextField alloc]initWithFrame:CGRectMake(20, 260, self.view.frame.size.width - 40, 40)];
         self.rePassword.placeholder = @"Re_type Password";
         self.rePassword.borderStyle = UITextBorderStyleLine;
+        [self.rePassword setSecureTextEntry:YES];
         self.rePassword.delegate = self;
         [self.myTableView addSubview:self.rePassword];
         
@@ -134,25 +137,33 @@
 
 //registerButton
 -(void) registerClicked:(UIButton *)button {
+    if ([self.passwordText.text isEqualToString:self.rePassword.text]) {
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"注册中...";
+        [self.view addSubview:HUD];
+        [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
+        //    STreamUser *user = [[STreamUser alloc] init];
+        //    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+        //    [metaData setValue:self.nameText.text forKey:@"name"];
+        //    [metaData setValue:self.passwordText.text forKey:@"password"];
+        //    [metaData setValue:self.genderText.text forKey:@"gender"];
+        //    [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
+        //
+        //    [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
+        //    if (succeed)
+        //               NSLog(@"userSignup passed OK");
+        //    else{
+        //
+        //        }
+        //    }];
+
+    }else{
+        alertview = [[UIAlertView alloc]initWithTitle:@"Error" message:@"两次输入密码不同，请重新输入" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        
+        [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(performDismiss:) userInfo:nil repeats:YES];
+        [alertview show];
+    }
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"注册中...";
-    [self.view addSubview:HUD];
-    [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
-//    STreamUser *user = [[STreamUser alloc] init];
-//    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
-//    [metaData setValue:self.nameText.text forKey:@"name"];
-//    [metaData setValue:self.passwordText.text forKey:@"password"];
-//    [metaData setValue:self.genderText.text forKey:@"gender"];
-//    [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
-//    
-//    [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
-//    if (succeed)
-//               NSLog(@"userSignup passed OK");
-//    else{
-//
-//        }
-//    }];
 }
 - (void)test{
     sleep(5);
@@ -199,11 +210,16 @@
 {
     return YES;
 }
+-(void)performDismiss:(NSTimer *)timer{
+    
+    [alertview dismissWithClickedButtonIndex:0 animated:YES];
+
+}
 - (void)pickerAction {
 	PickerAlertView *pickerAlertView = [[PickerAlertView alloc] initWithTitle:@" " message:@" " delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 	[pickerAlertView show];
 }
-
+//----pick actionsheet
 - (void)dateButton:(UIButton *)btn {
 	self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
