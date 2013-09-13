@@ -29,6 +29,10 @@
  */
 - (void) signUp: (NSString *)userName withPassword:(NSString *)password withMetadata:(NSMutableDictionary *)metaData response:(void (^)(BOOL succeed, NSString *resposne))doStaff;
 
+- (void) signUp: (NSString *)userName withPassword:(NSString *)password withMetadata:(NSMutableDictionary *)metaData;
+
+- (void) logIn: (NSString *)userName withPassword:(NSString *)password;
+
 - (NSString *)convertToJsonString: (NSMutableDictionary *)data;
 
 /*!
