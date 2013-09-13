@@ -246,6 +246,7 @@
         {
             [self takePhoto];
         }
+        isAddImage = NO;
 
     }else{
         NSString *dateFromData = [NSString stringWithFormat:@"%@",alertView.datePickerView.date];
