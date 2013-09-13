@@ -12,9 +12,10 @@
 #import "MainViewController.h"
 #import <arcstreamsdk/STreamUser.h>
 #import "MBProgressHUD.h"
-#import "MBProgressHUD.h"
 @interface LoginViewController ()
-
+{
+    MBProgressHUD *HUD;
+}
 @end
 
 @implementation LoginViewController
@@ -81,7 +82,7 @@
         
     }else{
         
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"登录中...";
         [self.view addSubview:HUD];
         [HUD showWhileExecuting:@selector(loginUser) onTarget:self withObject:nil animated:YES];
@@ -123,13 +124,14 @@
             //											      otherButtonTitles:nil];
             //			[alert show];
         }
-        MainViewController * mainView = [[MainViewController alloc]init];
+        
+        MainViewController *mainView = [[MainViewController alloc]init];
         [self.navigationController pushViewController:mainView animated:YES];
         
     }else{
-        
-        UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"该用户不存在，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertview show];
+        HUD.mode = MBProgressHUDModeText;
+        HUD.labelText = @"该用户不存在，请先注册，谢谢";
+        sleep(3);
     }
 }
 
