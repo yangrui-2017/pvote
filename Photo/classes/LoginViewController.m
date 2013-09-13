@@ -73,27 +73,81 @@
 }
 //loginButton
 -(void)loginButtonClicked{
-    STreamUser *user = [[STreamUser alloc] init];
+//    if (([self.name.text length]==0) && ([self.password.text length]==0)) {
+//        UIAlertView * view = [[UIAlertView alloc]initWithTitle:nil message:@"用户名和密码不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        [view show];
+//    }else{
+//        STreamUser *user = [[STreamUser alloc] init];
+//    
+//        [user logIn:self.name.text withPassword:self.password.text response:^(BOOL succeed, NSString *response){
+//        
+//        if (succeed){
+//            
+//            NSLog(@"登陆成功");
+//        
+//            MainViewController *mainView = [[MainViewController alloc]init];
+//            [self.navigationController pushViewController:mainView animated:YES];
+//        
+//        }else {
+//            
+//            NSLog(@"登陆失败");
+//            
+//        }
+//        
+//    }];
+//    
+//    MainViewController *mainView = [[MainViewController alloc]init];
+//    [self.navigationController pushViewController:mainView animated:YES];
+//
+//    }
     
-    [user logIn:self.name.text withPassword:self.password.text response:^(BOOL succeed, NSString *response){
-        
-        if (succeed){
-            
-            NSLog(@"登陆成功");
-        
-            MainViewController *mainView = [[MainViewController alloc]init];
-            [self.navigationController pushViewController:mainView animated:YES];
-        
-        }else {
-            
-            NSLog(@"登陆失败");
-            
+	if ([self.name.text isEqualToString:@"" ]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                        message:@"请输入name"
+                                                       delegate:self
+                                              cancelButtonTitle:@"好"
+                                              otherButtonTitles:nil];
+        [alert show];
+		return;
+	}
+	if ([self.password.text isEqualToString:@"" ]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+														message:@"请输入password"
+													   delegate:self
+											  cancelButtonTitle:@"好"
+											  otherButtonTitles:nil];
+		[alert show];
+		return;
+	}
+	
+	
+	
+	//初始化数据库
+	sqlService *sqlSer = [[sqlService alloc] init];
+	
+	//数据库插入
+		
+		sqlTestList *sqlInsert = [[sqlTestList alloc]init];
+		sqlInsert.name = self.name.text;
+		sqlInsert.password = self.password.text;
+		
+		//调用封装好的数据库插入函数
+		if ([sqlSer insertTestList:sqlInsert]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+															message:@"插入数据成功"
+														   delegate:self
+											      cancelButtonTitle:@"好"
+											      otherButtonTitles:nil];
+			[alert show];
+		}else {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+															message:@"插入数据失败"
+														   delegate:self
+											      cancelButtonTitle:@"好"
+											      otherButtonTitles:nil];
+			[alert show];
         }
-        
-    }];
     
-    MainViewController *mainView = [[MainViewController alloc]init];
-    [self.navigationController pushViewController:mainView animated:YES];
 }
 //registerButtonClicked
 -(void)registerButtonClicked{

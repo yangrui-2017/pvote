@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "sqlService.h"
 @interface LoginViewController : UIViewController<UITextFieldDelegate>
 {
 
+    NSMutableArray *listData;
+    sqlTestList *sqlValue;
 }
 @property (retain,nonatomic) UITextField *name;
 @property (retain,nonatomic) UITextField *password;

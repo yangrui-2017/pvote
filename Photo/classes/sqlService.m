@@ -233,7 +233,7 @@
 		sqlite3_stmt *statement = nil;
 		//sql语句
 //		char *sql = "SELECT title, image, detail, imgID FROM testTable WHERE image = '%sh%'";
-        char *sql = "SeLECT name, password FROM testTable";
+        char *sql = "SeLECT name, password FROM testTable WHERE name = ?";
 		
 		if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
 			NSLog(@"Error: failed to prepare statement with message:search name.");
