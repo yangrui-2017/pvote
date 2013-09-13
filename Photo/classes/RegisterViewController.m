@@ -141,22 +141,8 @@
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"注册中...";
         [self.view addSubview:HUD];
-        [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
-        //    STreamUser *user = [[STreamUser alloc] init];
-        //    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
-        //    [metaData setValue:self.nameText.text forKey:@"name"];
-        //    [metaData setValue:self.passwordText.text forKey:@"password"];
-        //    [metaData setValue:self.genderText.text forKey:@"gender"];
-        //    [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
-        //
-        //    [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData response:^(BOOL succeed, NSString *response){
-        //    if (succeed)
-        //               NSLog(@"userSignup passed OK");
-        //    else{
-        //
-        //        }
-        //    }];
-
+        [HUD showWhileExecuting:@selector(registerUser) onTarget:self withObject:nil animated:YES];
+       
     }else{
         alertview = [[UIAlertView alloc]initWithTitle:@"Error" message:@"两次输入密码不同，请重新输入" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
         
@@ -165,8 +151,21 @@
     }
     
 }
-- (void)test{
-    sleep(5);
+- (void)registerUser{
+    
+    STreamUser *user = [[STreamUser alloc] init];
+    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+    [metaData setValue:self.nameText.text forKey:@"name"];
+    [metaData setValue:self.passwordText.text forKey:@"password"];
+    [metaData setValue:self.genderText.text forKey:@"gender"];
+    [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
+
+    [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData];
+    
+    NSString *error = [user errorMessage];
+    
+    NSLog(@"%@", error);
+    
 }
 //* UIPickerView
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
