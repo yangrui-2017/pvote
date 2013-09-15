@@ -7,7 +7,17 @@
 //
 
 #import "MainViewController.h"
-@interface MainViewController ()
+#import <arcstreamsdk/STreamFile.h>
+#import <arcstreamsdk/STreamCategoryObject.h>
+#import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamQuery.h>
+#import "MBProgressHUD.h"
+
+
+@interface MainViewController (){
+    STreamCategoryObject *votes;
+    NSMutableArray *votesArray;
+}
 
 @end
 
@@ -39,6 +49,24 @@
     self.myTableView.dataSource = self;
     [self.view addSubview:self.myTableView];
     self.myDataArray = [[NSMutableArray alloc]init];
+    votes = [[STreamCategoryObject alloc] initWithCategory:@"test1"];
+  
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [votes load];
+        votesArray = [votes streamObjects];
+    
+     } completionBlock:^{
+        
+    
+     }];
+
+    
+    
+      
 }
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

@@ -122,15 +122,18 @@
     sleep(5);
     NSString *file1Id = [file1 fileId];
     NSString *file2Id = [file2 fileId];
-    while(file1Id == nil && file2Id == nil){
+    while(file1Id == nil || file2Id == nil){
         sleep(2);
+        file1Id = [file1 fileId];
+        file2Id = [file2 fileId];
     }
     
     STreamObject *o1 = [[STreamObject alloc] init];
     [o1 addStaff:@"file1" withObject:file1Id];
     [o1 addStaff:@"file2" withObject:file2Id];
     [o1 addStaff:@"message" withObject:_message.text];
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:@"test"];
+    NSString *userName = [STreamSession getUserName];
+    STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:userName];
     NSMutableArray *na = [[NSMutableArray alloc] init];
     [na addObject:o1];
     [sco updateStreamCategoryObjects:na];
