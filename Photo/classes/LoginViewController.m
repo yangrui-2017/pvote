@@ -12,10 +12,12 @@
 #import "MainViewController.h"
 #import <arcstreamsdk/STreamUser.h>
 #import "MBProgressHUD.h"
+#import "AppDelegate.h"
 @interface LoginViewController ()
 {
     MBProgressHUD *HUD;
     STreamUser *user;
+//    NSMutableArray *dataArray;
 }
 @end
 
@@ -32,6 +34,12 @@
         // Custom initialization
     }
     return self;
+}
+-(NSString *)dataFilePath
+{
+    NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString * documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:KFilename];
 }
 
 - (void)viewDidLoad
@@ -70,7 +78,24 @@
     [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
     [self.registerButton addTarget:self action:@selector(registerButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.registerButton];
-
+//
+    NSString *filePath = [self dataFilePath];
+    if ([[NSFileManager defaultManager]fileExistsAtPath:filePath]) {
+        
+        NSArray *array = [[NSArray alloc]initWithContentsOfFile:filePath];
+        self.name.text = [array objectAtIndex:[array count]-2];
+        self.password.text = [array objectAtIndex:[array count]-1];
+    }
+    UIApplication *app = [UIApplication sharedApplication];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:app];
+    
+}
+-(void)applicationWillResignActive:(NSNotification *) notification{
+    
+    NSMutableArray * array = [[NSMutableArray alloc]init];
+    [array addObject:self.name.text];
+    [array addObject:self.password.text];
+    [array writeToFile:[self dataFilePath] atomically:YES];
     
 }
 //loginButton

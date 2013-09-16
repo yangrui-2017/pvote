@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "sqlService.h"
+
+#define KFilename @"data.plist"
+
 @interface LoginViewController : UIViewController<UITextFieldDelegate>
 {
 
