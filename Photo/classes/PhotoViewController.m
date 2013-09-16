@@ -201,15 +201,29 @@
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     if (clicked1 == 1){
        self.imageView.image = image;
-       imageData1 = UIImageJPEGRepresentation(image, 0.1);
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(120.0, 120.0)];
+      // imageData1 = UIImageJPEGRepresentation(image, 0.1);
+       imageData1 = UIImageJPEGRepresentation(sImage, 1);
     }
     else{
        self.imageView2.image = image;
-       imageData2 = UIImageJPEGRepresentation(image, 0.1);
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(120.0, 120.0)];
+     //  imageData2 = UIImageJPEGRepresentation(image, 0.1);
+       imageData2 = UIImageJPEGRepresentation(sImage, 1);
+
     }
     
     clicked1 = 0;
     [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
+-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 - (void)didReceiveMemoryWarning
