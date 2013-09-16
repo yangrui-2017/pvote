@@ -13,7 +13,8 @@
 {
     
 }
-@property (retain,nonatomic) NSMutableDictionary *imageDictionary;
+
++ (ImageCache *)sharedObject;
 
 -(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId;
 

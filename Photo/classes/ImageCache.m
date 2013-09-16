@@ -10,15 +10,29 @@
 #import <arcstreamsdk/STreamFile.h>
 #import "ImageDataFile.h"
 
-@implementation ImageCache
-@synthesize imageDictionary = _imageDictionary;
+static NSMutableDictionary *_imageDictionary;
 
+@implementation ImageCache
+
+
+
++ (ImageCache *)sharedObject{
+    
+    static ImageCache *sharedInstance;
+    static dispatch_once_t onceToken;
+     dispatch_once(&onceToken, ^{
+        
+         sharedInstance = [[ImageCache alloc] init];
+         _imageDictionary = [[NSMutableDictionary alloc] init];
+         
+     });
+    
+    return sharedInstance;
+    
+}
 
 -(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId
 {
-    if (_imageDictionary == nil){
-        _imageDictionary = [[NSMutableDictionary alloc] init];
-    }
     [_imageDictionary setObject:imageFiles forKey:objectId];
 }
 

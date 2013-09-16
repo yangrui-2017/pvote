@@ -13,11 +13,11 @@
 #import <arcstreamsdk/STreamQuery.h>
 #import "MBProgressHUD.h"
 #import "ImageCache.h"
+#import "ImageDownload.h"
 
 @interface MainViewController (){
     STreamCategoryObject *votes;
     NSMutableArray *votesArray;
-    ImageCache *imageDownload;
     NSMutableArray *allVotes;
 }
 
@@ -60,7 +60,6 @@
     [self.view addSubview:HUD];
     
     [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
-    imageDownload = [[ImageCache alloc] init];
     allVotes = [[NSMutableArray alloc] init];
     
 }
@@ -134,29 +133,18 @@
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
     
-    if ([imageDownload getImages:[so objectId]] != nil){
-        ImageDataFile *files = [imageDownload getImages:[so objectId]];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    
+       
+    if ([imageCache getImages:[so objectId]] != nil){
+        ImageDataFile *files = [imageCache getImages:[so objectId]];
         self.oneImageView.image = [UIImage imageWithData:[files file1]];
         self.twoImageView.image = [UIImage imageWithData:[files file2]];
     }else{
-        STreamFile *file1file = [[STreamFile alloc] init];
-        [file1file downloadAsData:file1 downloadedData:^(NSData *imageData1){
-            
-            self.oneImageView.image = [UIImage imageWithData:imageData1];
-            STreamFile *file2file = [[STreamFile alloc] init];
-            [file2file downloadAsData:file2 downloadedData:^(NSData *imageData2){
-                self.twoImageView.image = [UIImage imageWithData:imageData2];
-                ImageDataFile *dataFile = [[ImageDataFile alloc] init];
-                [dataFile setFile1:imageData1];
-                [dataFile setFile2:imageData2];
-                [imageDownload imageDownload:dataFile withObjectId:[so objectId]];
-                [self.myTableView reloadData];
-            }];
-        }];
+        ImageDownload *imageDownload = [[ImageDownload alloc] init];
+        [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
+        [imageDownload setMainRefesh:self];
     }
-    
-  
-    
     
     //取消选中颜色
 //    UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
@@ -167,6 +155,11 @@
 
     return cell;
 }
+
+- (void)reloadTable{
+    [self.myTableView reloadData];
+}
+
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 300;

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MainViewTableViewRfresh.h"
 
-@interface MainViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
+@interface MainViewController : UIViewController <UITableViewDelegate,UITableViewDataSource, MainViewTableViewRfresh>
 {
    
 }
