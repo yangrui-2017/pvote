@@ -6,11 +6,11 @@
 //  Copyright (c) 2013年 wangshuai. All rights reserved.
 //
 
-#import "ImageDownload.h"
+#import "ImageCache.h"
 #import <arcstreamsdk/STreamFile.h>
 #import "ImageDataFile.h"
 
-@implementation ImageDownload
+@implementation ImageCache
 @synthesize imageDictionary = _imageDictionary;
 
 

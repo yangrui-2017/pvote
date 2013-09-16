@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ImageDataFile.h"
 
-@interface ImageDownload : NSObject
+@interface ImageCache : NSObject
 {
     
 }

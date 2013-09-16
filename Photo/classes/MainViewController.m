@@ -12,12 +12,12 @@
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamQuery.h>
 #import "MBProgressHUD.h"
-#import "ImageDownload.h"
+#import "ImageCache.h"
 
 @interface MainViewController (){
     STreamCategoryObject *votes;
     NSMutableArray *votesArray;
-    ImageDownload *imageDownload;
+    ImageCache *imageDownload;
     NSMutableArray *allVotes;
 }
 
@@ -60,7 +60,7 @@
     [self.view addSubview:HUD];
     
     [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
-    imageDownload = [[ImageDownload alloc] init];
+    imageDownload = [[ImageCache alloc] init];
     allVotes = [[NSMutableArray alloc] init];
     
 }
