@@ -128,15 +128,32 @@
         file2Id = [file2 fileId];
     }
     
+    NSDate *now = [[NSDate alloc] init];
+    long millionsSecs = [now timeIntervalSince1970];
+    NSString *longValue = [NSString stringWithFormat:@"%lu", millionsSecs];
+    NSString *userName = [STreamSession getUserName];
+    
     STreamObject *o1 = [[STreamObject alloc] init];
+    [o1 setObjectId:longValue];
     [o1 addStaff:@"file1" withObject:file1Id];
     [o1 addStaff:@"file2" withObject:file2Id];
     [o1 addStaff:@"message" withObject:_message.text];
-    NSString *userName = [STreamSession getUserName];
+    
+    STreamObject *vote = [[STreamObject alloc] init];
+    [vote setObjectId:longValue];
+    [vote addStaff:@"userName" withObject:userName];
+    
+    
     STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:userName];
     NSMutableArray *na = [[NSMutableArray alloc] init];
     [na addObject:o1];
     [sco updateStreamCategoryObjects:na];
+    
+   
+    STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"allVotes"];
+    NSMutableArray *av = [[NSMutableArray alloc] init];
+    [av addObject:vote];
+    [scov updateStreamCategoryObjects:av];
     
     
 }
