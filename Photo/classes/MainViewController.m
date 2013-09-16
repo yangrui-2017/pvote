@@ -68,13 +68,26 @@
     
     votesArray = [votes load];
 
-  
-    for (STreamObject *so in votesArray){
+    int count = [votesArray count];
+    
+    for (int i=count-1; i >=0; i--){
+        
+        STreamObject *so = [votesArray objectAtIndex:i];
         STreamQuery *query = [[STreamQuery alloc] initWithCategory:[so getValue:@"userName"]];
+        [self.myDataArray addObject:[so getValue:@"userName"]];
         [query addLimitId:[so objectId]];
         NSMutableArray *objects = [query find];
         [allVotes addObject:[objects objectAtIndex:0]];
+        
     }
+    
+    /*for (STreamObject *so in votesArray){
+        STreamQuery *query = [[STreamQuery alloc] initWithCategory:[so getValue:@"userName"]];
+        [self.myDataArray addObject:[so getValue:@"userName"]];
+        [query addLimitId:[so objectId]];
+        NSMutableArray *objects = [query find];
+        [allVotes addObject:[objects objectAtIndex:0]];
+    }*/
     
     [self.myTableView reloadData];
 }
@@ -91,15 +104,6 @@
     static NSString *cellName = @"cellName";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-//    NSString *message = [so getValue:@"message"];
-//    
-//    NSString *file1 = [so getValue:@"file1"];
-//    NSString *file2 = [so getValue:@"file2"];
-    
-    /*STreamFile *file1file = [[STreamFile alloc] init];
-    [file1file downloadAsData:file1 downloadedData:^(NSData *imageData){
-        
-    }];*/
     if (cell == nil) {
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
@@ -108,14 +112,13 @@
         [cell.contentView addSubview:self.imageView];
         
         self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 5, 200, 30)];
-        self.name.borderStyle = UITextBorderStyleLine;
         self.name.enabled = NO;
         [cell.contentView addSubview:self.name];
         
-        self.message = [[UITextField alloc]initWithFrame:CGRectMake(90, 40, 200, 40)];
-        self.message.borderStyle = UITextBorderStyleLine;
-        //     self.message.text = [so getValue:@"message"];
-        self.message.enabled = NO;
+        self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 30)];
+        [self.message setLineBreakMode:NSLineBreakByWordWrapping];
+        [self.message setNumberOfLines:0];
+        self.message.tag=1;
         [cell.contentView addSubview:self.message];
         
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 100, 150, 150)];
@@ -125,13 +128,32 @@
         self.twoImageView = [[UIImageView  alloc]initWithFrame:CGRectMake(165, 100, 150, 150)];
         [self.twoImageView setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:self.twoImageView];
-
     }
     STreamObject *so = [allVotes objectAtIndex:indexPath.row];
-    self.message.text = [so getValue:@"message"];
+    NSString *message = [so getValue:@"message"];
+    
+//    UILabel *label = (UILabel *)[cell viewWithTag:1];
+//    CGRect cellFrame = [cell frame];
+//	cellFrame.origin = CGPointMake(0, 0);
+//    
+//	label.text = message;
+//	CGRect rect = CGRectInset(cellFrame, 2, 2);
+//	label.frame = rect;
+//	[label sizeToFit];
+//	if (label.frame.size.height > 46) {
+//		cellFrame.size.height = 50 + label.frame.size.height - 46;
+//	}
+//	else {
+//		cellFrame.size.height = 50;
+//	}
+//	[cell setFrame:cellFrame];
+    
+    self.message.text = message;
+    self.name.text = [self.myDataArray objectAtIndex:indexPath.row];
     
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
+    
     
     ImageCache *imageCache = [ImageCache sharedObject];
     
@@ -147,11 +169,9 @@
     }
     
     //取消选中颜色
-//    UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
-//    cell.selectedBackgroundView = backView;
-//    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
-    
-   
+    UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
+    cell.selectedBackgroundView = backView;
+    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
 
     return cell;
 }
@@ -163,6 +183,8 @@
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 300;
+//    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+//    return cell.frame.size.height;
 }
 - (void)didReceiveMemoryWarning
 {

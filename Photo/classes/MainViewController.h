@@ -18,7 +18,7 @@
 @property (retain,nonatomic) NSMutableArray *myDataArray;
 @property (strong ,nonatomic) UIImageView *imageView;
 @property (strong,nonatomic) UITextField *name;
-@property (strong,nonatomic) UITextField *message;
+@property (strong,nonatomic) UILabel *message;
 @property (strong,nonatomic) UIImageView *oneImageView;
 @property (strong,nonatomic) UIImageView *twoImageView;
 
