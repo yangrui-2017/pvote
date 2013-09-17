@@ -38,7 +38,7 @@
 
 typedef void (^DelegateCall)(float);
 typedef void (^FinishCall)(NSString *);
-typedef void (^FinishDownload)(NSData *);
+typedef void (^FinishDownload)(NSData *, NSString *);
 
 
 /*!
