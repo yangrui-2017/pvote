@@ -13,6 +13,10 @@
 #import <arcstreamsdk/STreamUser.h>
 #import "MBProgressHUD.h"
 #import "AppDelegate.h"
+#import "CreateTabBarViewController.h"
+#import "UserInformationViewController.h"
+#import "InformationViewController.h"
+#import "FireViewController.h"
 @interface LoginViewController ()
 {
     MBProgressHUD *HUD;
@@ -40,6 +44,31 @@
     NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString * documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:KFilename];
+}
+//init
+-(void)creat_tabBar_LatestActivity
+{
+    
+    CreateTabBarViewController * usercentertab = [[CreateTabBarViewController alloc] init];
+    usercentertab.selectedIndex = 0;
+    MainViewController * mainVC = [[MainViewController alloc]init];
+    PhotoViewController *photoVC = [[PhotoViewController alloc]init];
+    FireViewController * fireVC = [[FireViewController alloc]init];
+    UserInformationViewController * userInfoVC = [[UserInformationViewController alloc]init];
+    InformationViewController * myInfoVC = [[InformationViewController alloc]init];
+    
+    
+    if (APPDELEGATE.loginSuccess == YES) {
+        
+        usercentertab.viewControllers = [NSArray arrayWithObjects: mainVC, fireVC, photoVC, userInfoVC,myInfoVC,nil];
+        
+    } else {
+        NSLog(@"<<<<<<<<<<<<<<<<未登录 & 未参加<<<<<<<<<<<<<<<<<<");
+        usercentertab.viewControllers = [NSArray arrayWithObjects: mainVC,nil];
+        
+    }
+    [self.navigationController pushViewController:usercentertab animated:YES];
+    
 }
 
 - (void)viewDidLoad
@@ -117,8 +146,10 @@
             [self loginUser];
         } completionBlock:^{
            if ([[user errorMessage] length] == 0) {
-               MainViewController *mainView = [[MainViewController alloc]init];
-               [self.navigationController pushViewController:mainView animated:YES];
+               APPDELEGATE.loginSuccess = YES;
+//               MainViewController *mainView = [[MainViewController alloc]init];
+//               [self.navigationController pushViewController:mainView animated:YES];
+               [self creat_tabBar_LatestActivity];
             }else{
                UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"该用户不存在，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertview show];
@@ -132,24 +163,24 @@
     [user logIn:self.name.text withPassword:self.password.text];
     NSString *error = [user errorMessage];
     NSLog(@"error = %@",error);
-    if ([error length] == 0) {
-        
-        //初始化数据库
-        sqlService *sqlSer = [[sqlService alloc] init];
-        
-        //数据库插入
-		
-		sqlTestList *sqlInsert = [[sqlTestList alloc]init];
-		sqlInsert.name = self.name.text;
-		sqlInsert.password = self.password.text;
-		
-		//调用封装好的数据库插入函数
-		if ([sqlSer insertTestList:sqlInsert]) {
-            NSLog(@"插入数据成功");
-		}else {
-            NSLog(@"插入数据失败");
-        }
-    }
+//    if ([error length] == 0) {
+//        
+//        //初始化数据库
+//        sqlService *sqlSer = [[sqlService alloc] init];
+//        
+//        //数据库插入
+//		
+//		sqlTestList *sqlInsert = [[sqlTestList alloc]init];
+//		sqlInsert.name = self.name.text;
+//		sqlInsert.password = self.password.text;
+//		
+//		//调用封装好的数据库插入函数
+//		if ([sqlSer insertTestList:sqlInsert]) {
+//            NSLog(@"插入数据成功");
+//		}else {
+//            NSLog(@"插入数据失败");
+//        }
+//    }
 }
 
 //registerButtonClicked

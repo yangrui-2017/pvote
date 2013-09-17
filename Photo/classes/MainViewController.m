@@ -30,6 +30,7 @@
 @synthesize message = _message;
 @synthesize oneImageView =_oneImageView;
 @synthesize twoImageView =_twoImageView;
+@synthesize ImageArray = _ImageArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,13 +40,14 @@
     }
     return self;
 }
-//init
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = @"MainPage";
+    self.myDataArray = [[NSMutableArray alloc]init];
+    self.ImageArray = [[NSMutableArray alloc]init];
     
     votes = [[STreamCategoryObject alloc] initWithCategory:@"allVotes"];
        
@@ -54,7 +56,6 @@
     self.myTableView.dataSource = self;
     
     [self.view addSubview:self.myTableView];
-    self.myDataArray = [[NSMutableArray alloc]init];
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
@@ -116,9 +117,12 @@
         [cell.contentView addSubview:self.name];
         
         self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 30)];
-        [self.message setLineBreakMode:NSLineBreakByWordWrapping];
-        [self.message setNumberOfLines:0];
-        self.message.tag=1;
+//        [self.message setLineBreakMode:NSLineBreakByWordWrapping];
+//        self.message .highlightedTextColor = [UIColor whiteColor];
+//        self.message.adjustsLetterSpacingToFitWidth = YES;
+//        self.message .numberOfLines = 0;
+//        self.message .opaque = NO; // 选中Opaque表示视图后面的任何内容都不应该绘制
+        self.message .backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:self.message];
         
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 100, 150, 150)];
@@ -132,21 +136,22 @@
     STreamObject *so = [allVotes objectAtIndex:indexPath.row];
     NSString *message = [so getValue:@"message"];
     
-//    UILabel *label = (UILabel *)[cell viewWithTag:1];
-//    CGRect cellFrame = [cell frame];
-//	cellFrame.origin = CGPointMake(0, 0);
-//    
-//	label.text = message;
-//	CGRect rect = CGRectInset(cellFrame, 2, 2);
-//	label.frame = rect;
-//	[label sizeToFit];
-//	if (label.frame.size.height > 46) {
-//		cellFrame.size.height = 50 + label.frame.size.height - 46;
-//	}
-//	else {
-//		cellFrame.size.height = 50;
-//	}
-//	[cell setFrame:cellFrame];
+    UILabel *label = (UILabel *)[cell viewWithTag:1];
+
+    CGRect cellFrame = [cell frame];
+    cellFrame.origin = CGPointMake(0, 0);
+    
+    label.text = message;
+    CGRect rect = CGRectInset(cellFrame, 2, 2);
+    label.frame = rect;
+    [label sizeToFit];
+    if (label.frame.size.height > 30) {
+        cellFrame.size.height = 50 + label.frame.size.height - 46;
+    }
+    else {
+        cellFrame.size.height = 300;
+    }
+    [cell setFrame:cellFrame];
     
     self.message.text = message;
     self.name.text = [self.myDataArray objectAtIndex:indexPath.row];
@@ -179,10 +184,38 @@
 - (void)reloadTable{
     [self.myTableView reloadData];
 }
+-(CGFloat)getCellHeight:(NSInteger)row
+{
+    // 列寬
+    CGFloat contentWidth =self.view.frame.size.width-90;
+    CGFloat height = 0.0;
+    // 设置字体
+    UIFont *font = [UIFont fontWithName:@"CourierNewPSMT" size:14];
+    
+    if (allVotes.count != 0) {
+        STreamObject *so = [allVotes objectAtIndex:row];
+        // 显示的内容
+        NSString *message = [so getValue:@"message"];        
+        // 计算出显示完內容需要的最小尺寸
+        CGSize size = [message sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 3000)];
+        
+        
+        if (size.height+200<300) {
+            height = 300;
+        }else
+        {
+            height = size.height+60;//40
+        }
+    }    // 返回需要的高度
+    return height;
+    
+}
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 300;
+    return [self getCellHeight:indexPath.row];
+
+//    return 300;
 //    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 //    return cell.frame.size.height;
 }

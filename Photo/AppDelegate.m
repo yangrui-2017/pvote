@@ -9,22 +9,26 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import <arcstreamsdk/STreamSession.h>
+
 @implementation AppDelegate
+
+@synthesize loginSuccess;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+
+    [STreamSession authenticate:@"9E6DA8D4057467427D0797BC2B12AFCE" secretKey:@"270740EE21B6F02F0FE69007F86E5B1D" clientKey:@"04869E41CCA70DD5F3500F00B6D83ACA" response:^(BOOL succeed, NSString *response){
+        
+    }];
+    //
+    loginSuccess = NO;
     
     LoginViewController *loginView = [[LoginViewController alloc]init];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
     [self.window setRootViewController:nav];
     
-    [STreamSession authenticate:@"9E6DA8D4057467427D0797BC2B12AFCE" secretKey:@"270740EE21B6F02F0FE69007F86E5B1D" clientKey:@"04869E41CCA70DD5F3500F00B6D83ACA" response:^(BOOL succeed, NSString *response){
-        
-        
-    }];
-
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
