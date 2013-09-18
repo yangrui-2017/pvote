@@ -81,10 +81,6 @@
     //test commit from second edward
     
     self.title = @"login";
-    
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"next" style:UIBarButtonItemStyleDone target:self action:@selector(selectRightAction:)];
-    self.navigationItem.rightBarButtonItem = rightItem;
-    
     self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 20, 260, 40)];
     self.name.placeholder=@"E-mail";
     self.name.borderStyle = UITextBorderStyleLine;
@@ -201,10 +197,6 @@
     [self.name resignFirstResponder];
     [self.password resignFirstResponder];
     return YES;
-}
--(void) selectRightAction:(UIBarButtonItem *)item{
-    PhotoViewController * photoView = [[PhotoViewController alloc]init];
-    [self.navigationController pushViewController:photoView animated:YES];
 }
 - (void)didReceiveMemoryWarning
 {
