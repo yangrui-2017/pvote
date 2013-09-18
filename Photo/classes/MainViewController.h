@@ -20,6 +20,8 @@
 @property (strong ,nonatomic) UIImageView *imageView;
 @property (strong,nonatomic) UITextField *name;
 @property (strong,nonatomic) UILabel *message;
+@property (strong,nonatomic) UILabel *vote1Lable;
+@property (strong,nonatomic) UILabel *vote2Lable;
 @property (strong,nonatomic) UIImageView *oneImageView;
 @property (strong,nonatomic) UIImageView *twoImageView;
 

@@ -31,7 +31,8 @@
 @synthesize oneImageView =_oneImageView;
 @synthesize twoImageView =_twoImageView;
 @synthesize ImageArray = _ImageArray;
-
+@synthesize vote1Lable = _vote1Lable;
+@synthesize vote2Lable = _vote2Lable;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -54,7 +55,7 @@
     self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
-    
+    [self.myTableView setBackgroundColor:[UIColor grayColor]];
     [self.view addSubview:self.myTableView];
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
@@ -112,9 +113,16 @@
         self.message .backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:self.message];
         
+        self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(115, 80, 40, 20)];
+        self.vote1Lable.textColor = [UIColor redColor];
+        self.vote1Lable.textAlignment = NSTextAlignmentCenter;
+        self.vote1Lable.backgroundColor = [UIColor whiteColor];
+        [cell.contentView addSubview:self.vote1Lable];
+        
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 100, 150, 150)];
         [self.oneImageView setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:self.oneImageView];
+        
         
         self.twoImageView = [[UIImageView  alloc]initWithFrame:CGRectMake(165, 100, 150, 150)];
         [self.twoImageView setBackgroundColor:[UIColor grayColor]];
