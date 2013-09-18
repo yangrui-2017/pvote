@@ -126,7 +126,7 @@
         self.oneImageView.userInteractionEnabled = YES;
         [cell.contentView addSubview:self.oneImageView];
         
-        self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(280, 80, 40, 20)];
+        self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 80, 40, 20)];
         self.vote2Lable.textColor = [UIColor redColor];
         self.vote2Lable.textAlignment = NSTextAlignmentCenter;
         self.vote2Lable.backgroundColor = [UIColor whiteColor];
