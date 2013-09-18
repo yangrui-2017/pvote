@@ -270,10 +270,13 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         NSLog(@"tage = %d",button.tag);
         NSNumber *fileVote2 = [so getValue:@"file2vote"];
         int newVote = [fileVote2 intValue] + 1;
 =======
+=======
+>>>>>>> 9b73ced1dc357796a04909bcb9cae4237191a041
 =======
 >>>>>>> 9b73ced1dc357796a04909bcb9cae4237191a041
 =======
