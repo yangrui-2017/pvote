@@ -120,6 +120,7 @@
         
         self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 80, 40, 20)];
         self.vote1Lable.textColor = [UIColor redColor];
+        self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
         self.vote1Lable.textAlignment = NSTextAlignmentCenter;
         self.vote1Lable.backgroundColor = [UIColor whiteColor];
         [cell.contentView addSubview:self.vote1Lable];
@@ -133,6 +134,7 @@
         
         self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 80, 40, 20)];
         self.vote2Lable.textColor = [UIColor redColor];
+        self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
         self.vote2Lable.textAlignment = NSTextAlignmentCenter;
         self.vote2Lable.backgroundColor = [UIColor whiteColor];
         [cell.contentView addSubview:self.vote2Lable];
@@ -140,7 +142,7 @@
         self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.twoImageView setFrame:CGRectMake(165, 100, 150, 150)];
         [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
-
+        [self.twoImageView setTag:indexPath.row];
         [self.twoImageView setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:self.twoImageView];
     }
@@ -224,8 +226,9 @@
     STreamObject *so = [allVotes objectAtIndex:button.tag];
     [voted loadAll:voteId];
     NSString *votedKey = [voted getValue:[so objectId]];
+    NSLog(@"tage = %d",button.tag);
+    
     if (votedKey == nil){
-        NSLog(@"tage = %d",button.tag);
         NSNumber *fileVote1 = [so getValue:@"file1vote"];
         int newVote = [fileVote1 intValue] + 1;
         [so addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote]];
@@ -260,10 +263,27 @@
     STreamObject *so = [allVotes objectAtIndex:button.tag];
     [voted loadAll:voteId];
     NSString *votedKey = [voted getValue:[so objectId]];
+    NSLog(@"tage = %d",button.tag);
+    
     if (votedKey == nil){
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         NSLog(@"tage = %d",button.tag);
+        NSNumber *fileVote2 = [so getValue:@"file2vote"];
+        int newVote = [fileVote2 intValue] + 1;
+=======
+=======
+>>>>>>> 9b73ced1dc357796a04909bcb9cae4237191a041
+=======
+>>>>>>> 9b73ced1dc357796a04909bcb9cae4237191a041
+=======
+>>>>>>> 9b73ced1dc357796a04909bcb9cae4237191a041
+        
         NSNumber *fileVote1 = [so getValue:@"file2vote"];
         int newVote = [fileVote1 intValue] + 1;
+>>>>>>> 9b73ced1dc357796a04909bcb9cae4237191a041
         [so addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote]];
         [self.myTableView reloadData];
         [so incrementWithCallback:@"file2vote" withCounts:1 response:^(NSNumber *doStaff){

@@ -41,10 +41,10 @@
     
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    NSLog(@"屏幕高度=====%f,%d",height,creat_viewControler);
     self.tabBar.frame = CGRectMake(0, height+20, 320, 49);
     
     UIView *tabImv = [[UIView alloc]initWithFrame:CGRectMake(0, height-20-44-49, 320, 49)];
+    [tabImv setBackgroundColor:[UIColor cyanColor]];
     CGFloat width_btn=0;
     NSInteger buttoncount = 0;
     
@@ -64,6 +64,7 @@
     for (int i=0; i<buttoncount; i++) {
         UIButton * btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.backgroundColor = [UIColor clearColor];
+        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btn setTitle:[btnTitle objectAtIndex:i] forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont systemFontOfSize:14];
         btn.titleLabel.textAlignment = NSTextAlignmentCenter;
