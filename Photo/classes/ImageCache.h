@@ -20,4 +20,9 @@
 
 -(ImageDataFile *)getImages:(NSString *)objectId;
 
+-(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId;
+
+-(NSData *)getImage:(NSString *)fileId;
+
+
 @end

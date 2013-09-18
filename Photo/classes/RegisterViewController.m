@@ -155,9 +155,19 @@
     }
     
 }
+
+-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 - (void)registerUser{
     
-    NSData *postData = UIImageJPEGRepresentation(self.imageview.image, 0.1);
+    UIImage *sImage = [self imageWithImageSimple:self.imageview.image scaledToSize:CGSizeMake(120.0, 120.0)];
+    NSData *postData = UIImageJPEGRepresentation(sImage, 0.1);
     STreamFile *file = [[STreamFile alloc] init];
     __block NSString *res;
     [file postData:postData finished:^(NSString *response){
@@ -184,6 +194,12 @@
         if ([error isEqualToString:@""]){
            STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:self.nameText.text];
            [sco createNewCategoryObject:^(BOOL succeed, NSString *objectId){}];
+           STreamObject *voted = [[STreamObject alloc] init];
+           NSMutableString *voteId = [[NSMutableString alloc] init];
+           [voteId appendString:self.nameText.text];
+           [voteId appendString:@"voted"];
+           [voted setObjectId:voteId];
+           [voted createNewObject:^(BOOL succeed, NSString *error){}];
         }else{
         
         }

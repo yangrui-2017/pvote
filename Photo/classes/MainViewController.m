@@ -82,14 +82,6 @@
         
     }
     
-    /*for (STreamObject *so in votesArray){
-        STreamQuery *query = [[STreamQuery alloc] initWithCategory:[so getValue:@"userName"]];
-        [self.myDataArray addObject:[so getValue:@"userName"]];
-        [query addLimitId:[so objectId]];
-        NSMutableArray *objects = [query find];
-        [allVotes addObject:[objects objectAtIndex:0]];
-    }*/
-    
     [self.myTableView reloadData];
 }
 

@@ -11,6 +11,7 @@
 #import "ImageDataFile.h"
 
 static NSMutableDictionary *_imageDictionary;
+static NSMutableDictionary *_selfImageDictionary;
 
 @implementation ImageCache
 
@@ -24,6 +25,7 @@ static NSMutableDictionary *_imageDictionary;
         
          sharedInstance = [[ImageCache alloc] init];
          _imageDictionary = [[NSMutableDictionary alloc] init];
+         _selfImageDictionary = [[NSMutableDictionary alloc] init];
          
      });
     
@@ -36,6 +38,13 @@ static NSMutableDictionary *_imageDictionary;
     [_imageDictionary setObject:imageFiles forKey:objectId];
 }
 
+-(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId{
+    [_selfImageDictionary setObject:file forKey:fileId];
+}
+
+-(NSData *)getImage:(NSString *)fileId{
+    return [_selfImageDictionary objectForKey:fileId];
+}
 
 -(ImageDataFile *)getImages:(NSString *)objectId{
     return [_imageDictionary objectForKey:objectId];

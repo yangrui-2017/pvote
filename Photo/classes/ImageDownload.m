@@ -20,6 +20,16 @@
 @synthesize data1;
 @synthesize data2;
 
+- (void)downloadFile:(NSString *)fileId{
+    
+    NSLog(@"CALL DOWNLOADING SINGLE DATA");
+    
+    ImageCache *imageCache = [ImageCache sharedObject];
+    STreamFile *file = [[STreamFile alloc] init];
+    [file downloadAsData:fileId downloadedData:^(NSData *imageData, NSString *oId) {
+        [imageCache selfImageDownload:imageData withFileId:fileId];
+    }];
+}
 
 - (void)dowloadFile:(NSString *)file1 withFile2:(NSString *)file2 withObjectId:(NSString *)objectId{
     
