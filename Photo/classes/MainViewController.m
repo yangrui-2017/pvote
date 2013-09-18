@@ -140,7 +140,7 @@
         self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.twoImageView setFrame:CGRectMake(165, 100, 150, 150)];
         [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
-
+        [self.twoImageView setTag:indexPath.row];
         [self.twoImageView setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:self.twoImageView];
     }
@@ -224,8 +224,9 @@
     STreamObject *so = [allVotes objectAtIndex:button.tag];
     [voted loadAll:voteId];
     NSString *votedKey = [voted getValue:[so objectId]];
+    NSLog(@"tage = %d",button.tag);
+    
     if (votedKey == nil){
-        NSLog(@"tage = %d",button.tag);
         NSNumber *fileVote1 = [so getValue:@"file1vote"];
         int newVote = [fileVote1 intValue] + 1;
         [so addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote]];
@@ -260,8 +261,10 @@
     STreamObject *so = [allVotes objectAtIndex:button.tag];
     [voted loadAll:voteId];
     NSString *votedKey = [voted getValue:[so objectId]];
+    NSLog(@"tage = %d",button.tag);
+    
     if (votedKey == nil){
-        NSLog(@"tage = %d",button.tag);
+        
         NSNumber *fileVote1 = [so getValue:@"file2vote"];
         int newVote = [fileVote1 intValue] + 1;
         [so addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote]];
