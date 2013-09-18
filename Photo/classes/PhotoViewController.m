@@ -13,6 +13,7 @@
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import <arcstreamsdk/STreamObject.h>
 #import "MBProgressHUD.h"
+#import "ImageCache.h"
 
 @interface PhotoViewController ()
 {
@@ -115,7 +116,6 @@
     HUD.labelText = @"提交中...";
     [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
     
-    NSLog(@"提交成功");
 }
 
 - (void)test{
@@ -131,7 +131,9 @@
     NSDate *now = [[NSDate alloc] init];
     long millionsSecs = [now timeIntervalSince1970];
     NSString *longValue = [NSString stringWithFormat:@"%lu", millionsSecs];
-    NSString *userName = [STreamSession getUserName];
+    
+    ImageCache *cache = [[ImageCache alloc] init];
+    NSString *userName = [cache getLoginUserName];
     
     STreamObject *o1 = [[STreamObject alloc] init];
     NSNumber *file1vote = [NSNumber numberWithInt:0];
@@ -205,13 +207,13 @@
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     if (clicked1 == 1){
        self.imageView.image = image;
-       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(120.0, 120.0)];
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
       // imageData1 = UIImageJPEGRepresentation(image, 0.1);
        imageData1 = UIImageJPEGRepresentation(sImage, 1);
     }
     else{
        self.imageView2.image = image;
-       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(120.0, 120.0)];
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
      //  imageData2 = UIImageJPEGRepresentation(image, 0.1);
        imageData2 = UIImageJPEGRepresentation(sImage, 1);
 
