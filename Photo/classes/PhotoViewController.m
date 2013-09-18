@@ -134,9 +134,13 @@
     NSString *userName = [STreamSession getUserName];
     
     STreamObject *o1 = [[STreamObject alloc] init];
+    NSNumber *file1vote = [NSNumber numberWithInt:0];
+    NSNumber *file2vote = [NSNumber numberWithInt:0];
     [o1 setObjectId:longValue];
     [o1 addStaff:@"file1" withObject:file1Id];
     [o1 addStaff:@"file2" withObject:file2Id];
+    [o1 addStaff:@"file1vote" withObject:file1vote];
+    [o1 addStaff:@"file2vote" withObject:file2vote];
     [o1 addStaff:@"message" withObject:_message.text];
     
     STreamObject *vote = [[STreamObject alloc] init];

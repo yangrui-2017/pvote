@@ -43,11 +43,6 @@
 		03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8E17E84CC70091D094 /* InformationViewController.m */; };
 		03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E9117E84D120091D094 /* UserInformationViewController.m */; };
 		03C78E9417E851770091D094 /* public_titlebac.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9317E851770091D094 /* public_titlebac.png */; };
-		03C78E9C17E864F80091D094 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9617E864F80091D094 /* blueArrow.png */; };
-		03C78E9D17E864F80091D094 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9717E864F80091D094 /* blueArrow@2x.png */; };
-		03C78E9E17E864F80091D094 /* blueArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9817E864F80091D094 /* blueArrowDown.png */; };
-		03C78E9F17E864F80091D094 /* blueArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9917E864F80091D094 /* blueArrowDown@2x.png */; };
-		03C78EA017E864F80091D094 /* PullingRefreshTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E9B17E864F80091D094 /* PullingRefreshTableView.m */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
 /* End PBXBuildFile section */
@@ -116,12 +111,6 @@
 		03C78E9017E84D120091D094 /* UserInformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInformationViewController.h; path = classes/UserInformationViewController.h; sourceTree = "<group>"; };
 		03C78E9117E84D120091D094 /* UserInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInformationViewController.m; path = classes/UserInformationViewController.m; sourceTree = "<group>"; };
 		03C78E9317E851770091D094 /* public_titlebac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = public_titlebac.png; sourceTree = "<group>"; };
-		03C78E9617E864F80091D094 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
-		03C78E9717E864F80091D094 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
-		03C78E9817E864F80091D094 /* blueArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrowDown.png; sourceTree = "<group>"; };
-		03C78E9917E864F80091D094 /* blueArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrowDown@2x.png"; sourceTree = "<group>"; };
-		03C78E9A17E864F80091D094 /* PullingRefreshTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullingRefreshTableView.h; sourceTree = "<group>"; };
-		03C78E9B17E864F80091D094 /* PullingRefreshTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullingRefreshTableView.m; sourceTree = "<group>"; };
 		03F7D12917E6FA6500FBCE96 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageCache.h; path = classes/ImageCache.h; sourceTree = "<group>"; };
 		03F7D12A17E6FA6500FBCE96 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageCache.m; path = classes/ImageCache.m; sourceTree = "<group>"; };
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
@@ -209,7 +198,6 @@
 		03C49AEB17E102FC00AE7E3B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				03C78E9517E864F80091D094 /* PullingRefreshTableView */,
 				03C49B1D17E11B8600AE7E3B /* images */,
 				03C49AEC17E102FC00AE7E3B /* Photo-Info.plist */,
 				03C49AED17E102FC00AE7E3B /* InfoPlist.strings */,
@@ -286,19 +274,6 @@
 				03C49B2017E11B8600AE7E3B /* two.jpg */,
 			);
 			path = images;
-			sourceTree = "<group>";
-		};
-		03C78E9517E864F80091D094 /* PullingRefreshTableView */ = {
-			isa = PBXGroup;
-			children = (
-				03C78E9617E864F80091D094 /* blueArrow.png */,
-				03C78E9717E864F80091D094 /* blueArrow@2x.png */,
-				03C78E9817E864F80091D094 /* blueArrowDown.png */,
-				03C78E9917E864F80091D094 /* blueArrowDown@2x.png */,
-				03C78E9A17E864F80091D094 /* PullingRefreshTableView.h */,
-				03C78E9B17E864F80091D094 /* PullingRefreshTableView.m */,
-			);
-			path = PullingRefreshTableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,10 +355,6 @@
 				03C49B2217E11B8600AE7E3B /* one.jpg in Resources */,
 				03C49B2317E11B8600AE7E3B /* two.jpg in Resources */,
 				03C78E9417E851770091D094 /* public_titlebac.png in Resources */,
-				03C78E9C17E864F80091D094 /* blueArrow.png in Resources */,
-				03C78E9D17E864F80091D094 /* blueArrow@2x.png in Resources */,
-				03C78E9E17E864F80091D094 /* blueArrowDown.png in Resources */,
-				03C78E9F17E864F80091D094 /* blueArrowDown@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,7 +405,6 @@
 				03C78E8C17E84C830091D094 /* FireViewController.m in Sources */,
 				03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */,
 				03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */,
-				03C78EA017E864F80091D094 /* PullingRefreshTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
