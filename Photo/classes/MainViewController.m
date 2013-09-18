@@ -109,11 +109,6 @@
         [cell.contentView addSubview:self.name];
         
         self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 30)];
-//        [self.message setLineBreakMode:NSLineBreakByWordWrapping];
-//        self.message .highlightedTextColor = [UIColor whiteColor];
-//        self.message.adjustsLetterSpacingToFitWidth = YES;
-//        self.message .numberOfLines = 0;
-//        self.message .opaque = NO; // 选中Opaque表示视图后面的任何内容都不应该绘制
         self.message .backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:self.message];
         
@@ -127,34 +122,11 @@
     }
     STreamObject *so = [allVotes objectAtIndex:indexPath.row];
     NSString *message = [so getValue:@"message"];
-    
-    UILabel *label = (UILabel *)[cell viewWithTag:1];
-
-    CGRect cellFrame = [cell frame];
-    cellFrame.origin = CGPointMake(0, 0);
-    
-    label.text = message;
-    CGRect rect = CGRectInset(cellFrame, 2, 2);
-    label.frame = rect;
-    [label sizeToFit];
-    if (label.frame.size.height > 30) {
-        cellFrame.size.height = 50 + label.frame.size.height - 46;
-    }
-    else {
-        cellFrame.size.height = 300;
-    }
-    [cell setFrame:cellFrame];
-    
     self.message.text = message;
     self.name.text = [self.myDataArray objectAtIndex:indexPath.row];
-    
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
-    
-    
-    ImageCache *imageCache = [ImageCache sharedObject];
-    
-       
+    ImageCache *imageCache = [ImageCache sharedObject];  
     if ([imageCache getImages:[so objectId]] != nil){
         ImageDataFile *files = [imageCache getImages:[so objectId]];
         self.oneImageView.image = [UIImage imageWithData:[files file1]];
@@ -164,11 +136,6 @@
         [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
         [imageDownload setMainRefesh:self];
     }
-    
-    //取消选中颜色
-    UIView *backView = [[UIView alloc] initWithFrame:cell.frame];
-    cell.selectedBackgroundView = backView;
-    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
 
     return cell;
 }
@@ -176,40 +143,10 @@
 - (void)reloadTable{
     [self.myTableView reloadData];
 }
--(CGFloat)getCellHeight:(NSInteger)row
-{
-    // 列寬
-    CGFloat contentWidth =self.view.frame.size.width-90;
-    CGFloat height = 0.0;
-    // 设置字体
-    UIFont *font = [UIFont fontWithName:@"CourierNewPSMT" size:14];
-    
-    if (allVotes.count != 0) {
-        STreamObject *so = [allVotes objectAtIndex:row];
-        // 显示的内容
-        NSString *message = [so getValue:@"message"];        
-        // 计算出显示完內容需要的最小尺寸
-        CGSize size = [message sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 3000)];
-        
-        
-        if (size.height+200<300) {
-            height = 300;
-        }else
-        {
-            height = size.height+60;//40
-        }
-    }    // 返回需要的高度
-    return height;
-    
-}
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self getCellHeight:indexPath.row];
-
-//    return 300;
-//    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-//    return cell.frame.size.height;
+    return 300;
 }
 - (void)didReceiveMemoryWarning
 {
