@@ -115,7 +115,7 @@
         self.message .backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:self.message];
         
-        self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(115, 80, 30, 20)];
+        self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 80, 40, 20)];
         self.vote1Lable.textColor = [UIColor redColor];
         self.vote1Lable.textAlignment = NSTextAlignmentCenter;
         self.vote1Lable.backgroundColor = [UIColor whiteColor];
@@ -124,11 +124,9 @@
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 100, 150, 150)];
         [self.oneImageView setBackgroundColor:[UIColor grayColor]];
         self.oneImageView.userInteractionEnabled = YES;
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
-        [ self.imageView  addGestureRecognizer:singleTap];
         [cell.contentView addSubview:self.oneImageView];
         
-        self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(295, 80, 30, 20)];
+        self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(280, 80, 40, 20)];
         self.vote2Lable.textColor = [UIColor redColor];
         self.vote2Lable.textAlignment = NSTextAlignmentCenter;
         self.vote2Lable.backgroundColor = [UIColor whiteColor];
@@ -142,12 +140,18 @@
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
     self.name.text = [self.myDataArray objectAtIndex:indexPath.row];
-    NSInteger vote1 =[[so getValue:@"file1vote"] integerValue];
-    NSInteger vote2 = [[so getValue:@"file2vote"] integerValue];
-    NSInteger allVotes ;
-    allVotes = vote1 + vote2;
-    
-    
+    float allcount = [[so getValue:@"file1vote"] floatValue]+[[so getValue:@"file2vote"] floatValue];
+    int vote1count;
+    int vote2count;
+    if (allcount) {
+        vote1count = ([[so getValue:@"file1vote"] floatValue]/allcount)*100;
+        vote2count = ([[so getValue:@"file2vote"] floatValue]/allcount)*100;
+    }else{
+        vote1count=0;
+        vote2count=0;
+    }
+    self.vote1Lable.text =[NSString stringWithFormat:@"%d%%",vote1count];
+    self.vote2Lable.text =[NSString stringWithFormat:@"%d%%",vote2count];
 
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
@@ -163,9 +167,6 @@
     }
 
     return cell;
-}
--(void)imageClicked:(UIImageView *)imageView {
-    NSLog(@"imageview clicked");
 }
 
 - (void)reloadTable{
