@@ -34,7 +34,6 @@
 		03C49B2717E11C9900AE7E3B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49B2617E11C9900AE7E3B /* libz.dylib */; };
 		03C49B2917E11CA000AE7E3B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49B2817E11CA000AE7E3B /* SystemConfiguration.framework */; };
 		03C49B2B17E11CAA00AE7E3B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49B2A17E11CAA00AE7E3B /* CFNetwork.framework */; };
-		03C49B2D17E11CD600AE7E3B /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49B2C17E11CD600AE7E3B /* arcstreamsdk.framework */; };
 		03C49B3017E1209B00AE7E3B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49B2F17E1209B00AE7E3B /* LoginViewController.m */; };
 		03C49B3317E133B400AE7E3B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49B3217E133B400AE7E3B /* MainViewController.m */; };
 		03C49B3617E145EE00AE7E3B /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49B3517E145EE00AE7E3B /* RegisterViewController.m */; };
@@ -43,6 +42,7 @@
 		03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8E17E84CC70091D094 /* InformationViewController.m */; };
 		03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E9117E84D120091D094 /* UserInformationViewController.m */; };
 		03C78E9417E851770091D094 /* public_titlebac.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9317E851770091D094 /* public_titlebac.png */; };
+		03E4AA9817E9591C00DE53F3 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E4AA9717E9591C00DE53F3 /* arcstreamsdk.framework */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
 /* End PBXBuildFile section */
@@ -95,7 +95,6 @@
 		03C49B2617E11C9900AE7E3B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		03C49B2817E11CA000AE7E3B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		03C49B2A17E11CAA00AE7E3B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		03C49B2C17E11CD600AE7E3B /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03C49B2E17E1209B00AE7E3B /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = classes/LoginViewController.h; sourceTree = "<group>"; };
 		03C49B2F17E1209B00AE7E3B /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = classes/LoginViewController.m; sourceTree = "<group>"; };
 		03C49B3117E133B400AE7E3B /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = classes/MainViewController.h; sourceTree = "<group>"; };
@@ -111,6 +110,7 @@
 		03C78E9017E84D120091D094 /* UserInformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInformationViewController.h; path = classes/UserInformationViewController.h; sourceTree = "<group>"; };
 		03C78E9117E84D120091D094 /* UserInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInformationViewController.m; path = classes/UserInformationViewController.m; sourceTree = "<group>"; };
 		03C78E9317E851770091D094 /* public_titlebac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = public_titlebac.png; sourceTree = "<group>"; };
+		03E4AA9717E9591C00DE53F3 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03F7D12917E6FA6500FBCE96 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageCache.h; path = classes/ImageCache.h; sourceTree = "<group>"; };
 		03F7D12A17E6FA6500FBCE96 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageCache.m; path = classes/ImageCache.m; sourceTree = "<group>"; };
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 				03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */,
 				03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */,
 				03C49AE917E102FC00AE7E3B /* CoreGraphics.framework in Frameworks */,
-				03C49B2D17E11CD600AE7E3B /* arcstreamsdk.framework in Frameworks */,
+				03E4AA9817E9591C00DE53F3 /* arcstreamsdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,10 +170,10 @@
 		03C49AE317E102FC00AE7E3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				03E4AA9717E9591C00DE53F3 /* arcstreamsdk.framework */,
 				033F4F9A17E229530081DF34 /* libsqlite3.dylib */,
 				03C49B2617E11C9900AE7E3B /* libz.dylib */,
 				03C49B2417E11C9200AE7E3B /* MobileCoreServices.framework */,
-				03C49B2C17E11CD600AE7E3B /* arcstreamsdk.framework */,
 				03C49B2A17E11CAA00AE7E3B /* CFNetwork.framework */,
 				03C49B2817E11CA000AE7E3B /* SystemConfiguration.framework */,
 				03C49AE417E102FC00AE7E3B /* UIKit.framework */,

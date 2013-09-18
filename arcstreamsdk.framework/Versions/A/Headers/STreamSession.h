@@ -80,7 +80,9 @@
 
 +(NSMutableString *) getDeleteStreamObjectKeyUrl:(NSString *)objectId;
 
-+ (NSMutableString *)getUserExistsUrl;
++(NSMutableString *) getUserExistsUrl;
+
++(NSMutableString *) loadUserMetadataUrl:(NSString *)userName;
 
 
 @end
