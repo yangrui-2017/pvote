@@ -19,4 +19,6 @@
 
 - (void)dowloadFile: (NSString *)file1 withFile2:(NSString *)file2 withObjectId:(NSString *)objectId;
 
+- (void)downloadFile:(NSString *)fileId;
+
 @end

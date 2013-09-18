@@ -11,9 +11,11 @@
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamQuery.h>
+#import <arcstreamsdk/STreamUser.h>
 #import "MBProgressHUD.h"
 #import "ImageCache.h"
 #import "ImageDownload.h"
+
 
 @interface MainViewController (){
     STreamCategoryObject *votes;
@@ -153,9 +155,19 @@
     self.vote1Lable.text =[NSString stringWithFormat:@"%d%%",vote1count];
     self.vote2Lable.text =[NSString stringWithFormat:@"%d%%",vote2count];
 
+    [self downloadDoubleImage:so];
+    [self loadUserMetadataAndDownloadUserProfileImage];
+    
+    
+    return cell;
+}
+
+- (void)downloadDoubleImage: (STreamObject *)so{
+    
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
-    ImageCache *imageCache = [ImageCache sharedObject];  
+     ImageCache *imageCache = [ImageCache sharedObject];
+    //download double image
     if ([imageCache getImages:[so objectId]] != nil){
         ImageDataFile *files = [imageCache getImages:[so objectId]];
         self.oneImageView.image = [UIImage imageWithData:[files file1]];
@@ -165,8 +177,35 @@
         [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
         [imageDownload setMainRefesh:self];
     }
+}
 
-    return cell;
+
+- (void)loadUserMetadataAndDownloadUserProfileImage{
+    
+    ImageCache *imageCache = [ImageCache sharedObject];
+
+    //load user metadata and profile image
+    if ([imageCache getUserMetadata:self.name.text] != nil){
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:self.name.text];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil){
+            ImageDownload *imageDownload = [[ImageDownload alloc] init];
+            [imageDownload downloadFile:pImageId];
+            [imageDownload setMainRefesh:self];
+        }else{
+            self.imageView.image = [UIImage imageWithData:[imageCache getImage:pImageId]];
+        }
+    }else{
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:self.name.text response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:self.name.text]){
+                NSMutableDictionary *dic = [user userMetadata];
+                [imageCache saveUserMetadata:self.name.text withMetadata:dic];
+                [self.myTableView reloadData];
+            }
+        }];
+    }
+
 }
 
 - (void)reloadTable{

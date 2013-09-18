@@ -12,6 +12,7 @@
 
 static NSMutableDictionary *_imageDictionary;
 static NSMutableDictionary *_selfImageDictionary;
+static NSMutableDictionary *_userMetaData;
 
 @implementation ImageCache
 
@@ -26,11 +27,20 @@ static NSMutableDictionary *_selfImageDictionary;
          sharedInstance = [[ImageCache alloc] init];
          _imageDictionary = [[NSMutableDictionary alloc] init];
          _selfImageDictionary = [[NSMutableDictionary alloc] init];
+         _userMetaData = [[NSMutableDictionary alloc] init];
          
      });
     
     return sharedInstance;
     
+}
+
+-(NSMutableDictionary *)getUserMetadata:(NSString *)userName{
+    return [_userMetaData objectForKey:userName];
+}
+
+-(void)saveUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData{
+    [_userMetaData setObject:metaData forKey:userName];
 }
 
 -(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId

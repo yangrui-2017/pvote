@@ -24,5 +24,9 @@
 
 -(NSData *)getImage:(NSString *)fileId;
 
+-(void)saveUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData;
+
+-(NSMutableDictionary *)getUserMetadata:(NSString *)userName;
+
 
 @end

@@ -22,18 +22,20 @@
 
 - (void)downloadFile:(NSString *)fileId{
     
-    NSLog(@"CALL DOWNLOADING SINGLE DATA");
     
     ImageCache *imageCache = [ImageCache sharedObject];
     STreamFile *file = [[STreamFile alloc] init];
     [file downloadAsData:fileId downloadedData:^(NSData *imageData, NSString *oId) {
-        [imageCache selfImageDownload:imageData withFileId:fileId];
+        if ([fileId isEqualToString:oId]){
+           NSLog(@"save image id %@", fileId);
+           [imageCache selfImageDownload:imageData withFileId:fileId];
+           [mainRefesh reloadTable];
+        }
     }];
 }
 
 - (void)dowloadFile:(NSString *)file1 withFile2:(NSString *)file2 withObjectId:(NSString *)objectId{
     
-    NSLog(@"CALL DOWNLOADING DATA");
     
     ImageCache *imageCache = [ImageCache sharedObject];
     STreamFile *file1file = [[STreamFile alloc] init];
@@ -43,6 +45,7 @@
     
     STreamFile *file2file = [[STreamFile alloc] init];
     [file2file downloadAsData:file2 downloadedData:^(NSData *imageData, NSString *oId){
+        NSLog(@"FILEID %@", oId);
         if ([file1 isEqualToString:oId])
             data1 = imageData;
         if ([file2 isEqualToString:oId])
@@ -53,6 +56,7 @@
             [dataFile setFile1:data1];
             [dataFile setFile2:data2];
             [imageCache imageDownload:dataFile withObjectId:objectId];
+           // NSLog(@"save double file");
             [mainRefesh reloadTable];
         }
         
