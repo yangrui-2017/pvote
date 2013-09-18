@@ -56,7 +56,9 @@
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
     [self.myTableView setBackgroundColor:[UIColor grayColor]];
+    self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
     [self.view addSubview:self.myTableView];
+    
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
@@ -113,7 +115,7 @@
         self.message .backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:self.message];
         
-        self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(115, 80, 40, 20)];
+        self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(115, 80, 30, 20)];
         self.vote1Lable.textColor = [UIColor redColor];
         self.vote1Lable.textAlignment = NSTextAlignmentCenter;
         self.vote1Lable.backgroundColor = [UIColor whiteColor];
@@ -121,8 +123,16 @@
         
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 100, 150, 150)];
         [self.oneImageView setBackgroundColor:[UIColor grayColor]];
+        self.oneImageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
+        [ self.imageView  addGestureRecognizer:singleTap];
         [cell.contentView addSubview:self.oneImageView];
         
+        self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(295, 80, 30, 20)];
+        self.vote2Lable.textColor = [UIColor redColor];
+        self.vote2Lable.textAlignment = NSTextAlignmentCenter;
+        self.vote2Lable.backgroundColor = [UIColor whiteColor];
+        [cell.contentView addSubview:self.vote2Lable];
         
         self.twoImageView = [[UIImageView  alloc]initWithFrame:CGRectMake(165, 100, 150, 150)];
         [self.twoImageView setBackgroundColor:[UIColor grayColor]];
@@ -132,6 +142,13 @@
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
     self.name.text = [self.myDataArray objectAtIndex:indexPath.row];
+    NSInteger vote1 =[[so getValue:@"file1vote"] integerValue];
+    NSInteger vote2 = [[so getValue:@"file2vote"] integerValue];
+    NSInteger allVotes ;
+    allVotes = vote1 + vote2;
+    
+    
+
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
     ImageCache *imageCache = [ImageCache sharedObject];  
@@ -146,6 +163,9 @@
     }
 
     return cell;
+}
+-(void)imageClicked:(UIImageView *)imageView {
+    NSLog(@"imageview clicked");
 }
 
 - (void)reloadTable{
