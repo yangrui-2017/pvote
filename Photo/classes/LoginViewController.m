@@ -17,6 +17,9 @@
 #import "UserInformationViewController.h"
 #import "InformationViewController.h"
 #import "FireViewController.h"
+#import "ImageCache.h"
+
+
 @interface LoginViewController ()
 {
     MBProgressHUD *HUD;
@@ -141,6 +144,8 @@
         HUD.labelText = @"登录中...";
         [self.view addSubview:HUD];
         user = [[STreamUser alloc] init];
+        ImageCache *cache = [ImageCache sharedObject];
+        [cache setLoginUserName:_name.text];
         
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self loginUser];

@@ -13,6 +13,7 @@
 static NSMutableDictionary *_imageDictionary;
 static NSMutableDictionary *_selfImageDictionary;
 static NSMutableDictionary *_userMetaData;
+static NSMutableString *loginUserName;
 
 @implementation ImageCache
 
@@ -33,6 +34,15 @@ static NSMutableDictionary *_userMetaData;
     
     return sharedInstance;
     
+}
+
+-(void)setLoginUserName:(NSString *)userName{
+    loginUserName = [[NSMutableString alloc] init];
+    [loginUserName appendString:userName];
+}
+
+-(NSMutableString *)getLoginUserName{
+    return loginUserName;
 }
 
 -(NSMutableDictionary *)getUserMetadata:(NSString *)userName{

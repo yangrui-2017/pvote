@@ -12,6 +12,7 @@
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamUser.h>
+#import <arcstreamsdk/STreamSession.h>
 #import "MBProgressHUD.h"
 #import "ImageCache.h"
 #import "ImageDownload.h"
@@ -43,7 +44,6 @@
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -99,6 +99,7 @@
      
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+      STreamObject *so = [allVotes objectAtIndex:indexPath.row];
     static NSString *cellName = @"cellName";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
@@ -123,9 +124,11 @@
         self.vote1Lable.backgroundColor = [UIColor whiteColor];
         [cell.contentView addSubview:self.vote1Lable];
         
-        self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 100, 150, 150)];
+        self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.oneImageView setFrame:CGRectMake(5, 100, 150, 150)];
         [self.oneImageView setBackgroundColor:[UIColor grayColor]];
-        self.oneImageView.userInteractionEnabled = YES;
+        [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
+        [self.oneImageView setTag:indexPath.row];
         [cell.contentView addSubview:self.oneImageView];
         
         self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 80, 40, 20)];
@@ -134,11 +137,13 @@
         self.vote2Lable.backgroundColor = [UIColor whiteColor];
         [cell.contentView addSubview:self.vote2Lable];
         
-        self.twoImageView = [[UIImageView  alloc]initWithFrame:CGRectMake(165, 100, 150, 150)];
+        self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.twoImageView setFrame:CGRectMake(165, 100, 150, 150)];
+        [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
+
         [self.twoImageView setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:self.twoImageView];
     }
-    STreamObject *so = [allVotes objectAtIndex:indexPath.row];
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
     self.name.text = [self.myDataArray objectAtIndex:indexPath.row];
@@ -170,8 +175,8 @@
     //download double image
     if ([imageCache getImages:[so objectId]] != nil){
         ImageDataFile *files = [imageCache getImages:[so objectId]];
-        self.oneImageView.image = [UIImage imageWithData:[files file1]];
-        self.twoImageView.image = [UIImage imageWithData:[files file2]];
+        [self.oneImageView setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
+        [self.twoImageView setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
     }else{
         ImageDownload *imageDownload = [[ImageDownload alloc] init];
         [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
@@ -208,6 +213,78 @@
 
 }
 
+-(void)voteTheTopicLeft:(UIButton *)button{
+    
+    STreamObject *voted = [[STreamObject alloc] init];
+    NSMutableString *voteId = [[NSMutableString alloc] init];
+    ImageCache *cache = [ImageCache sharedObject];
+    [voteId appendString:[cache getLoginUserName]];
+    [voteId appendString:@"voted"];
+    [voted setObjectId:voteId];
+    STreamObject *so = [allVotes objectAtIndex:button.tag];
+    [voted loadAll:voteId];
+    NSString *votedKey = [voted getValue:[so objectId]];
+    if (votedKey == nil){
+        NSLog(@"tage = %d",button.tag);
+        NSNumber *fileVote1 = [so getValue:@"file1vote"];
+        int newVote = [fileVote1 intValue] + 1;
+        [so addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote]];
+        [self.myTableView reloadData];
+        [so incrementWithCallback:@"file1vote" withCounts:1 response:^(NSNumber *doStaff){
+            
+        }];
+        
+        [voted addStaff:[so objectId] withObject:@"file1vote"];
+        [voted updateInBackground];
+    }
+}
+
+-(void)buttonClickedLeft:(UIButton *)button withEvent:(UIEvent*)event {
+    
+    UITouch* touch = [[event allTouches] anyObject];
+    if (touch.tapCount == 2) {
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"投票中...";
+        [self.view addSubview:HUD];
+        [HUD showWhileExecuting:@selector(voteTheTopicLeft:) onTarget:self withObject:button animated:YES];
+    }
+}
+-(void)voteTheTopicRight:(UIButton *)button{
+    
+    STreamObject *voted = [[STreamObject alloc] init];
+    NSMutableString *voteId = [[NSMutableString alloc] init];
+    ImageCache *cache = [ImageCache sharedObject];
+    [voteId appendString:[cache getLoginUserName]];
+    [voteId appendString:@"voted"];
+    [voted setObjectId:voteId];
+    STreamObject *so = [allVotes objectAtIndex:button.tag];
+    [voted loadAll:voteId];
+    NSString *votedKey = [voted getValue:[so objectId]];
+    if (votedKey == nil){
+        NSLog(@"tage = %d",button.tag);
+        NSNumber *fileVote1 = [so getValue:@"file2vote"];
+        int newVote = [fileVote1 intValue] + 1;
+        [so addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote]];
+        [self.myTableView reloadData];
+        [so incrementWithCallback:@"file2vote" withCounts:1 response:^(NSNumber *doStaff){
+            
+        }];
+        
+        [voted addStaff:[so objectId] withObject:@"file2vote"];
+        [voted updateInBackground];
+    }
+}
+
+-(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
+    
+    UITouch* touch = [[event allTouches] anyObject];
+    if (touch.tapCount == 2) {
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"投票中...";
+        [self.view addSubview:HUD];
+        [HUD showWhileExecuting:@selector(voteTheTopicRight:) onTarget:self withObject:button animated:YES];
+    }
+}
 - (void)reloadTable{
     [self.myTableView reloadData];
 }

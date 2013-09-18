@@ -28,5 +28,8 @@
 
 -(NSMutableDictionary *)getUserMetadata:(NSString *)userName;
 
+-(void)setLoginUserName:(NSString *)userName;
+
+-(NSMutableString *)getLoginUserName;
 
 @end
