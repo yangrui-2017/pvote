@@ -278,7 +278,7 @@
         
         [voted addStaff:[so objectId] withObject:@"file2vote"];
         [voted updateInBackground];
-    }
+    } 
 }
 
 -(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
