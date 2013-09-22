@@ -194,12 +194,14 @@
         if ([error isEqualToString:@""]){
            STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:self.nameText.text];
            [sco createNewCategoryObject:^(BOOL succeed, NSString *objectId){}];
-           STreamObject *voted = [[STreamObject alloc] init];
-           NSMutableString *voteId = [[NSMutableString alloc] init];
-           [voteId appendString:self.nameText.text];
-           [voteId appendString:@"voted"];
-           [voted setObjectId:voteId];
-           [voted createNewObject:^(BOOL succeed, NSString *error){}];
+            STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"voted"];
+            STreamObject *so = [[STreamObject alloc] init];
+            [so setObjectId:self.nameText.text];
+            NSNumber *intNum = [NSNumber numberWithInt:0];
+            [so addStaff:@"total" withObject:intNum];
+            NSMutableArray *allvoted = [[NSMutableArray alloc] init];
+            [allvoted addObject:so];
+            [scov updateStreamCategoryObjects:allvoted];
         }else{
         
         }

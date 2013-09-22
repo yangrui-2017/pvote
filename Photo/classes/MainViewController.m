@@ -217,28 +217,38 @@
 
 -(void)voteTheTopicLeft:(UIButton *)button{
     
-    STreamObject *voted = [[STreamObject alloc] init];
-    NSMutableString *voteId = [[NSMutableString alloc] init];
+    STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"voted"];
     ImageCache *cache = [ImageCache sharedObject];
-    [voteId appendString:[cache getLoginUserName]];
-    [voteId appendString:@"voted"];
-    [voted setObjectId:voteId];
-    STreamObject *so = [allVotes objectAtIndex:button.tag];
-    [voted loadAll:voteId];
-    NSString *votedKey = [voted getValue:[so objectId]];
-    NSLog(@"tage = %d",button.tag);
-    
-    if (votedKey == nil){
-        NSNumber *fileVote1 = [so getValue:@"file1vote"];
-        int newVote = [fileVote1 intValue] + 1;
-        [so addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote]];
-        [self.myTableView reloadData];
-        [so incrementWithCallback:@"file1vote" withCounts:1 response:^(NSNumber *doStaff){
-            
-        }];
+    [sq addLimitId:[cache getLoginUserName]];
+    NSMutableArray *vote = [sq find];
+    if ([vote count] > 0){
         
-        [voted addStaff:[so objectId] withObject:@"file1vote"];
-        [voted updateInBackground];
+        STreamObject *so = [vote objectAtIndex:0];
+        STreamObject *sorow = [allVotes objectAtIndex:button.tag];
+        NSString *votedKey = [so getValue:[sorow objectId]];
+        
+        if (votedKey == nil){
+            
+            //update category voted
+            [so addStaff:[sorow objectId] withObject:@"f1voted"];
+            int total = [so size];
+            [so addStaff:@"total" withObject:[NSNumber numberWithInt:total]];
+            [so updateInBackground];
+            
+            //update category username
+            NSNumber *fileVote1 = [sorow  getValue:@"file1vote"];
+            int newVote = [fileVote1 intValue] + 1;
+            [sorow  addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote]];
+            [self.myTableView reloadData];
+            [sorow updateInBackground];
+            
+        }
+        /*STreamQuery *sqq = [[STreamQuery alloc] initWithCategory:@"voted"];
+        [sqq setQueryLogicAnd:FALSE];
+        [sqq whereEqualsTo:[sorow objectId] forValue:@"f1voted"];
+        [sqq whereEqualsTo:[sorow objectId] forValue:@"f2voted"];
+        NSMutableArray *result = [sqq find];*/
+        
     }
 }
 
@@ -254,31 +264,32 @@
 }
 -(void)voteTheTopicRight:(UIButton *)button{
     
-    STreamObject *voted = [[STreamObject alloc] init];
-    NSMutableString *voteId = [[NSMutableString alloc] init];
+    STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"voted"];
     ImageCache *cache = [ImageCache sharedObject];
-    [voteId appendString:[cache getLoginUserName]];
-    [voteId appendString:@"voted"];
-    [voted setObjectId:voteId];
-    STreamObject *so = [allVotes objectAtIndex:button.tag];
-    [voted loadAll:voteId];
-    NSString *votedKey = [voted getValue:[so objectId]];
-    NSLog(@"tage = %d",button.tag);
-    
-    if (votedKey == nil){
-
-        NSLog(@"tage = %d",button.tag);
-        NSNumber *fileVote1 = [so getValue:@"file2vote"];
-        int newVote = [fileVote1 intValue] + 1;
-        [so addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote]];
-        [self.myTableView reloadData];
-        [so incrementWithCallback:@"file2vote" withCounts:1 response:^(NSNumber *doStaff){
-            
-        }];
+    [sq addLimitId:[cache getLoginUserName]];
+    NSMutableArray *vote = [sq find];
+    if ([vote count] > 0){
         
-        [voted addStaff:[so objectId] withObject:@"file2vote"];
-        [voted updateInBackground];
-    } 
+        STreamObject *so = [vote objectAtIndex:0];
+        STreamObject *sorow = [allVotes objectAtIndex:button.tag];
+        NSString *votedKey = [so getValue:[sorow objectId]];
+        
+        if (votedKey == nil){
+            //update category voted
+            [so addStaff:[sorow objectId] withObject:@"f2voted"];
+            int total = [so size];
+            [so addStaff:@"total" withObject:[NSNumber numberWithInt:total]];
+            [so updateInBackground];
+            
+            //update category username
+            NSNumber *fileVote1 = [sorow  getValue:@"file2vote"];
+            int newVote = [fileVote1 intValue] + 1;
+            [sorow  addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote]];
+            [self.myTableView reloadData];
+            [sorow updateInBackground];
+            
+        }
+    }
 }
 
 -(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
