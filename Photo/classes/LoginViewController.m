@@ -81,13 +81,13 @@
     //test commit from second edward
     
     self.title = @"login";
-    self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 20, 260, 40)];
+    self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 40)];
     self.name.placeholder=@"E-mail";
     self.name.borderStyle = UITextBorderStyleLine;
     self.name.delegate =self;
     [self.view addSubview: self.name];
     
-    self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 80, 260, 40)];
+    self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 120, 260, 40)];
     self.password.placeholder=@"Password";
     self.password.borderStyle = UITextBorderStyleLine;
     [self.password setSecureTextEntry:YES];
@@ -95,14 +95,14 @@
     [self.view addSubview: self.password];
     //loginbutton 
     self.loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.loginButton setFrame:CGRectMake(30, 160, 260, 40)];
+    [self.loginButton setFrame:CGRectMake(30, 170, 260, 40)];
     [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
     [self.loginButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.loginButton];
     
     //注册 registerButton
     self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.registerButton setFrame:CGRectMake(30, 220, 260,40)];
+    [self.registerButton setFrame:CGRectMake(30, 230, 260,40)];
     [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
     [self.registerButton addTarget:self action:@selector(registerButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.registerButton];

@@ -199,7 +199,7 @@
             [so setObjectId:self.nameText.text];
             NSNumber *intNum = [NSNumber numberWithInt:0];
             [so addStaff:@"total" withObject:intNum];
-            NSMutableArray *allvoted = [[NSMutableArray alloc] init];
+            NSMutableArray *allvoted = [[NSMutableArray alloc] init]; 
             [allvoted addObject:so];
             [scov updateStreamCategoryObjects:allvoted];
         }else{
