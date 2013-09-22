@@ -74,8 +74,8 @@
     
     [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
     allVotes = [[NSMutableArray alloc] init];
-    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
+//    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+//    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
 
     
 }

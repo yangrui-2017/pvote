@@ -51,8 +51,8 @@
     
     [super viewDidLoad];
     
-    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
+//    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+//    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
     leftImageId = [rowObject getValue:@"file1"];
     rightImageId = [rowObject getValue:@"file2"];
     float allcount = [[rowObject getValue:@"file1vote"] floatValue]+[[rowObject getValue:@"file2vote"] floatValue];
