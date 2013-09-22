@@ -24,4 +24,5 @@
 @property (strong,nonatomic) UILabel *vote2Lable;
 @property (strong,nonatomic) UIButton *oneImageView;
 @property (strong,nonatomic) UIButton *twoImageView;
+@property (strong,nonatomic) UIButton *clickButton;
 @end

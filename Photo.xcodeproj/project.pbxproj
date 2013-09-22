@@ -47,6 +47,7 @@
 		0EDFB13617EEB8C500949081 /* YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13517EEB8C500949081 /* YIFullScreenScroll.m */; };
 		0EDFB13C17EEB95B00949081 /* UIView+YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13B17EEB95B00949081 /* UIView+YIFullScreenScroll.m */; };
 		0EDFB13E17EEBB4A00949081 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFB13D17EEBB4A00949081 /* Placeholder.png */; };
+		0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB14017EEC9AC00949081 /* VotesShowViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,8 @@
 		0EDFB13A17EEB95B00949081 /* UIView+YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+YIFullScreenScroll.h"; path = "FullScreenScroll/UIView+YIFullScreenScroll.h"; sourceTree = "<group>"; };
 		0EDFB13B17EEB95B00949081 /* UIView+YIFullScreenScroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+YIFullScreenScroll.m"; path = "FullScreenScroll/UIView+YIFullScreenScroll.m"; sourceTree = "<group>"; };
 		0EDFB13D17EEBB4A00949081 /* Placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Placeholder.png; sourceTree = "<group>"; };
+		0EDFB13F17EEC9AC00949081 /* VotesShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VotesShowViewController.h; path = classes/VotesShowViewController.h; sourceTree = "<group>"; };
+		0EDFB14017EEC9AC00949081 /* VotesShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VotesShowViewController.m; path = classes/VotesShowViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,6 +255,8 @@
 				035DADA017E1FA7A007A1C2E /* PickerAlertView.m */,
 				03C49B3117E133B400AE7E3B /* MainViewController.h */,
 				03C49B3217E133B400AE7E3B /* MainViewController.m */,
+				0EDFB13F17EEC9AC00949081 /* VotesShowViewController.h */,
+				0EDFB14017EEC9AC00949081 /* VotesShowViewController.m */,
 				033F4F9717E229170081DF34 /* sqlService.h */,
 				033F4F9817E229170081DF34 /* sqlService.m */,
 				03A33F3917E7308A004459C5 /* ImageDataFile.h */,
@@ -421,6 +426,7 @@
 				03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */,
 				03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */,
 				03C78E8C17E84C830091D094 /* FireViewController.m in Sources */,
+				0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */,
 				03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */,
 				03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */,
 			);

@@ -18,7 +18,7 @@
 #import "ImageDownload.h"
 #import "YIFullScreenScroll.h"
 #import "LoginViewController.h"
-
+#import "VotesShowViewController.h"
 @interface MainViewController (){
     STreamCategoryObject *votes;
     NSMutableArray *votesArray;
@@ -38,6 +38,7 @@
 @synthesize ImageArray = _ImageArray;
 @synthesize vote1Lable = _vote1Lable;
 @synthesize vote2Lable = _vote2Lable;
+@synthesize clickButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -64,7 +65,6 @@
     self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
-    [self.myTableView setBackgroundColor:[UIColor grayColor]];
     self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
     [self.view addSubview:self.myTableView];
     
@@ -159,6 +159,13 @@
         [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
         [self.twoImageView setTag:indexPath.row];
         [cell.contentView addSubview:self.twoImageView];
+    
+        clickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        clickButton.tag = indexPath.row;
+        [clickButton setTitle:@"点击" forState:UIControlStateNormal];
+        [clickButton setFrame:CGRectMake(140, 250, 40, 20)];
+        [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:clickButton];
     }
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
@@ -173,6 +180,13 @@
         vote1count=0;
         vote2count=0;
     }
+    if (vote1count >= 50) {
+        self.vote1Lable.textColor = [UIColor greenColor];
+    }
+    if (vote2count >= 50) {
+        self.vote2Lable.textColor = [UIColor greenColor];
+    }
+
     self.vote1Lable.text =[NSString stringWithFormat:@"%d%%",vote1count];
     self.vote2Lable.text =[NSString stringWithFormat:@"%d%%",vote2count];
 
@@ -182,7 +196,16 @@
     
     return cell;
 }
-
+-(void)clickedButton:(UIButton *)sender
+{
+    
+    int index = sender.tag;
+    STreamObject *so = [allVotes objectAtIndex:index];
+    VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
+    [votesView setRowObject:so];
+    [self.navigationController pushViewController:votesView animated:YES];
+    
+}
 - (void)downloadDoubleImage: (STreamObject *)so{
     
     NSString *file1 = [so getValue:@"file1"];
