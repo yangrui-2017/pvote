@@ -8,11 +8,66 @@
 
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "MainViewController.h"
+#import "PhotoViewController.h"
+#import "FireViewController.h"
+#import "UserInformationViewController.h"
+#import "InformationViewController.h"
 #import <arcstreamsdk/STreamSession.h>
 
 @implementation AppDelegate
 
 @synthesize loginSuccess;
+
+-(void)showLoginSucceedView{
+    MainViewController * mainVC = [[MainViewController alloc]init];
+    PhotoViewController *photoVC = [[PhotoViewController alloc]init];
+    FireViewController * fireVC = [[FireViewController alloc]init];
+    UserInformationViewController * userInfoVC = [[UserInformationViewController alloc]init];
+    InformationViewController * myInfoVC = [[InformationViewController alloc]init];
+    mainVC.title=@"主页";
+    photoVC.title=@"拍照";
+    fireVC.title=@"火";
+    userInfoVC.title=@"用户信息";
+    myInfoVC.title=@"个人信息";
+    
+    UITabBarItem *mainBar=[[UITabBarItem alloc] initWithTitle:@"主页" image: [UIImage imageNamed:@""]tag:10001];
+    UITabBarItem *fireBar=[[UITabBarItem alloc] initWithTitle:@"火" image:[UIImage imageNamed:@""] tag:1002];
+    UITabBarItem *photoBar=[[UITabBarItem alloc] initWithTitle:@"拍照" image: [UIImage imageNamed:@""]tag:10001];
+    UITabBarItem *userBar=[[UITabBarItem alloc] initWithTitle:@"用户信息" image:[UIImage imageNamed:@""] tag:1002];
+    UITabBarItem *myBar=[[UITabBarItem alloc] initWithTitle:@"个人信息" image:[UIImage imageNamed:@""] tag:1002];
+    
+    mainVC.tabBarItem=mainBar;
+    fireVC.tabBarItem=fireBar;
+    photoVC.tabBarItem=photoBar;
+    userInfoVC.tabBarItem=userBar;
+    myInfoVC.tabBarItem = myBar;
+    
+    NSMutableArray *array=[[NSMutableArray alloc] initWithCapacity:0];
+    
+    UINavigationController *nav1=[[UINavigationController alloc] initWithRootViewController:mainVC];
+    UINavigationController *nav2=[[UINavigationController alloc] initWithRootViewController:fireVC];
+    UINavigationController *nav3=[[UINavigationController alloc] initWithRootViewController:photoVC];
+    UINavigationController *nav4=[[UINavigationController alloc] initWithRootViewController:userInfoVC];
+    UINavigationController *nav5=[[UINavigationController alloc] initWithRootViewController:myInfoVC];
+    
+    [array addObject:nav1];
+    [array addObject:nav2];
+    [array addObject:nav3];
+    [array addObject:nav4];
+    [array addObject:nav5];
+    
+    UITabBarController *tabBar=[[UITabBarController alloc] init];
+    tabBar.viewControllers=array;
+    [self.window setRootViewController:tabBar];
+}
+-(void)showMainView{
+    
+    MainViewController * mainVC = [[MainViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:mainVC];
+    [self.window setRootViewController:nav];
+    
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

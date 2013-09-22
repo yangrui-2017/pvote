@@ -13,7 +13,6 @@
 #import <arcstreamsdk/STreamUser.h>
 #import "MBProgressHUD.h"
 #import "AppDelegate.h"
-#import "CreateTabBarViewController.h"
 #import "UserInformationViewController.h"
 #import "InformationViewController.h"
 #import "FireViewController.h"
@@ -48,39 +47,13 @@
     NSString * documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:KFilename];
 }
-//init
--(void)creat_tabBar_LatestActivity
-{
-    
-    CreateTabBarViewController * usercentertab = [[CreateTabBarViewController alloc] init];
-    usercentertab.selectedIndex = 0;
-    MainViewController * mainVC = [[MainViewController alloc]init];
-    PhotoViewController *photoVC = [[PhotoViewController alloc]init];
-    FireViewController * fireVC = [[FireViewController alloc]init];
-    UserInformationViewController * userInfoVC = [[UserInformationViewController alloc]init];
-    InformationViewController * myInfoVC = [[InformationViewController alloc]init];
-    
-    
-    if (APPDELEGATE.loginSuccess == YES) {
-        
-        usercentertab.viewControllers = [NSArray arrayWithObjects: mainVC, fireVC, photoVC, userInfoVC,myInfoVC,nil];
-        
-    } else {
-        NSLog(@"<<<<<<<<<<<<<<<<未登录 & 未参加<<<<<<<<<<<<<<<<<<");
-        usercentertab.viewControllers = [NSArray arrayWithObjects: mainVC,nil];
-        
-    }
-    [self.navigationController pushViewController:usercentertab animated:YES];
-    
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //test commit from second edward
     
-    self.title = @"login";
+    self.title = @"登录";
     self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 40)];
     self.name.placeholder=@"E-mail";
     self.name.borderStyle = UITextBorderStyleLine;
@@ -148,9 +121,7 @@
         } completionBlock:^{
            if ([[user errorMessage] length] == 0) {
                APPDELEGATE.loginSuccess = YES;
-//               MainViewController *mainView = [[MainViewController alloc]init];
-//               [self.navigationController pushViewController:mainView animated:YES];
-               [self creat_tabBar_LatestActivity];
+               [APPDELEGATE showLoginSucceedView];
             }else{
                UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"该用户不存在，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertview show];

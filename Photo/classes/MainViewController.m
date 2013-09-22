@@ -16,12 +16,14 @@
 #import "MBProgressHUD.h"
 #import "ImageCache.h"
 #import "ImageDownload.h"
-
+#import "YIFullScreenScroll.h"
+#import "LoginViewController.h"
 
 @interface MainViewController (){
     STreamCategoryObject *votes;
     NSMutableArray *votesArray;
     NSMutableArray *allVotes;
+    YIFullScreenScroll* _fullScreenDelegate;
 }
 
 @end
@@ -48,7 +50,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"MainPage";
+    self.title = @"主 页";
+    
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
+    leftItem.tintColor = [UIColor blackColor];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    
     self.myDataArray = [[NSMutableArray alloc]init];
     self.ImageArray = [[NSMutableArray alloc]init];
     
@@ -67,7 +74,14 @@
     
     [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
     allVotes = [[NSMutableArray alloc] init];
+    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
+
     
+}
+-(void)selectLeftAction:(id)sender{
+    LoginViewController *loginVC  =[[LoginViewController alloc]init];
+    [self.navigationController pushViewController:loginVC animated:YES];
 }
 
 - (void)loadVotes{
@@ -107,7 +121,7 @@
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 80, 80)];
-        [self.imageView setBackgroundColor:[UIColor grayColor]];
+        self.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
         [cell.contentView addSubview:self.imageView];
         
         self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 5, 200, 30)];
@@ -127,7 +141,7 @@
         
         self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.oneImageView setFrame:CGRectMake(5, 100, 150, 150)];
-        [self.oneImageView setBackgroundColor:[UIColor grayColor]];
+        [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
         [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
         [self.oneImageView setTag:indexPath.row];
         [cell.contentView addSubview:self.oneImageView];
@@ -141,9 +155,9 @@
         
         self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.twoImageView setFrame:CGRectMake(165, 100, 150, 150)];
+        [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
         [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
         [self.twoImageView setTag:indexPath.row];
-        [self.twoImageView setBackgroundColor:[UIColor grayColor]];
         [cell.contentView addSubview:self.twoImageView];
     }
     NSString *message = [so getValue:@"message"];
@@ -309,6 +323,41 @@
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 300;
+}
+#pragma mark Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // hide tabBar when pushed & show again when popped
+    self.hidesBottomBarWhenPushed = YES;
+    
+    double delayInSeconds = UINavigationControllerHideShowBarDuration;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        self.hidesBottomBarWhenPushed = NO;
+    });
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScroll:scrollView];
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
 }
 - (void)didReceiveMemoryWarning
 {

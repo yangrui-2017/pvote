@@ -37,6 +37,7 @@
 @synthesize imageView2 = _imageView2;
 @synthesize imagePicker = _imagePicker;
 @synthesize message = _message;
+@synthesize myTableView = _myTableView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -51,36 +52,84 @@
     [super viewDidLoad];
     clicked1 = 0;
     
-    self.title = @"Create a Decision";
+    self.title = @"拍 照";
     
     self.navigationController.navigationItem.backBarButtonItem = NO;
     
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"提交" style:UIBarButtonItemStyleDone target:self action:@selector(selectRightAction:)];
     self.navigationItem.rightBarButtonItem = rightItem;
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
-    self.navigationItem.leftBarButtonItem = leftItem;
-            
+//    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
+//    self.navigationItem.leftBarButtonItem = leftItem;
+    
+    self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height) style:UITableViewStylePlain];
+    self.myTableView.delegate=self;
+    self.myTableView.dataSource=self;
+    self.myTableView.showsVerticalScrollIndicator = NO;
+    [self.view addSubview:self.myTableView];
+    self.myTableView.backgroundColor = [UIColor clearColor];
+    self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
+    
+//        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 80, 130, 130)];
+//        self.imageView .backgroundColor = [UIColor grayColor];
+//        self.imageView .userInteractionEnabled = YES;
+//        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
+//        [ self.imageView  addGestureRecognizer:singleTap];
+//        [self.view addSubview: self.imageView ];
+//    
+//    self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(170, 80, 130, 130)];
+//    self.imageView2 .backgroundColor = [UIColor grayColor];
+//    self.imageView2 .userInteractionEnabled = YES;
+//    UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
+//    [ self.imageView2  addGestureRecognizer:singleTap2];
+//    [self.view addSubview: self.imageView2 ];
+//    
+//    
+//    
+//    _message = [[UITextField alloc]initWithFrame:CGRectMake(20, 230, 280, 100)];
+//    _message.borderStyle =UITextBorderStyleLine;
+//    _message.backgroundColor = [UIColor grayColor];
+//    _message.delegate = self;
+//    [self.view addSubview:_message];
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString * cellName =@"CellID";
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
+    if (cell==nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 10, 130, 130)];
         self.imageView .backgroundColor = [UIColor grayColor];
         self.imageView .userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
         [ self.imageView  addGestureRecognizer:singleTap];
-        [self.view addSubview: self.imageView ];
-    
-    self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(170, 10, 130, 130)];
-    self.imageView2 .backgroundColor = [UIColor grayColor];
-    self.imageView2 .userInteractionEnabled = YES;
-    UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
-    [ self.imageView2  addGestureRecognizer:singleTap2];
-    [self.view addSubview: self.imageView2 ];
-    
-    
-    
-    _message = [[UITextField alloc]initWithFrame:CGRectMake(20, 150, 280, 100)];
-    _message.borderStyle =UITextBorderStyleLine;
-    _message.backgroundColor = [UIColor grayColor];
-    _message.delegate = self;
-    [self.view addSubview:_message];
+        [cell addSubview: self.imageView ];
+        
+        self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(170, 10, 130, 130)];
+        self.imageView2 .backgroundColor = [UIColor grayColor];
+        self.imageView2 .userInteractionEnabled = YES;
+        UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
+        [ self.imageView2  addGestureRecognizer:singleTap2];
+        [cell addSubview: self.imageView2 ];
+        
+        
+        
+        _message = [[UITextField alloc]initWithFrame:CGRectMake(20, 160, 280, 100)];
+        _message.borderStyle =UITextBorderStyleLine;
+        _message.backgroundColor = [UIColor grayColor];
+        _message.delegate = self;
+        [cell addSubview:_message];
+    }
+    return cell;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return _myTableView.bounds.size.height;//416
 }
 //UITextFied
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -204,6 +253,7 @@
 
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     if (clicked1 == 1){
        self.imageView.image = image;

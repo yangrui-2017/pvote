@@ -47,7 +47,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-        
+        self.title = @"注册";
     self.genderArray = [[NSArray alloc]initWithObjects:@"--Select Gender--",@"Male",@"Female", nil];
     
     self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height) style:UITableViewStylePlain];
@@ -266,7 +266,6 @@
 	self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
     UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 150)] ;
-    [pickerView setBackgroundColor:[UIColor blueColor]];
     pickerView.tag = 101;
     pickerView.delegate = self;
     pickerView.dataSource = self;
