@@ -47,6 +47,12 @@
     }
     return self;
 }
+
+- (void)viewDidAppear:(BOOL)animated{
+    [self.myTableView reloadData];
+    NSLog(@"");
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -201,12 +207,27 @@
 {
     
     int index = sender.tag;
-    STreamObject *so = [allVotes objectAtIndex:index];
-    VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
-    [votesView setRowObject:so];
-    [self.navigationController pushViewController:votesView animated:YES];
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    __block STreamObject *so = [allVotes objectAtIndex:index];
+    
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        STreamQuery *sq = [[STreamQuery alloc] initWithCategory:[so category]];
+        [sq addLimitId:[so objectId]];
+        NSMutableArray *ra = [sq find];
+        so = [ra objectAtIndex:0];
+        [allVotes replaceObjectAtIndex:index withObject:so];
+    } completionBlock:^{
+        VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
+        [votesView setRowObject:so];
+        [self.navigationController pushViewController:votesView animated:YES];
+    }];
     
 }
+
+
 - (void)downloadDoubleImage: (STreamObject *)so{
     
     NSString *file1 = [so getValue:@"file1"];

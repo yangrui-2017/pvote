@@ -11,6 +11,9 @@
 #import <arcstreamsdk/STreamObject.h>
 #import "ImageCache.h"
 #import "YIFullScreenScroll.h"
+#import "MainViewController.h"
+#import "MBProgressHUD.h"
+
 @interface VotesShowViewController (){
     NSMutableArray *result;
     NSMutableArray *leftVoters;
@@ -45,16 +48,16 @@
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
-    
+  
 //    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
 //    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
     leftImageId = [rowObject getValue:@"file1"];
     rightImageId = [rowObject getValue:@"file2"];
+    
     float allcount = [[rowObject getValue:@"file1vote"] floatValue]+[[rowObject getValue:@"file2vote"] floatValue];
     if (allcount) {
         vote1count = ([[rowObject getValue:@"file1vote"] floatValue]/allcount)*100;
@@ -65,6 +68,18 @@
      }
     leftVoters = [[NSMutableArray alloc] init];
     rightVoters = [[NSMutableArray alloc] init];
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    
+    [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
+
+
+}
+
+
+- (void)loadVotes{
+    
     STreamQuery *sqq = [[STreamQuery alloc] initWithCategory:@"voted"];
     [sqq setQueryLogicAnd:FALSE];
     NSString *objectId  = [rowObject objectId];
@@ -73,12 +88,14 @@
     [sqq whereEqualsTo:objectId forValue:@"f2voted"];
     result = [sqq find];
     for (STreamObject *so in result){
-           NSString *vote = [so getValue:objectId];
-            if ([vote isEqualToString:@"f1voted"])
-                [leftVoters addObject:[so objectId]];
-            if ([vote isEqualToString:@"f2voted"])
-                [rightVoters addObject:[so objectId]];
+        NSString *vote = [so getValue:objectId];
+        if ([vote isEqualToString:@"f1voted"])
+            [leftVoters addObject:[so objectId]];
+        if ([vote isEqualToString:@"f2voted"])
+            [rightVoters addObject:[so objectId]];
     }
+    [self.tableView reloadData];
+
 }
 
 
