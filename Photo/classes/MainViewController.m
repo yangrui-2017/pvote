@@ -73,6 +73,7 @@
     self.myTableView.dataSource = self;
     self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
     [self.view addSubview:self.myTableView];
+//    self.myTableView.backgroundColor=[UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
@@ -127,6 +128,7 @@
     if (cell == nil) {
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 80, 80)];
         self.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
         [cell.contentView addSubview:self.imageView];

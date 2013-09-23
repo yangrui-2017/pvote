@@ -13,6 +13,7 @@
 #import "YIFullScreenScroll.h"
 #import "MainViewController.h"
 #import "MBProgressHUD.h"
+#import "InformationViewController.h"
 
 @interface VotesShowViewController (){
     NSMutableArray *result;
@@ -32,8 +33,8 @@
 @synthesize countLable;
 @synthesize vote1Lable;
 @synthesize vote2Lable;
-@synthesize votes1;
-@synthesize votes2;
+@synthesize leftButton;
+@synthesize rightButton;
 @synthesize oneImageView;
 @synthesize twoImageView;
 @synthesize rowObject;
@@ -73,11 +74,7 @@
     [self.view addSubview:HUD];
     
     [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
-
-
 }
-
-
 - (void)loadVotes{
     
     STreamQuery *sqq = [[STreamQuery alloc] initWithCategory:@"voted"];
@@ -97,8 +94,6 @@
     [self.tableView reloadData];
 
 }
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -125,7 +120,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier ];
     if (cell==nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.row == 0) {
             self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 5, 40, 20)];
             self.vote1Lable.textColor = [UIColor redColor];
@@ -175,20 +170,15 @@
             [cell.contentView addSubview:self.rightLable];
             
         }else{
-            self.votes1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 30)];
-            self.votes1.textColor = [UIColor redColor];
-            self.votes1.font = [UIFont fontWithName:@"Arial" size:14];
-            self.votes1.textAlignment = NSTextAlignmentCenter;
-            self.votes1.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:self.votes1];
+            self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, 30)];
+            [self.leftButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [self.leftButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:self.leftButton];
             
-            self.votes2 = [[UILabel alloc]initWithFrame:CGRectMake(220, 0, 100, 30)];
-            self.votes2.textColor = [UIColor greenColor];
-            self.votes2.textAlignment = NSTextAlignmentRight;
-            self.votes2.font = [UIFont fontWithName:@"Arial" size:14];
-            self.votes2.textAlignment = NSTextAlignmentCenter;
-            self.votes2.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:self.votes2];
+            self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(220, 0, 100, 30)];
+            [self.rightButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+            [self.rightButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:self.rightButton];
         }
         
     }
@@ -201,9 +191,9 @@
     if (indexPath.row != 0) {
     
         if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1))
-            self.votes1.text=[leftVoters objectAtIndex:(indexPath.row-1 )];
+            [self.leftButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
         if ([rightVoters count]!=0 &&[rightVoters count] - 1 >= (indexPath.row - 1))
-           self.votes2.text=[rightVoters objectAtIndex:(indexPath.row-1 )];
+            [self.rightButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
 
     }
     ImageCache *cache = [ImageCache sharedObject];
@@ -221,6 +211,16 @@
     }
 }
 
+-(void)buttonClicked:(UIButton *)button{
+    InformationViewController * informationVC = [[InformationViewController alloc]init];
+    informationVC.userName = button.titleLabel.text;
+    informationVC.isPush = YES;
+    [self.navigationController pushViewController:informationVC animated:YES];
+}
+-(void)rightButtonClicked:(id)button{
+    NSLog(@"right");
+
+}
 #pragma mark Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

@@ -20,9 +20,8 @@
 @property (strong,nonatomic) UILabel *rightLable;
 @property (strong,nonatomic) UIImageView *oneImageView;
 @property (strong,nonatomic) UIImageView *twoImageView;
-@property (strong,nonatomic) UILabel *votes1;
-@property (strong,nonatomic) UILabel *votes2;
+@property (strong,nonatomic) UIButton *leftButton;
+@property (strong,nonatomic) UIButton *rightButton;
 @property (strong,nonatomic) STreamObject *rowObject;
-
 
 @end

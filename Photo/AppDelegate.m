@@ -84,7 +84,7 @@
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
     [self.window setRootViewController:nav];
     
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     [self.window makeKeyAndVisible];
     return YES;
 }

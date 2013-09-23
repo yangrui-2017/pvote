@@ -17,5 +17,6 @@
 @property (strong,nonatomic) UILabel *nameLablel;
 @property (strong,nonatomic) UILabel *lable;
 @property (strong,nonatomic) UILabel *countLable;
-
+@property (copy,nonatomic) NSString *userName;
+@property (assign) BOOL isPush;
 @end
