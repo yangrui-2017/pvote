@@ -59,14 +59,14 @@
     leftImageId = [rowObject getValue:@"file1"];
     rightImageId = [rowObject getValue:@"file2"];
     
-    float allcount = [[rowObject getValue:@"file1vote"] floatValue]+[[rowObject getValue:@"file2vote"] floatValue];
+    /*float allcount = [[rowObject getValue:@"file1vote"] floatValue]+[[rowObject getValue:@"file2vote"] floatValue];
     if (allcount) {
         vote1count = ([[rowObject getValue:@"file1vote"] floatValue]/allcount)*100;
         vote2count = ([[rowObject getValue:@"file2vote"] floatValue]/allcount)*100;
      }else{
          vote1count=0;
          vote2count=0;
-     }
+     }*/
     leftVoters = [[NSMutableArray alloc] init];
     rightVoters = [[NSMutableArray alloc] init];
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -91,6 +91,14 @@
         if ([vote isEqualToString:@"f2voted"])
             [rightVoters addObject:[so objectId]];
     }
+    int leftCount = [leftVoters count];
+    int rightCount = [rightVoters count];
+    
+    int total = [leftVoters count] + [rightVoters count];
+    
+    vote1count = ((float)leftCount/total)*100;
+    vote2count = ((float)rightCount/total)*100;
+    
     [self.tableView reloadData];
 
 }
@@ -216,10 +224,7 @@
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-       
-        
-    } completionBlock:^{
+    [HUD showAnimated:YES whileExecutingBlock:^{    } completionBlock:^{
         InformationViewController * informationVC = [[InformationViewController alloc]init];
         informationVC.userName = button.titleLabel.text;
         informationVC.isPush = YES;

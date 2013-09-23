@@ -171,15 +171,15 @@
     
         clickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         clickButton.tag = indexPath.row;
-        [clickButton setTitle:@"点击" forState:UIControlStateNormal];
-        [clickButton setFrame:CGRectMake(140, 250, 40, 20)];
+        [clickButton setTitle:@"点击查看投票" forState:UIControlStateNormal];
+        [clickButton setFrame:CGRectMake(110, 250, 100, 20)];
         [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:clickButton];
     }
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
     self.name.text = [self.myDataArray objectAtIndex:indexPath.row];
-    float allcount = [[so getValue:@"file1vote"] floatValue]+[[so getValue:@"file2vote"] floatValue];
+    /*float allcount = [[so getValue:@"file1vote"] floatValue]+[[so getValue:@"file2vote"] floatValue];
     int vote1count;
     int vote2count;
     if (allcount) {
@@ -195,9 +195,11 @@
     if (vote2count >= 50) {
         self.vote2Lable.textColor = [UIColor greenColor];
     }
+    
+    
 
     self.vote1Lable.text =[NSString stringWithFormat:@"%d%%",vote1count];
-    self.vote2Lable.text =[NSString stringWithFormat:@"%d%%",vote2count];
+    self.vote2Lable.text =[NSString stringWithFormat:@"%d%%",vote2count];*/
 
     [self downloadDoubleImage:so];
     [self loadUserMetadataAndDownloadUserProfileImage];
@@ -208,7 +210,7 @@
 -(void)clickedButton:(UIButton *)sender
 {
     
-    int index = sender.tag;
+    /*int index = sender.tag;
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
@@ -225,7 +227,11 @@
         VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
         [votesView setRowObject:so];
         [self.navigationController pushViewController:votesView animated:YES];
-    }];
+    }];*/
+    
+    VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
+    [votesView setRowObject:[allVotes objectAtIndex:sender.tag]];
+    [self.navigationController pushViewController:votesView animated:YES];
     
 }
 
@@ -292,11 +298,13 @@
             
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
-            int total = [so size];
+            int total = [so size] + 1;
             [so addStaff:@"total" withObject:[NSNumber numberWithInt:total]];
             [so updateInBackground];
             
             //update category username
+
+            
             NSNumber *fileVote1 = [sorow  getValue:@"file1vote"];
             int newVote = [fileVote1 intValue] + 1;
             [sorow  addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote]];
@@ -336,6 +344,7 @@
             [sorow updateInBackground];*/
         }
     }
+    [self clickedButton:button];
 }
 
 -(void)buttonClickedLeft:(UIButton *)button withEvent:(UIEvent*)event {
@@ -363,7 +372,7 @@
         if (votedKey == nil){
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
-            int total = [so size];
+            int total = [so size] + 1;
             [so addStaff:@"total" withObject:[NSNumber numberWithInt:total]];
             [so updateInBackground];
             
@@ -409,6 +418,7 @@
         }
 
     }
+    [self clickedButton:button];
 }
 
 -(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
