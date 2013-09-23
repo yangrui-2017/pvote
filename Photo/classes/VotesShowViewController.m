@@ -193,7 +193,7 @@
         if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1))
             [self.leftButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
         if ([rightVoters count]!=0 &&[rightVoters count] - 1 >= (indexPath.row - 1))
-            [self.rightButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
+            [self.rightButton setTitle:[rightVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
 
     }
     ImageCache *cache = [ImageCache sharedObject];
