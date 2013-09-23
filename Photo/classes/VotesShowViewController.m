@@ -122,26 +122,26 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.row == 0) {
-            self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 5, 40, 20)];
+            self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(70, 0, 80, 30)];
             self.vote1Lable.textColor = [UIColor redColor];
-            self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
-            self.vote1Lable.textAlignment = NSTextAlignmentCenter;
+            self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:20];
+            self.vote1Lable.textAlignment = NSTextAlignmentRight;
             self.vote1Lable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.vote1Lable];
             
-            self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 25, 150, 150)];
+            self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 30, 150, 150)];
             [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
             [cell.contentView addSubview:self.oneImageView];
 
             
-            self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 5, 40, 20)];
+            self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(175, 0, 80, 30)];
             self.vote2Lable.textColor = [UIColor greenColor];
-            self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
-            self.vote2Lable.textAlignment = NSTextAlignmentCenter;
+            self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:20];
+            self.vote2Lable.textAlignment = NSTextAlignmentRight;
             self.vote2Lable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.vote2Lable];
             
-            self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 25, 150, 150)];
+            self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 30, 150, 150)];
             [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
             [cell.contentView addSubview:self.twoImageView];
             
@@ -149,33 +149,34 @@
             self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(120, 180, 100, 50)];
             self.countLable.textColor = [UIColor blackColor];
             self.countLable.textAlignment = NSTextAlignmentCenter;
-            self.countLable.font = [UIFont fontWithName:@"Arial" size:22];
+            self.countLable.font = [UIFont fontWithName:@"Arial" size:24];
             self.countLable.textAlignment = NSTextAlignmentCenter;
             self.countLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.countLable];
             
-            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(30, 180, 80, 30)];
+            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 180, 80, 40)];
             self.leftLable.textColor = [UIColor redColor];
             self.leftLable.font = [UIFont fontWithName:@"Arial" size:22];
-            self.leftLable.textAlignment = NSTextAlignmentCenter;
+            self.leftLable.textAlignment = NSTextAlignmentLeft;
             self.leftLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.leftLable];
             
-            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(250, 180, 80, 30)];
+            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 180, 80, 40)];
             self.rightLable.textColor = [UIColor greenColor];
-            self.rightLable.textAlignment = NSTextAlignmentRight;
-            self.rightLable.font = [UIFont fontWithName:@"Arial" size:22];
             self.rightLable.textAlignment = NSTextAlignmentCenter;
+            self.rightLable.font = [UIFont fontWithName:@"Arial" size:22];
             self.rightLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.rightLable];
             
         }else{
-            self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, 50)];
+            self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 80,40)];
+            self.leftButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:22];
             [self.leftButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
             [self.leftButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:self.leftButton];
             
-            self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(220, 0, 100, 50)];
+            self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(240, 0, 80,40)];
+            self.rightButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:22];
             [self.rightButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
             [self.rightButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:self.rightButton];
@@ -207,7 +208,7 @@
     if (indexPath.row == 0) {
         return 230;
     }else{
-        return 50;
+        return 40;
     }
 }
 

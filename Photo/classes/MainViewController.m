@@ -321,7 +321,7 @@
         }else{
             
             //update category voted
-            [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            /*[so removeKey:[sorow objectId] forObjectId:[so objectId]];
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
             [so updateInBackground];
             
@@ -333,7 +333,7 @@
             int newVote1 = [fileVote1 intValue] + 1;
             [sorow  addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote1]];
             [self.myTableView reloadData];
-            [sorow updateInBackground];
+            [sorow updateInBackground];*/
         }
     }
 }
@@ -393,7 +393,7 @@
         }else{
             
             //update category voted
-            [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            /*[so removeKey:[sorow objectId] forObjectId:[so objectId]];
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
             [so updateInBackground];
             
@@ -405,7 +405,7 @@
             int newVote1 = [fileVote1 intValue] - 1;
             [sorow  addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote1]];
             [self.myTableView reloadData];
-            [sorow updateInBackground];
+            [sorow updateInBackground];*/
         }
 
     }
