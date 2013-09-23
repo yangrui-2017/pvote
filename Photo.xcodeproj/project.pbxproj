@@ -44,6 +44,7 @@
 		03E4AA9817E9591C00DE53F3 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E4AA9717E9591C00DE53F3 /* arcstreamsdk.framework */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
+		0EBB400217F0A6E2007E789E /* VoteResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBB400117F0A6E2007E789E /* VoteResults.m */; };
 		0EDFB13617EEB8C500949081 /* YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13517EEB8C500949081 /* YIFullScreenScroll.m */; };
 		0EDFB13C17EEB95B00949081 /* UIView+YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13B17EEB95B00949081 /* UIView+YIFullScreenScroll.m */; };
 		0EDFB13E17EEBB4A00949081 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFB13D17EEBB4A00949081 /* Placeholder.png */; };
@@ -117,6 +118,8 @@
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
 		03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageDownload.m; path = classes/ImageDownload.m; sourceTree = "<group>"; };
 		03F7D12F17E7009A00FBCE96 /* MainViewTableViewRfresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewTableViewRfresh.h; path = classes/MainViewTableViewRfresh.h; sourceTree = "<group>"; };
+		0EBB400017F0A6E2007E789E /* VoteResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteResults.h; sourceTree = "<group>"; };
+		0EBB400117F0A6E2007E789E /* VoteResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoteResults.m; sourceTree = "<group>"; };
 		0EDFB13417EEB8C500949081 /* YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YIFullScreenScroll.h; path = FullScreenScroll/YIFullScreenScroll.h; sourceTree = "<group>"; };
 		0EDFB13517EEB8C500949081 /* YIFullScreenScroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YIFullScreenScroll.m; path = FullScreenScroll/YIFullScreenScroll.m; sourceTree = "<group>"; };
 		0EDFB13A17EEB95B00949081 /* UIView+YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+YIFullScreenScroll.h"; path = "FullScreenScroll/UIView+YIFullScreenScroll.h"; sourceTree = "<group>"; };
@@ -270,6 +273,8 @@
 				03C78E8E17E84CC70091D094 /* InformationViewController.m */,
 				03C78E9017E84D120091D094 /* UserInformationViewController.h */,
 				03C78E9117E84D120091D094 /* UserInformationViewController.m */,
+				0EBB400017F0A6E2007E789E /* VoteResults.h */,
+				0EBB400117F0A6E2007E789E /* VoteResults.m */,
 			);
 			name = classes;
 			sourceTree = "<group>";
@@ -412,6 +417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C49AF117E102FC00AE7E3B /* main.m in Sources */,
+				0EBB400217F0A6E2007E789E /* VoteResults.m in Sources */,
 				03C49AF517E102FC00AE7E3B /* AppDelegate.m in Sources */,
 				03C49B1B17E1036F00AE7E3B /* PhotoViewController.m in Sources */,
 				0EDFB13617EEB8C500949081 /* YIFullScreenScroll.m in Sources */,

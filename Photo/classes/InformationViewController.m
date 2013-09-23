@@ -43,7 +43,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     cache = [ImageCache sharedObject];
-    sq = [[STreamQuery alloc] initWithCategory:@"voted"];
+    sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
     if (isPush) {
         [sq addLimitId:userName];
     }else{
@@ -118,10 +118,10 @@
     }
     if (indexPath.row ==2) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
-        if ([so size]==0 || [so size]==1) {
+        if ([so size]==0) {
             countLable.text = @"0";
         }else{
-            countLable.text = [NSString stringWithFormat:@"%d",[so size]-1];
+            countLable.text = [NSString stringWithFormat:@"%d",[so size]];
         }
     }
     return cell;

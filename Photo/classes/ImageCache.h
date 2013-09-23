@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ImageDataFile.h"
+#import "VoteResults.h"
 
 @interface ImageCache : NSObject
 {
@@ -31,5 +32,9 @@
 -(void)setLoginUserName:(NSString *)userName;
 
 -(NSMutableString *)getLoginUserName;
+
+-(void)addVotesResults:(NSString *)objectId withVoteResult:(VoteResults *)results;
+
+-(VoteResults *)getResults:(NSString *)objectId;
 
 @end

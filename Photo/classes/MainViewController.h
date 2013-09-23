@@ -15,7 +15,6 @@
 }
 
 @property (retain,nonatomic) UITableView *myTableView ;
-@property (retain,nonatomic) NSMutableArray *myDataArray;
 @property (retain,nonatomic) NSMutableArray *ImageArray;
 @property (strong ,nonatomic) UIImageView *imageView;
 @property (strong,nonatomic) UITextField *name;

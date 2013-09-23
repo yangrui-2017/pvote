@@ -77,7 +77,8 @@
 }
 - (void)loadVotes{
     
-    STreamQuery *sqq = [[STreamQuery alloc] initWithCategory:@"voted"];
+    ImageCache *imageCache = [ImageCache sharedObject];
+    STreamQuery *sqq = [[STreamQuery alloc] initWithCategory:@"Voted"];
     [sqq setQueryLogicAnd:FALSE];
     NSString *objectId  = [rowObject objectId];
     
@@ -98,6 +99,14 @@
     
     vote1count = ((float)leftCount/total)*100;
     vote2count = ((float)rightCount/total)*100;
+    
+    NSString *vote1 = [NSString stringWithFormat:@"%d%%",vote1count];
+    NSString *vote2 = [NSString stringWithFormat:@"%d%%",vote2count];
+    VoteResults *vo = [[VoteResults alloc] init];
+    [vo setObjectId:[rowObject objectId]];
+    [vo setF1:vote1];
+    [vo setF2:vote2];
+    [imageCache addVotesResults:[rowObject objectId] withVoteResult:vo];
     
     [self.tableView reloadData];
 

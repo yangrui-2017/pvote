@@ -9,10 +9,12 @@
 #import "ImageCache.h"
 #import <arcstreamsdk/STreamFile.h>
 #import "ImageDataFile.h"
+#import "VoteResults.h"
 
 static NSMutableDictionary *_imageDictionary;
 static NSMutableDictionary *_selfImageDictionary;
 static NSMutableDictionary *_userMetaData;
+static NSMutableDictionary *_voteResults;
 static NSMutableString *loginUserName;
 
 @implementation ImageCache
@@ -29,6 +31,7 @@ static NSMutableString *loginUserName;
          _imageDictionary = [[NSMutableDictionary alloc] init];
          _selfImageDictionary = [[NSMutableDictionary alloc] init];
          _userMetaData = [[NSMutableDictionary alloc] init];
+         _voteResults = [[NSMutableDictionary alloc] init];
          
      });
     
@@ -68,6 +71,14 @@ static NSMutableString *loginUserName;
 
 -(ImageDataFile *)getImages:(NSString *)objectId{
     return [_imageDictionary objectForKey:objectId];
+}
+
+-(void)addVotesResults:(NSString *)objectId withVoteResult:(VoteResults *)results{
+    [_voteResults setObject:results forKey:objectId];
+}
+
+-(VoteResults *)getResults:(NSString *)objectId{
+    return [_voteResults objectForKey:objectId];
 }
 
 @end

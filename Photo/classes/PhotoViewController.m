@@ -163,28 +163,14 @@
     ImageCache *cache = [[ImageCache alloc] init];
     NSString *userName = [cache getLoginUserName];
     
-    STreamObject *o1 = [[STreamObject alloc] init];
-    NSNumber *file1vote = [NSNumber numberWithInt:0];
-    NSNumber *file2vote = [NSNumber numberWithInt:0];
-    [o1 setObjectId:longValue];
-    [o1 addStaff:@"file1" withObject:file1Id];
-    [o1 addStaff:@"file2" withObject:file2Id];
-    [o1 addStaff:@"file1vote" withObject:file1vote];
-    [o1 addStaff:@"file2vote" withObject:file2vote];
-    [o1 addStaff:@"message" withObject:_message.text];
-    
     STreamObject *vote = [[STreamObject alloc] init];
     [vote setObjectId:longValue];
+    [vote addStaff:@"file1" withObject:file1Id];
+    [vote addStaff:@"file2" withObject:file2Id];
+    [vote addStaff:@"message" withObject:_message.text];
     [vote addStaff:@"userName" withObject:userName];
     
-    
-    STreamCategoryObject *sco = [[STreamCategoryObject alloc] initWithCategory:userName];
-    NSMutableArray *na = [[NSMutableArray alloc] init];
-    [na addObject:o1];
-    [sco updateStreamCategoryObjects:na];
-    
-   
-    STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"allVotes"];
+    STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     NSMutableArray *av = [[NSMutableArray alloc] init];
     [av addObject:vote];
     [scov updateStreamCategoryObjects:av];
