@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InformationViewController : UIViewController
+@interface InformationViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    
+}
+@property (strong,nonatomic) UITableView *myTableView;
+@property (strong,nonatomic) UIImageView *imageView;
+@property (strong,nonatomic) UILabel *nameLablel;
+@property (strong,nonatomic) UILabel *lable;
+@property (strong,nonatomic) UILabel *countLable;
 
 @end

@@ -14,7 +14,8 @@
 #import <arcstreamsdk/STreamObject.h>
 #import "MBProgressHUD.h"
 #import "ImageCache.h"
-
+#import "MainViewController.h"
+#import "AppDelegate.h"
 @interface PhotoViewController ()
 {
    
@@ -68,28 +69,6 @@
     [self.view addSubview:self.myTableView];
     self.myTableView.backgroundColor = [UIColor clearColor];
     self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
-    
-//        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 80, 130, 130)];
-//        self.imageView .backgroundColor = [UIColor grayColor];
-//        self.imageView .userInteractionEnabled = YES;
-//        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
-//        [ self.imageView  addGestureRecognizer:singleTap];
-//        [self.view addSubview: self.imageView ];
-//    
-//    self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(170, 80, 130, 130)];
-//    self.imageView2 .backgroundColor = [UIColor grayColor];
-//    self.imageView2 .userInteractionEnabled = YES;
-//    UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
-//    [ self.imageView2  addGestureRecognizer:singleTap2];
-//    [self.view addSubview: self.imageView2 ];
-//    
-//    
-//    
-//    _message = [[UITextField alloc]initWithFrame:CGRectMake(20, 230, 280, 100)];
-//    _message.borderStyle =UITextBorderStyleLine;
-//    _message.backgroundColor = [UIColor grayColor];
-//    _message.delegate = self;
-//    [self.view addSubview:_message];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -209,8 +188,7 @@
     NSMutableArray *av = [[NSMutableArray alloc] init];
     [av addObject:vote];
     [scov updateStreamCategoryObjects:av];
-    
-    
+    [APPDELEGATE showLoginSucceedView];
 }
 
 -(void) imageClicked:(UIImageView *)View{
@@ -258,14 +236,14 @@
     if (clicked1 == 1){
        self.imageView.image = image;
        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
-      // imageData1 = UIImageJPEGRepresentation(image, 0.1);
-       imageData1 = UIImageJPEGRepresentation(sImage, 1);
+      // imageData1 = UIImageJPEGRepresentation(image, 1);
+       imageData1 = UIImageJPEGRepresentation(sImage, 0.1);
     }
     else{
        self.imageView2.image = image;
        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
-     //  imageData2 = UIImageJPEGRepresentation(image, 0.1);
-       imageData2 = UIImageJPEGRepresentation(sImage, 1);
+     //  imageData2 = UIImageJPEGRepresentation(image, 1);
+       imageData2 = UIImageJPEGRepresentation(sImage, 0.1);
 
     }
     

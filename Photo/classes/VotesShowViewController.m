@@ -142,14 +142,14 @@
             self.countLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.countLable];
             
-            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(30, 180, 40, 20)];
+            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(30, 180, 50, 20)];
             self.leftLable.textColor = [UIColor redColor];
             self.leftLable.font = [UIFont fontWithName:@"Arial" size:16];
             self.leftLable.textAlignment = NSTextAlignmentCenter;
             self.leftLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.leftLable];
             
-            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(250, 180, 40, 20)];
+            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(250, 180, 50, 20)];
             self.rightLable.textColor = [UIColor greenColor];
             self.rightLable.textAlignment = NSTextAlignmentRight;
             self.rightLable.font = [UIFont fontWithName:@"Arial" size:16];
@@ -182,9 +182,10 @@
     self.rightLable.text=[NSString stringWithFormat:@"%d%%",vote2count];;
 
     if (indexPath.row != 0) {
-        if ([leftVoters count] - 1 >= (indexPath.row - 1))
+    
+        if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1))
             self.votes1.text=[leftVoters objectAtIndex:(indexPath.row-1 )];
-        if ([rightVoters count] - 1 >= (indexPath.row - 1))
+        if ([rightVoters count]!=0 &&[rightVoters count] - 1 >= (indexPath.row - 1))
            self.votes2.text=[rightVoters objectAtIndex:(indexPath.row-1 )];
 
     }
@@ -192,9 +193,7 @@
     ImageDataFile *dataFile = [cache getImages:[rowObject objectId]];
     self.oneImageView.image = [UIImage imageWithData:[dataFile file1]];
     self.twoImageView.image = [UIImage imageWithData:[dataFile file2]];
-    
-    
-           self.countLable.text=[NSString stringWithFormat:@"%d", [result count]];
+    self.countLable.text=[NSString stringWithFormat:@"%d", [result count]];
     return cell;
 }
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
