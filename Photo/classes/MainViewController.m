@@ -97,7 +97,8 @@
         [self.myDataArray addObject:[so getValue:@"userName"]];
         [query addLimitId:[so objectId]];
         NSMutableArray *objects = [query find];
-        [allVotes addObject:[objects objectAtIndex:0]];
+        if (objects != nil && [objects count] == 1)
+           [allVotes addObject:[objects objectAtIndex:0]];
         
     }
     
@@ -279,13 +280,38 @@
             [self.myTableView reloadData];
             [sorow updateInBackground];
             
+        }else if([votedKey isEqualToString:@"f1voted"]){
+          
+            //update category voted
+            [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            int total = [so size] - 1;
+            [so addStaff:@"total" withObject:[NSNumber numberWithInt:total]];
+            [so updateInBackground];
+            
+            //update category username
+            NSNumber *fileVote1 = [sorow  getValue:@"file1vote"];
+            int newVote = [fileVote1 intValue] - 1;
+            [sorow  addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote]];
+            [self.myTableView reloadData];
+            [sorow updateInBackground];
+            
+        }else{
+            
+            //update category voted
+            [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            [so addStaff:[sorow objectId] withObject:@"f1voted"];
+            [so updateInBackground];
+            
+            //update category username
+            NSNumber *fileVote2 = [sorow  getValue:@"file2vote"];
+            int newVote2 = [fileVote2 intValue] - 1;
+            [sorow  addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote2]];
+            NSNumber *fileVote1 = [sorow  getValue:@"file1vote"];
+            int newVote1 = [fileVote1 intValue] + 1;
+            [sorow  addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote1]];
+            [self.myTableView reloadData];
+            [sorow updateInBackground];
         }
-        /*STreamQuery *sqq = [[STreamQuery alloc] initWithCategory:@"voted"];
-        [sqq setQueryLogicAnd:FALSE];
-        [sqq whereEqualsTo:[sorow objectId] forValue:@"f1voted"];
-        [sqq whereEqualsTo:[sorow objectId] forValue:@"f2voted"];
-        NSMutableArray *result = [sqq find];*/
-        
     }
 }
 
@@ -326,6 +352,39 @@
             [sorow updateInBackground];
             
         }
+        else if([votedKey isEqualToString:@"f2voted"]){
+            
+            //update category voted
+            [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            int total = [so size] - 1;
+            [so addStaff:@"total" withObject:[NSNumber numberWithInt:total]];
+            [so updateInBackground];
+            
+            //update category username
+            NSNumber *fileVote1 = [sorow  getValue:@"file2vote"];
+            int newVote = [fileVote1 intValue] - 1;
+            [sorow  addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote]];
+            [self.myTableView reloadData];
+            [sorow updateInBackground];
+            
+        }else{
+            
+            //update category voted
+            [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            [so addStaff:[sorow objectId] withObject:@"f2voted"];
+            [so updateInBackground];
+            
+            //update category username
+            NSNumber *fileVote2 = [sorow  getValue:@"file2vote"];
+            int newVote2 = [fileVote2 intValue] + 1;
+            [sorow  addStaff:@"file2vote" withObject:[NSNumber numberWithInt:newVote2]];
+            NSNumber *fileVote1 = [sorow  getValue:@"file1vote"];
+            int newVote1 = [fileVote1 intValue] - 1;
+            [sorow  addStaff:@"file1vote" withObject:[NSNumber numberWithInt:newVote1]];
+            [self.myTableView reloadData];
+            [sorow updateInBackground];
+        }
+
     }
 }
 

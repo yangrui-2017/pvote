@@ -109,6 +109,8 @@
  */
 - (void) removeKey: (NSString *)key forObjectId:(NSString *)objectId;
 
+- (void) removeKeyInBackground: (NSString *)key forObjectId:(NSString *)streamObjectId;
+
 - (void)resetErrorMessage;
 
 
