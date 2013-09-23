@@ -146,36 +146,36 @@
             [cell.contentView addSubview:self.twoImageView];
             
             
-            self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(120, 180, 80, 20)];
+            self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(120, 180, 100, 50)];
             self.countLable.textColor = [UIColor blackColor];
             self.countLable.textAlignment = NSTextAlignmentCenter;
-            self.countLable.font = [UIFont fontWithName:@"Arial" size:20];
+            self.countLable.font = [UIFont fontWithName:@"Arial" size:22];
             self.countLable.textAlignment = NSTextAlignmentCenter;
             self.countLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.countLable];
             
-            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(30, 180, 50, 20)];
+            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(30, 180, 80, 30)];
             self.leftLable.textColor = [UIColor redColor];
-            self.leftLable.font = [UIFont fontWithName:@"Arial" size:16];
+            self.leftLable.font = [UIFont fontWithName:@"Arial" size:22];
             self.leftLable.textAlignment = NSTextAlignmentCenter;
             self.leftLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.leftLable];
             
-            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(250, 180, 50, 20)];
+            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(250, 180, 80, 30)];
             self.rightLable.textColor = [UIColor greenColor];
             self.rightLable.textAlignment = NSTextAlignmentRight;
-            self.rightLable.font = [UIFont fontWithName:@"Arial" size:16];
+            self.rightLable.font = [UIFont fontWithName:@"Arial" size:22];
             self.rightLable.textAlignment = NSTextAlignmentCenter;
             self.rightLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.rightLable];
             
         }else{
-            self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, 30)];
+            self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, 50)];
             [self.leftButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
             [self.leftButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:self.leftButton];
             
-            self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(220, 0, 100, 30)];
+            self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(220, 0, 100, 50)];
             [self.rightButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
             [self.rightButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:self.rightButton];
@@ -200,25 +200,30 @@
     ImageDataFile *dataFile = [cache getImages:[rowObject objectId]];
     self.oneImageView.image = [UIImage imageWithData:[dataFile file1]];
     self.twoImageView.image = [UIImage imageWithData:[dataFile file2]];
-    self.countLable.text=[NSString stringWithFormat:@"%d", [result count]];
+    self.countLable.text=[NSString stringWithFormat:@"投票数:%d", [result count]];
     return cell;
 }
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
-        return 200;
+        return 230;
     }else{
-        return 30;
+        return 50;
     }
 }
 
 -(void)buttonClicked:(UIButton *)button{
-    InformationViewController * informationVC = [[InformationViewController alloc]init];
-    informationVC.userName = button.titleLabel.text;
-    informationVC.isPush = YES;
-    [self.navigationController pushViewController:informationVC animated:YES];
-}
--(void)rightButtonClicked:(id)button{
-    NSLog(@"right");
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+       
+        
+    } completionBlock:^{
+        InformationViewController * informationVC = [[InformationViewController alloc]init];
+        informationVC.userName = button.titleLabel.text;
+        informationVC.isPush = YES;
+      [self.navigationController pushViewController:informationVC animated:YES];
+    }];
 
 }
 #pragma mark Segue

@@ -76,22 +76,22 @@
             imageView.image = [UIImage imageNamed:@"Placeholder.png"];
             [cell.contentView addSubview:imageView];
             
-            nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 30)];
+            nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 50)];
             nameLablel.textColor = [UIColor blackColor];
             nameLablel.textAlignment = NSTextAlignmentCenter;
             nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
             nameLablel.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:nameLablel];
         }else{
-            lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 30)];
+            lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 240, 50)];
             lable.textAlignment = NSTextAlignmentCenter;
-            lable.font = [UIFont fontWithName:@"Arial" size:16];
+            lable.font = [UIFont fontWithName:@"Arial" size:24];
             lable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:lable];
             
-            countLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 0, 80, 30)];
+            countLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 0, 80, 50)];
             countLable.textAlignment = NSTextAlignmentCenter;
-            countLable.font = [UIFont fontWithName:@"Arial" size:16];
+            countLable.font = [UIFont fontWithName:@"Arial" size:24];
             countLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:countLable];
             
@@ -131,7 +131,7 @@
     if (indexPath.row == 0) {
         return 100;
     }else{
-        return 30;
+        return 50;
     }
 }
 - (void)didReceiveMemoryWarning
