@@ -47,7 +47,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-        self.title = @"注册";
+    self.title = @"注册";
     self.genderArray = [[NSArray alloc]initWithObjects:@"--Select Gender--",@"Male",@"Female", nil];
     
     self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height) style:UITableViewStylePlain];
@@ -58,6 +58,17 @@
     self.myTableView.backgroundColor = [UIColor clearColor];
     self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
     
+    // 建立 UIDatePicker
+    datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, -(self.view.bounds.size.height), self.view.bounds.size.width, 100)];
+    datePicker.datePickerMode = UIDatePickerModeDate;
+    datelocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+    datePicker.locale = datelocale;
+    datePicker.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+    // 建立 UIToolbar
+    toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0,0, 320, 44)];
+     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(cancelPicker)];
+    toolBar.items = [NSArray arrayWithObject:right];
+
 }
 #pragma mark-------------tableView-------------------
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -104,13 +115,15 @@
         self.dateOfBirthText = [[UITextField alloc]initWithFrame:CGRectMake(20, 320, self.view.frame.size.width - 40, 40)];
         self.dateOfBirthText.placeholder = @"Date of birth";
         self.dateOfBirthText.borderStyle = UITextBorderStyleLine;
+        self.dateOfBirthText.inputView = datePicker;
+        self.dateOfBirthText.inputAccessoryView = toolBar;
         self.dateOfBirthText.delegate = self;
         [self.myTableView addSubview:self.dateOfBirthText];
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(20, 320, self.view.frame.size.width - 40, 40);
-        [button addTarget:self action:@selector(pickerAction) forControlEvents:UIControlEventTouchUpInside];
-        [self.myTableView addSubview:button];
+//        
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        button.frame = CGRectMake(20, 320, self.view.frame.size.width - 40, 40);
+//        [button addTarget:self action:@selector(pickerAction) forControlEvents:UIControlEventTouchUpInside];
+//        [self.myTableView addSubview:button];
         
         self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 380, self.view.frame.size.width - 40, 40)];
         self.genderText.placeholder = @"Gender";
@@ -133,12 +146,20 @@
     return cell;
     
 }
+//done
+-(void) cancelPicker {
+    if ([self.view endEditing:NO]) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        NSString *dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:datelocale];
+        [formatter setDateFormat:dateFormat];
+        [formatter setLocale:datelocale];
+        self.dateOfBirthText.text = [NSString stringWithFormat:@"%@",[formatter stringFromDate:datePicker.date]];
+    }
+}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _myTableView.bounds.size.height+100;//416
+    return _myTableView.bounds.size.height+150;//416
 }
-
-
 //registerButton
 -(void) registerClicked:(UIButton *)button {
     if ([self.passwordText.text isEqualToString:self.rePassword.text]) {
@@ -233,15 +254,6 @@
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-   
-    if ([textField isEqual: self.genderText]) {
-    
-        [self.view setFrame:CGRectMake(0, -100, self.view.frame.size.width, self.view.frame.size.height)];
-        
-    }else{
-        [self.view setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-
-    }
     
 }
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -261,7 +273,7 @@
 - (void)dateButton:(UIButton *)btn {
 	self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
-    UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 150)] ;
+    UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, 80)] ;
     pickerView.tag = 101;
     pickerView.delegate = self;
     pickerView.dataSource = self;

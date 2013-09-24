@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 @interface RegisterViewController : UIViewController<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>
-
+{
+    UIDatePicker *datePicker;
+    NSLocale *datelocale;
+    UIToolbar *toolBar;
+}
 @property (strong,nonatomic) UITextField *nameText;
 @property (strong,nonatomic) UITextField *passwordText;
 @property (strong,nonatomic) UITextField *rePassword;
