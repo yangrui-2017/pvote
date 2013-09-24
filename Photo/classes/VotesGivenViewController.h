@@ -1,17 +1,17 @@
 //
-//  MainViewController.h
+//  VotesGivenViewController.h
 //  Photo
 //
-//  Created by wangshuai on 13-9-12.
+//  Created by wangsh on 13-9-24.
 //  Copyright (c) 2013年 wangshuai. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "MainViewTableViewRfresh.h"
-
-@interface MainViewController : UIViewController <UITableViewDelegate,UITableViewDataSource, MainViewTableViewRfresh>
+#import "MainViewController.h"
+#import <arcstreamsdk/STreamObject.h>
+@interface VotesGivenViewController : UIViewController<UITableViewDelegate,UITableViewDataSource, MainViewTableViewRfresh>
 {
-   
+    
 }
 
 @property (retain,nonatomic) UITableView *myTableView ;
@@ -24,6 +24,5 @@
 @property (strong,nonatomic) UIButton *oneImageView;
 @property (strong,nonatomic) UIButton *twoImageView;
 @property (strong,nonatomic) UIButton *clickButton;
-@property (assign)BOOL isPush;
-@property (strong,nonatomic) NSString * userName;
+@property (retain,nonatomic) NSMutableArray *votesGivenArray;
 @end

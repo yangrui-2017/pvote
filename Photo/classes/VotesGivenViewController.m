@@ -1,12 +1,12 @@
 //
-//  MainViewController.m
+//  VotesGivenViewController.m
 //  Photo
 //
-//  Created by wangshuai on 13-9-12.
+//  Created by wangsh on 13-9-24.
 //  Copyright (c) 2013年 wangshuai. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import "VotesGivenViewController.h"
 #import <arcstreamsdk/STreamFile.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import <arcstreamsdk/STreamObject.h>
@@ -16,19 +16,18 @@
 #import "MBProgressHUD.h"
 #import "ImageCache.h"
 #import "ImageDownload.h"
-#import "YIFullScreenScroll.h"
-#import "LoginViewController.h"
 #import "VotesShowViewController.h"
-@interface MainViewController (){
-    STreamCategoryObject *votes;
-    NSMutableArray *votesArray;
-    YIFullScreenScroll* _fullScreenDelegate;
-    STreamQuery *st;
-}
 
+@interface VotesGivenViewController ()
+{
+    STreamCategoryObject *votes;
+//    NSMutableArray *votesArray;
+    STreamQuery *st;
+    NSMutableArray *array;
+}
 @end
 
-@implementation MainViewController
+@implementation VotesGivenViewController
 @synthesize myTableView = _myTableView;
 @synthesize name = _name;
 @synthesize message = _message;
@@ -38,8 +37,7 @@
 @synthesize vote1Lable = _vote1Lable;
 @synthesize vote2Lable = _vote2Lable;
 @synthesize clickButton;
-@synthesize isPush;
-@synthesize userName;
+@synthesize votesGivenArray;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -58,66 +56,47 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"主 页";
-    if (!isPush) {
-        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
-        leftItem.tintColor = [UIColor blackColor];
-        self.navigationItem.leftBarButtonItem = leftItem;
-    }    self.ImageArray = [[NSMutableArray alloc]init];
-    
+    self.ImageArray = [[NSMutableArray alloc]init];
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
-       
+    
     self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
     self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
     [self.view addSubview:self.myTableView];
-//    self.myTableView.backgroundColor=[UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+    //    self.myTableView.backgroundColor=[UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     
     [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
-
-//    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-//    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
-
-    
 }
--(void)selectLeftAction:(id)sender{
-    LoginViewController *loginVC  =[[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginVC animated:YES];
-}
-
 - (void)loadVotes{
-    if (isPush) {
-         st = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
-        [st whereEqualsTo:@"userName" forValue:userName];
-        votesArray = [st find];
-    }else{
-        votesArray = [votes load];
-        votesArray = [[NSMutableArray alloc] initWithArray:[[votesArray reverseObjectEnumerator]allObjects]];
-         st = [[STreamQuery alloc] initWithCategory:@"Voted"];
-    }
+//    votesArray = [votes load];
+//    votesArray = [[NSMutableArray alloc] initWithArray:[[votesArray reverseObjectEnumerator]allObjects]];
+    st = [[STreamQuery alloc] initWithCategory:@"Voted"];
     ImageCache *imageCache = [ImageCache sharedObject];
-   
-   
     [st setQueryLogicAnd:FALSE];
-    for (STreamObject *allVotes in votesArray){
+    for (STreamObject *allVotes in votesGivenArray){
         [st whereEqualsTo:[allVotes objectId] forValue:@"f1voted"];
         [st whereEqualsTo:[allVotes objectId] forValue:@"f2voted"];
     }
     NSMutableArray *results = [st find];
-    for (STreamObject *allVotes in votesArray){
+    for (STreamObject *allVotes in votesGivenArray){
         int f1 = 0;
         int f2 = 0;
         for (STreamObject *vote in results){
             NSString *voted = [vote getValue:[allVotes objectId]];
-            if (voted != nil && [voted isEqualToString:@"f1voted"])
-                f1++;
-            if (voted != nil && [voted isEqualToString:@"f2voted"])
-                f2++;
+            
+            if (voted != nil && [voted isEqualToString:@"f1voted"]){
+                 f1++;
+            }
+            
+            if (voted != nil && [voted isEqualToString:@"f2voted"]){
+                 f2++;
+            }
+            
         }
         int total = f1 + f2;
         int vote1count;
@@ -146,13 +125,13 @@
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [votesArray count];
-  
+    return [votesGivenArray count];
+    
 }
-     
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-      STreamObject *so = [votesArray objectAtIndex:indexPath.row];
+    STreamObject *so = [votesGivenArray objectAtIndex:indexPath.row];
     static NSString *cellName = @"cellName";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
@@ -199,7 +178,7 @@
         [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
         [self.twoImageView setTag:indexPath.row];
         [cell.contentView addSubview:self.twoImageView];
-    
+        
         clickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         clickButton.tag = indexPath.row;
         [clickButton setTitle:@"点击查看投票" forState:UIControlStateNormal];
@@ -210,28 +189,6 @@
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
     self.name.text = [so getValue:@"userName"];
-    /*float allcount = [[so getValue:@"file1vote"] floatValue]+[[so getValue:@"file2vote"] floatValue];
-    int vote1count;
-    int vote2count;
-    if (allcount) {
-        vote1count = ([[so getValue:@"file1vote"] floatValue]/allcount)*100;
-        vote2count = ([[so getValue:@"file2vote"] floatValue]/allcount)*100;
-    }else{
-        vote1count=0;
-        vote2count=0;
-    }
-    if (vote1count >= 50) {
-        self.vote1Lable.textColor = [UIColor greenColor];
-    }
-    if (vote2count >= 50) {
-        self.vote2Lable.textColor = [UIColor greenColor];
-    }
-    
-    
-
-    self.vote1Lable.text =[NSString stringWithFormat:@"%d%%",vote1count];
-    self.vote2Lable.text =[NSString stringWithFormat:@"%d%%",vote2count];*/
-
     ImageCache *imageCache = [ImageCache sharedObject];
     VoteResults *vo = [imageCache getResults:[so objectId]];
     if (vo){
@@ -256,7 +213,7 @@
 -(void)clickedButton:(UIButton *)sender
 {
     VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
-    [votesView setRowObject:[votesArray objectAtIndex:sender.tag]];
+    [votesView setRowObject:[votesGivenArray objectAtIndex:sender.tag]];
     [self.navigationController pushViewController:votesView animated:YES];
     
 }
@@ -266,7 +223,7 @@
     
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
-     ImageCache *imageCache = [ImageCache sharedObject];
+    ImageCache *imageCache = [ImageCache sharedObject];
     //download double image
     if ([imageCache getImages:[so objectId]] != nil){
         ImageDataFile *files = [imageCache getImages:[so objectId]];
@@ -283,7 +240,7 @@
 - (void)loadUserMetadataAndDownloadUserProfileImage{
     
     ImageCache *imageCache = [ImageCache sharedObject];
-
+    
     //load user metadata and profile image
     if ([imageCache getUserMetadata:self.name.text] != nil){
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:self.name.text];
@@ -305,7 +262,7 @@
             }
         }];
     }
-
+    
 }
 
 -(void)voteTheTopicLeft:(UIButton *)button{
@@ -317,7 +274,7 @@
     if ([vote count] > 0){
         
         STreamObject *so = [vote objectAtIndex:0];
-        STreamObject *sorow = [votesArray objectAtIndex:button.tag];
+        STreamObject *sorow = [votesGivenArray objectAtIndex:button.tag];
         NSString *votedKey = [so getValue:[sorow objectId]];
         
         if (votedKey == nil){
@@ -325,11 +282,11 @@
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
             [so updateInBackground];
-             sleep(3);
+            sleep(3);
             
             
         }else if([votedKey isEqualToString:@"f1voted"]){
-          
+            
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
             
@@ -366,7 +323,7 @@
     if ([vote count] > 0){
         
         STreamObject *so = [vote objectAtIndex:0];
-        STreamObject *sorow = [votesArray objectAtIndex:button.tag];
+        STreamObject *sorow = [votesGivenArray objectAtIndex:button.tag];
         NSString *votedKey = [so getValue:[sorow objectId]];
         
         if (votedKey == nil){
@@ -389,7 +346,7 @@
             [so updateInBackground];
             sleep(3);
         }
-
+        
     }
     [self clickedButton:button];
 }
@@ -412,41 +369,7 @@
 {
     return 300;
 }
-#pragma mark Segue
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // hide tabBar when pushed & show again when popped
-    self.hidesBottomBarWhenPushed = YES;
-    
-    double delayInSeconds = UINavigationControllerHideShowBarDuration;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        self.hidesBottomBarWhenPushed = NO;
-    });
-}
-
-#pragma mark UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScroll:scrollView];
-}
-
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
-{
-    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
