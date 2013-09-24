@@ -223,13 +223,13 @@
        self.imageView.image = image;
        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
       // imageData1 = UIImageJPEGRepresentation(image, 1);
-       imageData1 = UIImageJPEGRepresentation(sImage, 0.5);
+       imageData1 = UIImageJPEGRepresentation(sImage, 0.3);
     }
     else{
        self.imageView2.image = image;
        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
      //  imageData2 = UIImageJPEGRepresentation(image, 1);
-       imageData2 = UIImageJPEGRepresentation(sImage, 0.5);
+       imageData2 = UIImageJPEGRepresentation(sImage, 0.3);
 
     }
     
