@@ -79,8 +79,9 @@
     ImageCache *imageCache = [ImageCache sharedObject];
     [st setQueryLogicAnd:FALSE];
     for (STreamObject *allVotes in votesGivenArray){
-        [st whereEqualsTo:[allVotes objectId] forValue:@"f1voted"];
-        [st whereEqualsTo:[allVotes objectId] forValue:@"f2voted"];
+       // [st whereEqualsTo:[allVotes objectId] forValue:@"f1voted"];
+       // [st whereEqualsTo:[allVotes objectId] forValue:@"f2voted"];
+        [st whereKeyExists:[allVotes objectId]];
     }
     NSMutableArray *results = [st find];
     for (STreamObject *allVotes in votesGivenArray){
@@ -281,9 +282,7 @@
             
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
-            [so updateInBackground];
-            sleep(3);
-            
+            [so update];
             
         }else if([votedKey isEqualToString:@"f1voted"]){
             
@@ -295,8 +294,7 @@
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
-            [so updateInBackground];
-            sleep(3);
+            [so update];
             
         }
     }
@@ -329,8 +327,7 @@
         if (votedKey == nil){
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
-            [so updateInBackground];
-            sleep(3);
+            [so update];
         }
         
         else if([votedKey isEqualToString:@"f2voted"]){
@@ -343,8 +340,8 @@
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
-            [so updateInBackground];
-            sleep(3);
+            [so update];
+            
         }
         
     }

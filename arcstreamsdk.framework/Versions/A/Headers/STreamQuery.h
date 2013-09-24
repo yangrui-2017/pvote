@@ -42,6 +42,10 @@
  */
 - (void)whereEqualsTo: (NSString *)key forValue:(NSString *)value;
 
+- (void)whereKeyExists: (NSString *)key;
+
+- (void)whereMatches: (NSString *)key forValue:(NSString *)value;
+
 /*!
  Add a constraint to the query that requires a particular key's value and the values that are included in the provided values array
  @param key the key to check.

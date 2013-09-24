@@ -68,9 +68,14 @@
 -(void) updateStreamCategoryObjects: (NSMutableArray *)objects afterUpdate: (void(^)(BOOL succeed, NSString *objectId))doStaff;
 
 /*!
- Update a list of stream objects. The update call is done synchronously.
+ Update a list of stream objects. The update call is done asynchronously.
 */
--(void) updateStreamCategoryObjects: (NSMutableArray *)objects;
+-(void) updateStreamCategoryObjectsInBackground: (NSMutableArray *)objects;
+
+/*!
+ Update a list of stream objects. The update call is done synchronously.
+ */
+-(NSString *) updateStreamCategoryObjects: (NSMutableArray *)objects;
 
 /*!
  Delete a list of stream objects. The call returns immediately. The delete call is done asynchronously.

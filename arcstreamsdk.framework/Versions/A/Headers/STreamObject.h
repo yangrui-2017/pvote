@@ -56,6 +56,11 @@
 - (void)updateInBackground;
 
 /*!
+ Update current loaded stream object synchronously.
+ */
+- (NSString *)update;
+
+/*!
  Delete stream object in background. The object is permanently removed from storage.
  */
 - (void)deleteObjectInBackground;
