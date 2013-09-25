@@ -21,6 +21,9 @@
     STreamObject *so;
     NSMutableDictionary *userMetaData;
     int count;
+    BOOL isFollowing;
+    STreamObject *follower;
+    NSArray *allFollowKey;
 }
 @end
 
@@ -33,6 +36,8 @@
 @synthesize imageView;
 @synthesize userName;
 @synthesize isPush;
+@synthesize followerButton;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -56,7 +61,6 @@
     }else{
         [sq addLimitId:[cache getLoginUserName]];
     }
-    
     arrayCount = [sq find];
     if (arrayCount!= nil && [arrayCount count] == 1)
     so = [arrayCount objectAtIndex:0];
@@ -64,11 +68,17 @@
     myTableView.dataSource = self;
     myTableView.delegate = self;
     [self.view addSubview:myTableView];
-    
+    follower  = [[STreamObject alloc]init];
+    [follower setObjectId:[NSString stringWithFormat:@"%@Follower",[cache getLoginUserName]]];
+    [follower getObject:[NSString stringWithFormat:@"%@Follower",[cache getLoginUserName]] response:^(NSString * res){
+        allFollowKey = [follower getAllKeys];
+//        NSLog(@"key = %@",allFollowKey);
+    }];
+
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 5;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -84,10 +94,19 @@
             
             nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 50)];
             nameLablel.textColor = [UIColor blackColor];
+            
             nameLablel.textAlignment = NSTextAlignmentCenter;
             nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
             nameLablel.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:nameLablel];
+            followerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [followerButton setFrame:CGRectMake(210, 10, 120, 50)];
+            [followerButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
+            [followerButton addTarget:self action:@selector(followButton:) forControlEvents:UIControlEventTouchUpInside];
+            if (isPush && ![userName isEqualToString:[cache getLoginUserName]]) {
+                [cell.contentView addSubview:followerButton];
+            }else{
+            }
         }else{
             lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 240, 50)];
             lable.textAlignment = NSTextAlignmentCenter;
@@ -104,10 +123,16 @@
     }
     
     sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
+   
     if (isPush) {
         nameLablel.text = userName;
         userMetaData = [cache getUserMetadata:userName];
         [sq whereEqualsTo:@"userName" forValue:userName];
+        if ([allFollowKey containsObject:userName]) {
+            [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
+        }else{
+            [followerButton setTitle:@"关注" forState:UIControlStateNormal];
+        }
     }else{
         nameLablel.text = [cache getLoginUserName];
         userMetaData = [cache getUserMetadata:[cache getLoginUserName]];
@@ -117,7 +142,7 @@
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
     NSMutableArray * array = [sq find];
-    NSArray * dataArray =[[NSArray alloc]initWithObjects:@"上传数",@"投票数", nil];
+    NSArray * dataArray =[[NSArray alloc]initWithObjects:@"上传数",@"投票数",@"关注数",@"粉丝数",nil];
     if (indexPath.row ==1) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
         countLable.text =[NSString stringWithFormat:@"%d",[array count]];
@@ -131,6 +156,13 @@
             countLable.text = [NSString stringWithFormat:@"%d",[so size]];
         }
     }
+    if (indexPath.row ==3) {
+        lable.text = [dataArray objectAtIndex:indexPath.row-1];
+        countLable.text =[NSString stringWithFormat:@"%d",[allFollowKey count]];
+    }
+    if (indexPath.row ==4) {
+        lable.text = [dataArray objectAtIndex:indexPath.row-1];
+    }
     return cell;
 }
 -(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -141,10 +173,24 @@
         return 50;
     }
 }
+//follow
+-(void)followButton:(UIButton *)button
+{
+    if ([button.titleLabel.text isEqualToString:@"关注"]){
+        [follower addStaff:userName withObject:[cache getLoginUserName]];
+        [follower update];
+        [button setTitle:@"取消关注" forState:UIControlStateNormal];
+    }
+    if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
+        [follower removeKeyInBackground:userName forObjectId:[NSString stringWithFormat:@"%@Follower",[cache getLoginUserName]]];
+        [button setTitle:@"关注" forState:UIControlStateNormal];
+    }
+   
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 1) {
-        if (count!= 0) {
+        if (count!=0) {
             MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];

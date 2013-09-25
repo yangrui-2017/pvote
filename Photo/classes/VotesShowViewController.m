@@ -40,6 +40,7 @@
 @synthesize rowObject;
 @synthesize leftLable;
 @synthesize rightLable;
+@synthesize commentButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -139,31 +140,30 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.row == 0) {
-            self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(70, 0, 80, 30)];
+            self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 80, 40)];
             self.vote1Lable.textColor = [UIColor redColor];
-            self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:20];
-            self.vote1Lable.textAlignment = NSTextAlignmentRight;
+            self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:22];
             self.vote1Lable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.vote1Lable];
             
-            self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 30, 150, 150)];
+            self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 40, 150, 150)];
             [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
             [cell.contentView addSubview:self.oneImageView];
 
             
-            self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(175, 0, 80, 30)];
+            self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(230, 0, 80, 40)];
             self.vote2Lable.textColor = [UIColor greenColor];
-            self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:20];
+            self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:22];
             self.vote2Lable.textAlignment = NSTextAlignmentRight;
             self.vote2Lable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.vote2Lable];
             
-            self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 30, 150, 150)];
+            self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 40, 150, 150)];
             [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
             [cell.contentView addSubview:self.twoImageView];
             
             
-            self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(120, 180, 100, 50)];
+            self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(110, 0, 100, 40)];
             self.countLable.textColor = [UIColor blackColor];
             self.countLable.textAlignment = NSTextAlignmentCenter;
             self.countLable.font = [UIFont fontWithName:@"Arial" size:24];
@@ -171,19 +171,25 @@
             self.countLable.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:self.countLable];
             
-            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 180, 80, 40)];
-            self.leftLable.textColor = [UIColor redColor];
-            self.leftLable.font = [UIFont fontWithName:@"Arial" size:22];
-            self.leftLable.textAlignment = NSTextAlignmentLeft;
-            self.leftLable.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:self.leftLable];
-            
-            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 180, 80, 40)];
-            self.rightLable.textColor = [UIColor greenColor];
-            self.rightLable.textAlignment = NSTextAlignmentCenter;
-            self.rightLable.font = [UIFont fontWithName:@"Arial" size:22];
-            self.rightLable.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:self.rightLable];
+            self.commentButton = [[UIButton alloc]initWithFrame:CGRectMake(120, 190, 80,40)];
+            self.commentButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:24];
+            [self.commentButton setTitle:@"评 论" forState:UIControlStateNormal];
+            [self.commentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [self.commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:self.commentButton];
+//            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 180, 80, 40)];
+//            self.leftLable.textColor = [UIColor redColor];
+//            self.leftLable.font = [UIFont fontWithName:@"Arial" size:22];
+//            self.leftLable.textAlignment = NSTextAlignmentLeft;
+//            self.leftLable.backgroundColor = [UIColor whiteColor];
+//            [cell.contentView addSubview:self.leftLable];
+//            
+//            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 180, 80, 40)];
+//            self.rightLable.textColor = [UIColor greenColor];
+//            self.rightLable.textAlignment = NSTextAlignmentCenter;
+//            self.rightLable.font = [UIFont fontWithName:@"Arial" size:22];
+//            self.rightLable.backgroundColor = [UIColor whiteColor];
+//            [cell.contentView addSubview:self.rightLable];
             
         }else{
             self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 80,40)];
@@ -192,7 +198,7 @@
             [self.leftButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:self.leftButton];
             
-            self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(240, 0, 80,40)];
+            self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(245, 0, 80,40)];
             self.rightButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:22];
             [self.rightButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
             [self.rightButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -228,7 +234,11 @@
         return 40;
     }
 }
-
+//comment
+-(void)commentButtonClicked:(UIButton *)button{
+    NSLog(@"comment");
+}
+//
 -(void)buttonClicked:(UIButton *)button{
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";

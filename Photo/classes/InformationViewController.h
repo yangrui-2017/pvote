@@ -19,4 +19,5 @@
 @property (strong,nonatomic) UILabel *countLable;
 @property (copy,nonatomic) NSString *userName;
 @property (assign) BOOL isPush;
+@property (strong,nonatomic) UIButton * followerButton;
 @end

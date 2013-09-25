@@ -219,6 +219,18 @@
             NSMutableArray *allvoted = [[NSMutableArray alloc] init];
             [allvoted addObject:so];
             [scov updateStreamCategoryObjects:allvoted];
+            STreamObject *follower = [[STreamObject alloc]init];
+            STreamObject *following = [[STreamObject alloc]init];
+            [follower setObjectId:[NSString stringWithFormat:@"%@Follower",self.nameText.text]];
+            [following setObjectId:[NSString stringWithFormat:@"%@Following",self.nameText.text]];
+            [follower createNewObject:^(BOOL succeed, NSString *response){
+                if (!succeed)
+                    NSLog(@"res: %@", response);
+            }];
+            [following createNewObject:^(BOOL succeed, NSString *response){
+                if (!succeed)
+                    NSLog(@"res: %@", response);
+            }];
         }else{
         
         }

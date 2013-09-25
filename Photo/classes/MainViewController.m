@@ -19,6 +19,7 @@
 #import "YIFullScreenScroll.h"
 #import "LoginViewController.h"
 #import "VotesShowViewController.h"
+#import "InformationViewController.h"
 @interface MainViewController (){
     STreamCategoryObject *votes;
     NSMutableArray *votesArray;
@@ -163,6 +164,9 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 80, 80)];
         self.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+        self.imageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
+        [ self.imageView  addGestureRecognizer:singleTap];
         [cell.contentView addSubview:self.imageView];
         
         self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 5, 200, 30)];
@@ -408,6 +412,16 @@
 {
     return 300;
 }
+
+//head image clicked
+-(void) imageClicked:(id)sender {
+    InformationViewController *informationView = [[InformationViewController alloc]init];
+    informationView.userName = self.name.text;
+    informationView.isPush = YES;
+    [self.navigationController pushViewController:informationView animated:YES];
+}
+
+#pragma mark Full Screen
 #pragma mark Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
