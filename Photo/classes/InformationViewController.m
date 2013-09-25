@@ -171,6 +171,7 @@
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
         countLable.text =[NSString stringWithFormat:@"%d",[allFollowerKey count]];
     }
+    nameLablel.text = pageUserName;
     return cell;
 }
 -(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
