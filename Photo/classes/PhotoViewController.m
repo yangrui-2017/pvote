@@ -138,15 +138,18 @@
         NSLog(@"total: %f", percentage);
     }];
     
-    
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:HUD];
     HUD.labelText = @"提交中...";
-    [HUD showWhileExecuting:@selector(test) onTarget:self withObject:nil animated:YES];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self upload];
+    } completionBlock:^{
+        [APPDELEGATE showLoginSucceedView];
+    }];
     
 }
 
-- (void)test{
+- (void)upload{
     sleep(5);
     NSString *file1Id = [file1 fileId];
     NSString *file2Id = [file2 fileId];
@@ -174,7 +177,17 @@
     NSMutableArray *av = [[NSMutableArray alloc] init];
     [av addObject:vote];
     [scov updateStreamCategoryObjects:av];
-    [APPDELEGATE showLoginSucceedView];
+    
+    STreamObject *comments = [[STreamObject alloc] init];
+    [comments setObjectId:longValue];
+    [comments createNewObject:^(BOOL succeed, NSString *response){
+        
+    }];
+    /*NSMutableDictionary *newComment = [[NSMutableDictionary alloc] init];
+    [newComment setObject:@"" forKey:@"content"];
+    [comments addStaff:longValue withObject:newComment];
+    [comments update];*/
+    
 }
 
 -(void) imageClicked:(UIImageView *)View{
