@@ -224,7 +224,6 @@
         }
     }
     if (indexPath.row == 2) {
-        if ([countLable.text intValue]!=0) {
             MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];
@@ -232,11 +231,7 @@
             [HUD showAnimated:YES whileExecutingBlock:^{
               
                 STreamQuery *queryVotes = [[STreamQuery alloc]initWithCategory:@"Voted"];
-                if (isPush){
-                    [queryVotes addLimitId:userName];
-                }else{
-                    [queryVotes addLimitId:[cache getLoginUserName]];
-                }
+               [queryVotes addLimitId:pageUserName];
                 NSMutableArray *votesResult = [queryVotes find];
                 STreamObject *result = [votesResult objectAtIndex:0];
                 NSArray *keys = [result getAllKeys];
@@ -251,7 +246,7 @@
                 
                 [self.navigationController pushViewController:votesGiven animated:YES];
             }];
-        }
+        
     }
 }
 
