@@ -22,8 +22,14 @@
     NSMutableDictionary *userMetaData;
     int count;
     BOOL isFollowing;
+    STreamObject *following;
     STreamObject *follower;
-    NSArray *allFollowKey;
+    NSArray *allFollowingKey;
+    NSArray *allFollowerKey;
+    NSArray *followerKey;
+    NSString *pageUserName;
+    NSMutableArray *array;
+    NSArray *loggedInUserFollowing;
 }
 @end
 
@@ -53,28 +59,43 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
     cache = [ImageCache sharedObject];
-    sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
-    if (isPush) {
-        [sq addLimitId:userName];
-    }else{
-        [sq addLimitId:[cache getLoginUserName]];
-    }
-    arrayCount = [sq find];
-    if (arrayCount!= nil && [arrayCount count] == 1)
-    so = [arrayCount objectAtIndex:0];
-    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    if (userName != nil)
+        pageUserName = userName;
+    else
+        pageUserName = [cache getLoginUserName];
+	// Do any additional setup after loading the view.
+       myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     myTableView.dataSource = self;
     myTableView.delegate = self;
     [self.view addSubview:myTableView];
-    follower  = [[STreamObject alloc]init];
-    [follower setObjectId:[NSString stringWithFormat:@"%@Follower",[cache getLoginUserName]]];
-    [follower getObject:[NSString stringWithFormat:@"%@Follower",[cache getLoginUserName]] response:^(NSString * res){
-        allFollowKey = [follower getAllKeys];
-//        NSLog(@"key = %@",allFollowKey);
-    }];
+    
+    
+    sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
+    [sq addLimitId:pageUserName];
+    arrayCount = [sq find];
+    if (arrayCount!= nil && [arrayCount count] == 1)
+        so = [arrayCount objectAtIndex:0];
 
+    
+    follower = [[STreamObject alloc]init];
+    [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
+    allFollowerKey = [follower getAllKeys];
+    
+    following  = [[STreamObject alloc]init];
+    [following loadAll:[NSString stringWithFormat:@"%@Following",pageUserName]];
+    allFollowingKey = [following getAllKeys];
+
+    sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
+    [sq whereEqualsTo:@"userName" forValue:pageUserName];
+    array = [sq find];
+    
+    STreamObject *loggedInUserFollowingStream = [[STreamObject alloc] init];
+    [loggedInUserFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",[cache getLoginUserName]]];
+    loggedInUserFollowing = [loggedInUserFollowingStream getAllKeys];
+    
+    
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -122,26 +143,12 @@
         }
     }
     
-    sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
-   
-    if (isPush) {
-        nameLablel.text = userName;
-        userMetaData = [cache getUserMetadata:userName];
-        [sq whereEqualsTo:@"userName" forValue:userName];
-        if ([allFollowKey containsObject:userName]) {
-            [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
-        }else{
-            [followerButton setTitle:@"关注" forState:UIControlStateNormal];
-        }
+    if ([loggedInUserFollowing containsObject:pageUserName]) {
+        [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
     }else{
-        nameLablel.text = [cache getLoginUserName];
-        userMetaData = [cache getUserMetadata:[cache getLoginUserName]];
-        [sq whereEqualsTo:@"userName" forValue:[cache getLoginUserName]];
+        [followerButton setTitle:@"关注" forState:UIControlStateNormal];
     }
     
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-    imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
-    NSMutableArray * array = [sq find];
     NSArray * dataArray =[[NSArray alloc]initWithObjects:@"上传数",@"投票数",@"关注数",@"粉丝数",nil];
     if (indexPath.row ==1) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
@@ -158,10 +165,11 @@
     }
     if (indexPath.row ==3) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
-        countLable.text =[NSString stringWithFormat:@"%d",[allFollowKey count]];
+        countLable.text =[NSString stringWithFormat:@"%d",[allFollowingKey count]];
     }
     if (indexPath.row ==4) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
+        countLable.text =[NSString stringWithFormat:@"%d",[allFollowerKey count]];
     }
     return cell;
 }
@@ -177,12 +185,23 @@
 -(void)followButton:(UIButton *)button
 {
     if ([button.titleLabel.text isEqualToString:@"关注"]){
-        [follower addStaff:userName withObject:[cache getLoginUserName]];
-        [follower update];
-        [button setTitle:@"取消关注" forState:UIControlStateNormal];
+            STreamObject *loggedInUser = [[STreamObject alloc] init];
+            [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+            [loggedInUser addStaff:pageUserName withObject:@""];
+            [loggedInUser update];
+        
+            [follower addStaff:[cache getLoginUserName] withObject:@""];
+            [follower update];
+        
+            [button setTitle:@"取消关注" forState:UIControlStateNormal];
     }
+   
+    
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-        [follower removeKeyInBackground:userName forObjectId:[NSString stringWithFormat:@"%@Follower",[cache getLoginUserName]]];
+        STreamObject *loggedInUser = [[STreamObject alloc] init];
+        [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+        
+        [following removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower", pageUserName]];
         [button setTitle:@"关注" forState:UIControlStateNormal];
     }
    

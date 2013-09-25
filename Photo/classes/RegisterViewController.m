@@ -213,7 +213,7 @@
     
         NSString *error = [user errorMessage];
         if ([error isEqualToString:@""]){
-            STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"voted"];
+            STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"Voted"];
             STreamObject *so = [[STreamObject alloc] init];
             [so setObjectId:self.nameText.text];
             NSMutableArray *allvoted = [[NSMutableArray alloc] init];

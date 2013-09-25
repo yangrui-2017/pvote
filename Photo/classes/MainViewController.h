@@ -16,7 +16,7 @@
 
 @property (retain,nonatomic) UITableView *myTableView ;
 @property (retain,nonatomic) NSMutableArray *ImageArray;
-@property (strong ,nonatomic) UIImageView *imageView;
+@property (strong ,nonatomic) UIButton *imageView;
 @property (strong,nonatomic) UITextField *name;
 @property (strong,nonatomic) UILabel *message;
 @property (strong,nonatomic) UILabel *vote1Lable;

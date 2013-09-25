@@ -14,7 +14,7 @@
 #import "MainViewController.h"
 #import "MBProgressHUD.h"
 #import "InformationViewController.h"
-
+#import "CommentsViewController.h"
 @interface VotesShowViewController (){
     NSMutableArray *result;
     NSMutableArray *leftVoters;
@@ -24,6 +24,7 @@
     int vote1count;
     int vote2count;
     YIFullScreenScroll *_fullScreenDelegate;
+    UIView *cellView;
 }
 
 @end
@@ -38,8 +39,6 @@
 @synthesize oneImageView;
 @synthesize twoImageView;
 @synthesize rowObject;
-@synthesize leftLable;
-@synthesize rightLable;
 @synthesize commentButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -140,15 +139,16 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.row == 0) {
+            cellView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 190)];
             self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 80, 40)];
             self.vote1Lable.textColor = [UIColor redColor];
             self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:22];
             self.vote1Lable.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:self.vote1Lable];
+            [cellView addSubview:self.vote1Lable];
             
             self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 40, 150, 150)];
             [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
-            [cell.contentView addSubview:self.oneImageView];
+            [cellView addSubview:self.oneImageView];
 
             
             self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(230, 0, 80, 40)];
@@ -156,11 +156,11 @@
             self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:22];
             self.vote2Lable.textAlignment = NSTextAlignmentRight;
             self.vote2Lable.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:self.vote2Lable];
+            [cellView addSubview:self.vote2Lable];
             
             self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 40, 150, 150)];
             [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
-            [cell.contentView addSubview:self.twoImageView];
+            [cellView addSubview:self.twoImageView];
             
             
             self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(110, 0, 100, 40)];
@@ -169,28 +169,15 @@
             self.countLable.font = [UIFont fontWithName:@"Arial" size:24];
             self.countLable.textAlignment = NSTextAlignmentCenter;
             self.countLable.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:self.countLable];
+            [cellView addSubview:self.countLable];
             
             self.commentButton = [[UIButton alloc]initWithFrame:CGRectMake(120, 190, 80,40)];
             self.commentButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:24];
             [self.commentButton setTitle:@"评 论" forState:UIControlStateNormal];
             [self.commentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [self.commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:self.commentButton];
-//            self.leftLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 180, 80, 40)];
-//            self.leftLable.textColor = [UIColor redColor];
-//            self.leftLable.font = [UIFont fontWithName:@"Arial" size:22];
-//            self.leftLable.textAlignment = NSTextAlignmentLeft;
-//            self.leftLable.backgroundColor = [UIColor whiteColor];
-//            [cell.contentView addSubview:self.leftLable];
-//            
-//            self.rightLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 180, 80, 40)];
-//            self.rightLable.textColor = [UIColor greenColor];
-//            self.rightLable.textAlignment = NSTextAlignmentCenter;
-//            self.rightLable.font = [UIFont fontWithName:@"Arial" size:22];
-//            self.rightLable.backgroundColor = [UIColor whiteColor];
-//            [cell.contentView addSubview:self.rightLable];
-            
+            [cell addSubview:self.commentButton];
+            [cell.contentView addSubview:cellView];
         }else{
             self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 80,40)];
             self.leftButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:22];
@@ -209,8 +196,6 @@
     
     self.vote1Lable.text=[NSString stringWithFormat:@"%d%%",vote1count];
     self.vote2Lable.text=[NSString stringWithFormat:@"%d%%",vote2count];
-    self.leftLable.text=[NSString stringWithFormat:@"%d%%",vote1count];
-    self.rightLable.text=[NSString stringWithFormat:@"%d%%",vote2count];;
 
     if (indexPath.row != 0) {
     
@@ -236,6 +221,9 @@
 }
 //comment
 -(void)commentButtonClicked:(UIButton *)button{
+    CommentsViewController * commentsView = [[CommentsViewController alloc] init];
+    commentsView.cellView = cellView;
+    [self.navigationController pushViewController:commentsView animated:YES];
     NSLog(@"comment");
 }
 //

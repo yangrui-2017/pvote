@@ -162,11 +162,11 @@
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
-        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 80, 80)];
-        self.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
-        self.imageView.userInteractionEnabled = YES;
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
-        [ self.imageView  addGestureRecognizer:singleTap];
+        self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.imageView setFrame:CGRectMake(5, 5, 80, 80)];
+        [self.imageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+        [self.imageView setTag:indexPath.row];
+        [self.imageView addTarget:self action:@selector(imageClicked:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:self.imageView];
         
         self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 5, 200, 30)];
@@ -298,7 +298,7 @@
             [imageDownload downloadFile:pImageId];
             [imageDownload setMainRefesh:self];
         }else{
-            self.imageView.image = [UIImage imageWithData:[imageCache getImage:pImageId]];
+            [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]] forState:UIControlStateNormal];
         }
     }else{
         STreamUser *user = [[STreamUser alloc] init];
@@ -414,9 +414,10 @@
 }
 
 //head image clicked
--(void) imageClicked:(id)sender {
+-(void) imageClicked:(UIButton *)sender {
+    STreamObject *so = [votesArray objectAtIndex:sender.tag];
     InformationViewController *informationView = [[InformationViewController alloc]init];
-    informationView.userName = self.name.text;
+    informationView.userName = [so getValue:@""];
     informationView.isPush = YES;
     [self.navigationController pushViewController:informationView animated:YES];
 }
