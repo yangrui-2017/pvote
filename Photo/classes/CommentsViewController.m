@@ -55,11 +55,6 @@
     myTableView.tag =TABLEVIEWTAG;
     myTableView.separatorStyle=YES;//UITableView每个cell之间的默认分割线隐藏掉sel
     [self.view addSubview:myTableView];
-
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"读取中...";
-    [self.view addSubview:HUD];
-    [HUD showWhileExecuting:@selector(loadComments) onTarget:self withObject:nil animated:YES];
     
     UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
     toolBar.backgroundColor= [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
@@ -86,6 +81,17 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
+
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    //[HUD showWhileExecuting:@selector(loadComments) onTarget:self withObject:nil animated:YES];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadComments];
+    }completionBlock:^{
+        [myTableView reloadData];
+    }];
+   
 }
 - (void)loadComments{
     STreamObject *test = [[STreamObject alloc] init];
@@ -105,12 +111,8 @@
                 [userNameArray addObject:dicKey];
             }
             NSLog(@"dicKey%@",dicKey);
-            
         }
-
     }
-       [myTableView reloadData];
-    
 }
 
 //创建cell上控件
@@ -229,7 +231,8 @@
     }
     return YES;
 }
--(void)senderClicker{
+
+- (void)addComments{
     
     ImageCache *cache = [ImageCache sharedObject];
     NSDate *now = [[NSDate alloc] init];
@@ -241,10 +244,22 @@
     [dic setObject:contentsView.text forKey:[cache getLoginUserName]];
     [comment addStaff:longValue withObject:dic];
     [comment update];
-    contentsView.text = @"";
-    [contentsView resignFirstResponder];
+    
 }
 
+-(void)senderClicker{
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self addComments];
+    } completionBlock:^{
+        contentsView.text = @"";
+        [contentsView resignFirstResponder];
+    }];
+    
+}
 
 -(void) autoMovekeyBoard: (float) h{
     
