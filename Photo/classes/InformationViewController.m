@@ -11,7 +11,6 @@
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
 #import "MainViewController.h"
-#import "VotesGivenViewController.h"
 #import "MBProgressHUD.h"
 @interface InformationViewController ()
 {
@@ -282,9 +281,8 @@
             MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];
-              VotesGivenViewController *votesGiven = [[VotesGivenViewController alloc]init];
+            MainViewController * mainVC = [[MainViewController alloc]init];
             [HUD showAnimated:YES whileExecutingBlock:^{
-              
                 STreamQuery *queryVotes = [[STreamQuery alloc]initWithCategory:@"Voted"];
                [queryVotes addLimitId:pageUserName];
                 NSMutableArray *votesResult = [queryVotes find];
@@ -295,11 +293,11 @@
                     [sqq addLimitId:key];
                 }
                 NSMutableArray *resultVotes = [sqq find];
-                [votesGiven setVotesGivenArray:resultVotes];
-                
+                [mainVC setVotesArray:resultVotes];
+                mainVC.isPush = YES;
+                mainVC.isPushFromVotesGiven = YES;
             } completionBlock:^{
-                
-                [self.navigationController pushViewController:votesGiven animated:YES];
+                [self.navigationController pushViewController:mainVC animated:YES];
             }];
         
     }

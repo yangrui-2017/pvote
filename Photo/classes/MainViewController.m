@@ -23,8 +23,7 @@
 #import "CommentsViewController.h"
 
 @interface MainViewController (){
-    STreamCategoryObject *votes;
-    NSMutableArray *votesArray;
+    STreamCategoryObject *votes;   
     YIFullScreenScroll* _fullScreenDelegate;
     STreamQuery *st;
 }
@@ -37,13 +36,15 @@
 @synthesize message = _message;
 @synthesize oneImageView =_oneImageView;
 @synthesize twoImageView =_twoImageView;
-@synthesize ImageArray = _ImageArray;
 @synthesize vote1Lable = _vote1Lable;
 @synthesize vote2Lable = _vote2Lable;
 @synthesize clickButton;
 @synthesize commentButton;
 @synthesize isPush;
 @synthesize userName;
+@synthesize votesArray;
+@synthesize isPushFromVotesGiven;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -67,7 +68,7 @@
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
         leftItem.tintColor = [UIColor blackColor];
         self.navigationItem.leftBarButtonItem = leftItem;
-    }    self.ImageArray = [[NSMutableArray alloc]init];
+    } 
     
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
        
@@ -81,9 +82,13 @@
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadVotes];
+    }completionBlock:^{
+        [self.myTableView reloadData];
+    }];
     
-    [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
-
+ 
 //    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
 //    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
 
@@ -98,9 +103,11 @@
 
 - (void)loadVotes{
     if (isPush) {
-         st = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
-        [st whereEqualsTo:@"userName" forValue:userName];
-        votesArray = [st find];
+        if (!isPushFromVotesGiven){
+            st = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
+            [st whereEqualsTo:@"userName" forValue:userName];
+            votesArray = [st find];
+        }
     }else{
         votesArray = [votes load];
         votesArray = [[NSMutableArray alloc] initWithArray:[[votesArray reverseObjectEnumerator]allObjects]];
@@ -111,8 +118,6 @@
    
     [st setQueryLogicAnd:FALSE];
     for (STreamObject *allVotes in votesArray){
-        //[st whereEqualsTo:[allVotes objectId] forValue:@"f1voted"];
-        //[st whereEqualsTo:[allVotes objectId] forValue:@"f2voted"];
         [st whereKeyExists:[allVotes objectId]];
     }
     NSMutableArray *results = [st find];
@@ -144,10 +149,7 @@
             vote1count=0;
             vote2count=0;
         }
-        
     }
-    
-    [self.myTableView reloadData];
 }
 //创建cell上控件
 -(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
@@ -181,7 +183,7 @@
     
     self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.oneImageView setFrame:CGRectMake(5, 110, 150, 150)];
-    [self.oneImageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
+    [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.oneImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.oneImageView];
@@ -195,7 +197,7 @@
     
     self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.twoImageView setFrame:CGRectMake(165, 110, 150, 150)];
-    [self.twoImageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
+    [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.twoImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.twoImageView];

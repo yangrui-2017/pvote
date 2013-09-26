@@ -51,7 +51,6 @@
 		0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB14017EEC9AC00949081 /* VotesShowViewController.m */; };
 		0EE23C4117F3E66C00F56F37 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE23C4017F3E66C00F56F37 /* CommentsViewController.m */; };
 		0EE23C4517F4198400F56F37 /* headImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EE23C4417F4198400F56F37 /* headImage.jpg */; };
-		0EE6679E17F1398C00B94FD9 /* VotesGivenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE6679D17F1398C00B94FD9 /* VotesGivenViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,8 +131,6 @@
 		0EE23C3F17F3E66C00F56F37 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentsViewController.h; path = classes/CommentsViewController.h; sourceTree = "<group>"; };
 		0EE23C4017F3E66C00F56F37 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentsViewController.m; path = classes/CommentsViewController.m; sourceTree = "<group>"; };
 		0EE23C4417F4198400F56F37 /* headImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = headImage.jpg; sourceTree = "<group>"; };
-		0EE6679C17F1398C00B94FD9 /* VotesGivenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VotesGivenViewController.h; path = classes/VotesGivenViewController.h; sourceTree = "<group>"; };
-		0EE6679D17F1398C00B94FD9 /* VotesGivenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VotesGivenViewController.m; path = classes/VotesGivenViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,8 +265,6 @@
 				0EDFB14017EEC9AC00949081 /* VotesShowViewController.m */,
 				0EE23C3F17F3E66C00F56F37 /* CommentsViewController.h */,
 				0EE23C4017F3E66C00F56F37 /* CommentsViewController.m */,
-				0EE6679C17F1398C00B94FD9 /* VotesGivenViewController.h */,
-				0EE6679D17F1398C00B94FD9 /* VotesGivenViewController.m */,
 				033F4F9717E229170081DF34 /* sqlService.h */,
 				033F4F9817E229170081DF34 /* sqlService.m */,
 				03A33F3917E7308A004459C5 /* ImageDataFile.h */,
@@ -443,7 +438,6 @@
 				033F4F9917E229170081DF34 /* sqlService.m in Sources */,
 				03A33F3B17E7308A004459C5 /* ImageDataFile.m in Sources */,
 				03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */,
-				0EE6679E17F1398C00B94FD9 /* VotesGivenViewController.m in Sources */,
 				03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */,
 				03C78E8C17E84C830091D094 /* FireViewController.m in Sources */,
 				0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */,

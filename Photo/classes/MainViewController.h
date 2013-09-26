@@ -15,7 +15,7 @@
 }
 
 @property (retain,nonatomic) UITableView *myTableView ;
-@property (retain,nonatomic) NSMutableArray *ImageArray;
+
 @property (strong ,nonatomic) UIButton *imageView;
 @property (strong,nonatomic) UITextField *name;
 @property (strong,nonatomic) UITextView *message;
@@ -25,6 +25,8 @@
 @property (strong,nonatomic) UIButton *twoImageView;
 @property (strong,nonatomic) UIButton *clickButton;
 @property (strong,nonatomic) UIButton *commentButton;
+@property (strong,nonatomic) NSMutableArray *votesArray;
 @property (assign)BOOL isPush;
+@property (assign)BOOL isPushFromVotesGiven;
 @property (strong,nonatomic) NSString * userName;
 @end
