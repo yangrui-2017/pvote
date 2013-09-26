@@ -71,9 +71,9 @@
     self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
-    self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
+    self.myTableView.separatorStyle=YES;//UITableView每个cell之间的默认分割线隐藏掉sel
+    self.myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
     [self.view addSubview:self.myTableView];
-//    self.myTableView.backgroundColor=[UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
@@ -86,6 +86,8 @@
 
     
 }
+
+
 -(void)selectLeftAction:(id)sender{
     LoginViewController *loginVC  =[[LoginViewController alloc]init];
     [self.navigationController pushViewController:loginVC animated:YES];
@@ -162,6 +164,15 @@
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
+        
+        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+        backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+        cell.backgroundView = backgrdView;
+        
+//        UIImageView *imageview=[[UIImageView alloc] initWithImage:[UIImage  imageNamed:@"one.jpg"]];
+//        imageview.frame=cell.frame;
+//        cell.backgroundView=imageview;
+        
         self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.imageView setFrame:CGRectMake(5, 5, 80, 80)];
         [self.imageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
