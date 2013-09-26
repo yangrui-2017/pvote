@@ -218,10 +218,11 @@
     
     STreamObject *loggedInUser = [[STreamObject alloc] init];
     [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-    [following removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower", pageUserName]];
+    [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower", pageUserName]];
     //for table view update
     [loggedInUserFollowing removeObject:pageUserName];
     allFollowingKey = [following getAllKeys];
+    allFollowerKey = [follower getAllKeys];
     
 }
 

@@ -155,7 +155,7 @@
     
     self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.imageView setFrame:CGRectMake(5, 10, 80, 80)];
-    [self.imageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+    [self.imageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.imageView setTag:indexPath.row];
     [self.imageView addTarget:self action:@selector(headImageClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:self.imageView];
@@ -177,7 +177,7 @@
     
     self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.oneImageView setFrame:CGRectMake(5, 110, 150, 150)];
-    [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+    [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.oneImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.oneImageView];
@@ -191,7 +191,7 @@
     
     self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.twoImageView setFrame:CGRectMake(165, 110, 150, 150)];
-    [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+    [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.twoImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.twoImageView];
@@ -243,28 +243,7 @@
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
     self.name.text = [so getValue:@"userName"];
-    /*float allcount = [[so getValue:@"file1vote"] floatValue]+[[so getValue:@"file2vote"] floatValue];
-    int vote1count;
-    int vote2count;
-    if (allcount) {
-        vote1count = ([[so getValue:@"file1vote"] floatValue]/allcount)*100;
-        vote2count = ([[so getValue:@"file2vote"] floatValue]/allcount)*100;
-    }else{
-        vote1count=0;
-        vote2count=0;
-    }
-    if (vote1count >= 50) {
-        self.vote1Lable.textColor = [UIColor greenColor];
-    }
-    if (vote2count >= 50) {
-        self.vote2Lable.textColor = [UIColor greenColor];
-    }
-    
-    
-
-    self.vote1Lable.text =[NSString stringWithFormat:@"%d%%",vote1count];
-    self.vote2Lable.text =[NSString stringWithFormat:@"%d%%",vote2count];*/
-
+   
     ImageCache *imageCache = [ImageCache sharedObject];
     VoteResults *vo = [imageCache getResults:[so objectId]];
     if (vo){
