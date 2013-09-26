@@ -21,6 +21,5 @@
 @property (strong,nonatomic) UIButton *leftButton;
 @property (strong,nonatomic) UIButton *rightButton;
 @property (strong,nonatomic) STreamObject *rowObject;
-@property (strong,nonatomic) UIButton *commentButton;
 
 @end

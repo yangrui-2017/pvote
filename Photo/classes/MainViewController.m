@@ -20,6 +20,8 @@
 #import "LoginViewController.h"
 #import "VotesShowViewController.h"
 #import "InformationViewController.h"
+#import "CommentsViewController.h"
+
 @interface MainViewController (){
     STreamCategoryObject *votes;
     NSMutableArray *votesArray;
@@ -39,6 +41,7 @@
 @synthesize vote1Lable = _vote1Lable;
 @synthesize vote2Lable = _vote2Lable;
 @synthesize clickButton;
+@synthesize commentButton;
 @synthesize isPush;
 @synthesize userName;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -146,14 +149,75 @@
     
     [self.myTableView reloadData];
 }
+//创建cell上控件
+-(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
+{
+    
+    self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.imageView setFrame:CGRectMake(5, 10, 80, 80)];
+    [self.imageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+    [self.imageView setTag:indexPath.row];
+    [self.imageView addTarget:self action:@selector(headImageClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:self.imageView];
+    
+    self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 10, 200, 30)];
+    self.name.enabled = NO;
+    [cell.contentView addSubview:self.name];
+    
+    self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 45, 200, 30)];
+    self.message .backgroundColor = [UIColor clearColor];
+    [cell.contentView addSubview:self.message];
+    
+    self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 90, 40, 20)];
+    self.vote1Lable.textColor = [UIColor redColor];
+    self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
+    self.vote1Lable.textAlignment = NSTextAlignmentCenter;
+    self.vote1Lable.backgroundColor = [UIColor whiteColor];
+    [cell.contentView addSubview:self.vote1Lable];
+    
+    self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.oneImageView setFrame:CGRectMake(5, 110, 150, 150)];
+    [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+    [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
+    [self.oneImageView setTag:indexPath.row];
+    [cell.contentView addSubview:self.oneImageView];
+    
+    self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 90, 40, 20)];
+    self.vote2Lable.textColor = [UIColor redColor];
+    self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
+    self.vote2Lable.textAlignment = NSTextAlignmentCenter;
+    self.vote2Lable.backgroundColor = [UIColor whiteColor];
+    [cell.contentView addSubview:self.vote2Lable];
+    
+    self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.twoImageView setFrame:CGRectMake(165, 110, 150, 150)];
+    [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+    [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
+    [self.twoImageView setTag:indexPath.row];
+    [cell.contentView addSubview:self.twoImageView];
+    
+    clickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    clickButton.tag = indexPath.row;
+    [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
+    [clickButton setFrame:CGRectMake(220, 260, 100, 50)];
+    [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:clickButton];
+    
+    commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    commentButton.tag = indexPath.row;
+    [commentButton setTitle:@"评论" forState:UIControlStateNormal];
+    [commentButton setFrame:CGRectMake(10, 260, 100, 50)];
+    [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:commentButton];
 
+}
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [votesArray count];
   
 }
-     
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
       STreamObject *so = [votesArray objectAtIndex:indexPath.row];
@@ -173,55 +237,8 @@
 //        imageview.frame=cell.frame;
 //        cell.backgroundView=imageview;
         
-        self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.imageView setFrame:CGRectMake(5, 5, 80, 80)];
-        [self.imageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
-        [self.imageView setTag:indexPath.row];
-        [self.imageView addTarget:self action:@selector(imageClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.contentView addSubview:self.imageView];
+        [self createUIControls:cell withCellRowAtIndextPath:indexPath];
         
-        self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 5, 200, 30)];
-        self.name.enabled = NO;
-        [cell.contentView addSubview:self.name];
-        
-        self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 30)];
-        self.message .backgroundColor = [UIColor clearColor];
-        [cell.contentView addSubview:self.message];
-        
-        self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 80, 40, 20)];
-        self.vote1Lable.textColor = [UIColor redColor];
-        self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
-        self.vote1Lable.textAlignment = NSTextAlignmentCenter;
-        self.vote1Lable.backgroundColor = [UIColor whiteColor];
-        [cell.contentView addSubview:self.vote1Lable];
-        
-        self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.oneImageView setFrame:CGRectMake(5, 100, 150, 150)];
-        [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
-        [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
-        [self.oneImageView setTag:indexPath.row];
-        [cell.contentView addSubview:self.oneImageView];
-        
-        self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 80, 40, 20)];
-        self.vote2Lable.textColor = [UIColor redColor];
-        self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
-        self.vote2Lable.textAlignment = NSTextAlignmentCenter;
-        self.vote2Lable.backgroundColor = [UIColor whiteColor];
-        [cell.contentView addSubview:self.vote2Lable];
-        
-        self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.twoImageView setFrame:CGRectMake(165, 100, 150, 150)];
-        [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
-        [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
-        [self.twoImageView setTag:indexPath.row];
-        [cell.contentView addSubview:self.twoImageView];
-    
-        clickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        clickButton.tag = indexPath.row;
-        [clickButton setTitle:@"点击查看投票" forState:UIControlStateNormal];
-        [clickButton setFrame:CGRectMake(110, 250, 100, 20)];
-        [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.contentView addSubview:clickButton];
     }
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
@@ -269,6 +286,7 @@
     
     return cell;
 }
+//查看投票
 -(void)clickedButton:(UIButton *)sender
 {
     VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
@@ -276,7 +294,13 @@
     [self.navigationController pushViewController:votesView animated:YES];
     
 }
-
+//comments button
+-(void)commentButtonClicked:(UIButton *)button
+{
+    CommentsViewController *commentsView = [[CommentsViewController alloc]init];
+    [commentsView setRowObject:[votesArray objectAtIndex:button.tag]];
+    [self.navigationController pushViewController:commentsView animated:YES];
+}
 
 - (void)downloadDoubleImage: (STreamObject *)so{
     
@@ -421,14 +445,14 @@
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 300;
+    return 330;
 }
 
 //head image clicked
--(void) imageClicked:(UIButton *)sender {
+-(void) headImageClicked:(UIButton *)sender {
     STreamObject *so = [votesArray objectAtIndex:sender.tag];
     InformationViewController *informationView = [[InformationViewController alloc]init];
-    informationView.userName = [so getValue:@""];
+    informationView.userName = [so getValue:@"userName"];
     informationView.isPush = YES;
     [self.navigationController pushViewController:informationView animated:YES];
 }

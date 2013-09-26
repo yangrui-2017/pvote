@@ -24,6 +24,7 @@
 @property (strong,nonatomic) UIButton *oneImageView;
 @property (strong,nonatomic) UIButton *twoImageView;
 @property (strong,nonatomic) UIButton *clickButton;
+@property (strong,nonatomic) UIButton *commentButton;
 @property (assign)BOOL isPush;
 @property (strong,nonatomic) NSString * userName;
 @end
