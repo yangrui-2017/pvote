@@ -154,8 +154,8 @@
 {
     
     self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.imageView setFrame:CGRectMake(5, 10, 80, 80)];
-    [self.imageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
+    [self.imageView setFrame:CGRectMake(5, 10, 60, 60)];
+    [self.imageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
     [self.imageView setTag:indexPath.row];
     [self.imageView addTarget:self action:@selector(headImageClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:self.imageView];
@@ -164,7 +164,11 @@
     self.name.enabled = NO;
     [cell.contentView addSubview:self.name];
     
-    self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 45, 200, 30)];
+    self.message = [[UITextView alloc]initWithFrame:CGRectMake(90, 40, 200, 40)];
+    self.message.font =[UIFont systemFontOfSize:15.0f];
+    [self.message setEditable:NO];
+    self.message.showsVerticalScrollIndicator= YES;
+    self.message.delegate = self;
     self.message .backgroundColor = [UIColor clearColor];
     [cell.contentView addSubview:self.message];
     
@@ -177,7 +181,7 @@
     
     self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.oneImageView setFrame:CGRectMake(5, 110, 150, 150)];
-    [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
+    [self.oneImageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
     [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.oneImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.oneImageView];
@@ -191,7 +195,7 @@
     
     self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.twoImageView setFrame:CGRectMake(165, 110, 150, 150)];
-    [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
+    [self.twoImageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
     [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.twoImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.twoImageView];
@@ -199,13 +203,17 @@
     clickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     clickButton.tag = indexPath.row;
     [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
+    [clickButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    clickButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
     [clickButton setFrame:CGRectMake(220, 260, 100, 50)];
     [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:clickButton];
     
-    commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
     commentButton.tag = indexPath.row;
     [commentButton setTitle:@"评论" forState:UIControlStateNormal];
+    [commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    commentButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
     [commentButton setFrame:CGRectMake(10, 260, 100, 50)];
     [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:commentButton];
@@ -278,6 +286,7 @@
 {
     CommentsViewController *commentsView = [[CommentsViewController alloc]init];
     [commentsView setRowObject:[votesArray objectAtIndex:button.tag]];
+    commentsView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:commentsView animated:YES];
 }
 

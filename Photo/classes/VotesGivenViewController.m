@@ -141,7 +141,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 80, 80)];
-        self.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+        self.imageView.image = [UIImage imageNamed:@"headImage.jpg"];
         [cell.contentView addSubview:self.imageView];
         
         self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 5, 200, 30)];
@@ -161,7 +161,7 @@
         
         self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.oneImageView setFrame:CGRectMake(5, 100, 150, 150)];
-        [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+        [self.oneImageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
         [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
         [self.oneImageView setTag:indexPath.row];
         [cell.contentView addSubview:self.oneImageView];
@@ -175,7 +175,7 @@
         
         self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.twoImageView setFrame:CGRectMake(165, 100, 150, 150)];
-        [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] forState:UIControlStateNormal];
+        [self.twoImageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
         [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
         [self.twoImageView setTag:indexPath.row];
         [cell.contentView addSubview:self.twoImageView];

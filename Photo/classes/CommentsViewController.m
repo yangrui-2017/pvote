@@ -116,18 +116,17 @@
     if (indexPath.row == 0) {
         
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 30, 150, 150)];
-        [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
+        [self.oneImageView setImage:[UIImage imageNamed:@"headImage.jpg"] ];
         [cell addSubview:self.oneImageView];
         
         self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 30, 150, 150)];
-        [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
+        [self.twoImageView setImage:[UIImage imageNamed:@"headImage.jpg"] ];
         [cell addSubview:self.twoImageView];
         
     }else{
         
-        headImageView =  [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
-        headImageView.backgroundColor = [UIColor clearColor];
-        [headImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
+        headImageView =  [[UIImageView alloc]initWithFrame:CGRectMake(0, 10, 40, 40)];
+        [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [cell addSubview:headImageView];
         
         nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 30)];
@@ -166,9 +165,13 @@
     if (indexPath.row !=0) {
         nameLable.text = [userNameArray objectAtIndex:indexPath.row-1];
         contentView.text = [contentsArray objectAtIndex:indexPath.row-1];
-        NSMutableDictionary *userMetaData = [cache getUserMetadata:[cache getUserMetadata:[userNameArray objectAtIndex:indexPath.row-1]]];
+        NSMutableDictionary *userMetaData = [cache getUserMetadata:[userNameArray objectAtIndex:indexPath.row-1]];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        headImageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
+        if ([cache getImage:pImageId]){
+            headImageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
+        }else{
+            [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+        }
     }
     return cell;
 }
@@ -192,25 +195,6 @@
     return YES;
 }
 -(void)senderClicker{
-    
-    /*STreamObject *test = [[STreamObject alloc] init];
-    [test setObjectId:[rowObject objectId]];
-    [test loadAll:[rowObject objectId]];
-    NSArray *keys = [test getAllKeys];
-    
-    for (NSString *key in keys){
-        
-        NSMutableDictionary *comme = [test getValue:key];
-        NSEnumerator *con = [comme keyEnumerator];
-        NSString *dicKey = [con nextObject];
-        if (dicKey){
-            NSString *value  = [comme objectForKey:dicKey];
-            NSLog(@"%@", value);
-        }
-        NSLog(@"");
-        
-    }*/
-    
     
     ImageCache *cache = [ImageCache sharedObject];
     NSDate *now = [[NSDate alloc] init];

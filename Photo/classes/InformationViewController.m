@@ -124,7 +124,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         if (indexPath.row ==0) {
             imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 80, 80)];
-            imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+            imageView.image = [UIImage imageNamed:@"headImage.jpg"];
             [cell.contentView addSubview:imageView];
             
             nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 50)];
@@ -156,7 +156,14 @@
             [cell.contentView addSubview:countLable];
         }
     }
-    
+    userMetaData = [cache getUserMetadata:pageUserName];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    if ([cache getImage:pImageId]){
+        imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
+    }else{
+        [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+    }
+
     if ([loggedInUserFollowing containsObject:pageUserName]) {
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
     }else{

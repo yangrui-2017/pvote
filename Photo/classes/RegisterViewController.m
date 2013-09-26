@@ -8,7 +8,6 @@
 
 #import "RegisterViewController.h"
 #import "MBProgressHUD.h"
-#import "PickerAlertView.h"
 #import <arcstreamsdk/STreamUser.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import <arcstreamsdk/STreamFile.h>
@@ -119,11 +118,6 @@
         self.dateOfBirthText.inputAccessoryView = toolBar;
         self.dateOfBirthText.delegate = self;
         [self.myTableView addSubview:self.dateOfBirthText];
-//        
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        button.frame = CGRectMake(20, 320, self.view.frame.size.width - 40, 40);
-//        [button addTarget:self action:@selector(pickerAction) forControlEvents:UIControlEventTouchUpInside];
-//        [self.myTableView addSubview:button];
         
         self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 380, self.view.frame.size.width - 40, 40)];
         self.genderText.placeholder = @"Gender";
@@ -277,10 +271,7 @@
     [alertview dismissWithClickedButtonIndex:0 animated:YES];
 
 }
-- (void)pickerAction {
-	PickerAlertView *pickerAlertView = [[PickerAlertView alloc] initWithTitle:@" " message:@" " delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-	[pickerAlertView show];
-}
+
 //----pick actionsheet
 - (void)dateButton:(UIButton *)btn {
 	self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
@@ -311,27 +302,18 @@
 
 
 #pragma mark UIAlertViewDelegate
-- (void)alertView:(PickerAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-	
-    if (isAddImage) {
-        if (buttonIndex == 1)
-        {
-            [self addPhoto];
-        }
-        else if(buttonIndex == 2)
-        {
-            [self takePhoto];
-        }
-        isAddImage = NO;
-
-    }else{
-        NSString *dateFromData = [NSString stringWithFormat:@"%@",alertView.datePickerView.date];
-        NSString *date = [dateFromData substringWithRange:NSMakeRange(0, 10)];
-        self.dateOfBirthText.text = date;
-        NSLog(@"date %@...%@",date,alertView.datePickerView.date);
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [self addPhoto];
     }
-    
+    else if(buttonIndex == 2)
+    {
+        [self takePhoto];
+    }
+    isAddImage = NO;
+
 }
 
 //image

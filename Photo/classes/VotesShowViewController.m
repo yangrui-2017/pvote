@@ -57,14 +57,6 @@
     leftImageId = [rowObject getValue:@"file1"];
     rightImageId = [rowObject getValue:@"file2"];
     
-    /*float allcount = [[rowObject getValue:@"file1vote"] floatValue]+[[rowObject getValue:@"file2vote"] floatValue];
-    if (allcount) {
-        vote1count = ([[rowObject getValue:@"file1vote"] floatValue]/allcount)*100;
-        vote2count = ([[rowObject getValue:@"file2vote"] floatValue]/allcount)*100;
-     }else{
-         vote1count=0;
-         vote2count=0;
-     }*/
     leftVoters = [[NSMutableArray alloc] init];
     rightVoters = [[NSMutableArray alloc] init];
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -129,7 +121,7 @@
         [cellView addSubview:self.vote1Lable];
         
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 40, 150, 150)];
-        [self.oneImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
+        [self.oneImageView setImage:[UIImage imageNamed:@"headImage.jpg"] ];
         [cellView addSubview:self.oneImageView];
         
         
@@ -141,7 +133,7 @@
         [cellView addSubview:self.vote2Lable];
         
         self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 40, 150, 150)];
-        [self.twoImageView setImage:[UIImage imageNamed:@"Placeholder.png"] ];
+        [self.twoImageView setImage:[UIImage imageNamed:@"headImage.jpg"] ];
         [cellView addSubview:self.twoImageView];
         
         
