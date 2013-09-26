@@ -29,7 +29,8 @@
     NSArray *followerKey;
     NSString *pageUserName;
     NSMutableArray *array;
-    NSArray *loggedInUserFollowing;
+    NSMutableArray *loggedInUserFollowing;
+
 }
 @end
 
@@ -106,7 +107,7 @@
     
     STreamObject *loggedInUserFollowingStream = [[STreamObject alloc] init];
     [loggedInUserFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",[cache getLoginUserName]]];
-    loggedInUserFollowing = [loggedInUserFollowingStream getAllKeys];
+    loggedInUserFollowing = [NSMutableArray arrayWithArray:[loggedInUserFollowingStream getAllKeys]];
 
 }
 
@@ -195,28 +196,61 @@
         return 50;
     }
 }
-//follow
+
+- (void)followAction{
+ 
+    STreamObject *loggedInUser = [[STreamObject alloc] init];
+    [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    [loggedInUser addStaff:pageUserName withObject:@""];
+    [loggedInUser update];
+    
+    [follower addStaff:[cache getLoginUserName] withObject:@""];
+    [follower update];
+    
+    
+    //for table view update
+    allFollowerKey = [follower getAllKeys];
+    [loggedInUserFollowing addObject:pageUserName];
+
+}
+
+- (void)unFollowAction{
+    
+    STreamObject *loggedInUser = [[STreamObject alloc] init];
+    [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    [following removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower", pageUserName]];
+    //for table view update
+    [loggedInUserFollowing removeObject:pageUserName];
+    allFollowingKey = [following getAllKeys];
+    
+}
+
+//follow/unfollow
 -(void)followButton:(UIButton *)button
 {
     if ([button.titleLabel.text isEqualToString:@"关注"]){
-            STreamObject *loggedInUser = [[STreamObject alloc] init];
-            [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-            [loggedInUser addStaff:pageUserName withObject:@""];
-            [loggedInUser update];
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"读取中...";
+            [self.view addSubview:HUD];
         
-            [follower addStaff:[cache getLoginUserName] withObject:@""];
-            [follower update];
-        
-            [button setTitle:@"取消关注" forState:UIControlStateNormal];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                [self followAction];
+            }completionBlock:^{
+               [self.myTableView reloadData];
+            }];
+        return;
     }
    
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-        STreamObject *loggedInUser = [[STreamObject alloc] init];
-        [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-        
-        [following removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower", pageUserName]];
-        [button setTitle:@"关注" forState:UIControlStateNormal];
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"读取中...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self unFollowAction];
+        }completionBlock:^{
+            [self.myTableView reloadData];
+        }];
     }
    
 }

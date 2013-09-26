@@ -42,6 +42,7 @@
 		03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8E17E84CC70091D094 /* InformationViewController.m */; };
 		03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E9117E84D120091D094 /* UserInformationViewController.m */; };
 		03C78E9417E851770091D094 /* public_titlebac.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9317E851770091D094 /* public_titlebac.png */; };
+		03CEA0F217F44D1800D36DAC /* ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CEA0F117F44D1800D36DAC /* ph.png */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
 		0EBB400217F0A6E2007E789E /* VoteResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBB400117F0A6E2007E789E /* VoteResults.m */; };
@@ -115,6 +116,7 @@
 		03C78E9017E84D120091D094 /* UserInformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInformationViewController.h; path = classes/UserInformationViewController.h; sourceTree = "<group>"; };
 		03C78E9117E84D120091D094 /* UserInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInformationViewController.m; path = classes/UserInformationViewController.m; sourceTree = "<group>"; };
 		03C78E9317E851770091D094 /* public_titlebac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = public_titlebac.png; sourceTree = "<group>"; };
+		03CEA0F117F44D1800D36DAC /* ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ph.png; sourceTree = "<group>"; };
 		03F7D12917E6FA6500FBCE96 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageCache.h; path = classes/ImageCache.h; sourceTree = "<group>"; };
 		03F7D12A17E6FA6500FBCE96 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageCache.m; path = classes/ImageCache.m; sourceTree = "<group>"; };
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 		03C49B1D17E11B8600AE7E3B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				03CEA0F117F44D1800D36DAC /* ph.png */,
 				0EDFB13D17EEBB4A00949081 /* Placeholder.png */,
 				03C78E9317E851770091D094 /* public_titlebac.png */,
 				03C49B1E17E11B8600AE7E3B /* 1.jpg */,
@@ -392,6 +395,7 @@
 				03C49B2217E11B8600AE7E3B /* one.jpg in Resources */,
 				03C49B2317E11B8600AE7E3B /* two.jpg in Resources */,
 				03C78E9417E851770091D094 /* public_titlebac.png in Resources */,
+				03CEA0F217F44D1800D36DAC /* ph.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
