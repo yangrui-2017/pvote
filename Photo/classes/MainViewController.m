@@ -202,7 +202,7 @@
     [self.twoImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.twoImageView];
     
-    clickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    clickButton = [UIButton buttonWithType:UIButtonTypeCustom];
     clickButton.tag = indexPath.row;
     [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
     [clickButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];

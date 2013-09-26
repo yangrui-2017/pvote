@@ -101,7 +101,8 @@
         _message = [[UITextView alloc]initWithFrame:CGRectMake(20, 160, 280, 100)];
         _message.font = [UIFont systemFontOfSize:20];
         _message.backgroundColor = [UIColor grayColor];
-        _message.alpha = 0.4;
+        _message.text = @"请输入此刻想法40字之内";
+        _message.textColor = [UIColor lightGrayColor];
         _message.delegate = self;
         [cell addSubview:_message];
     }
@@ -114,12 +115,32 @@
 //UITextView
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    
+    if (textView.text.length>40)
+    {
+        UIAlertView * alert=[[UIAlertView alloc] initWithTitle:@"提示" message:@"您已输入140个字" delegate:nil cancelButtonTitle:@"返回" otherButtonTitles: nil];
+        [alert show];
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+
     if ([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
         return NO;
+    }else{
+        return YES;
     }
+}
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    _message.text=@"";
+    _message.textColor = [UIColor blackColor];
     return YES;
 }
+
 -(void) selectLeftAction:(UIBarButtonItem *)item {
 //    LoginViewController *loginView = [[LoginViewController alloc]init];
     [self.navigationController popToRootViewControllerAnimated:YES];
