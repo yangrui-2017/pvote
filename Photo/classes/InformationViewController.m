@@ -71,13 +71,26 @@
     myTableView.delegate = self;
     [self.view addSubview:myTableView];
     
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
     
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadDetails];
+     }completionBlock:^{
+        [self.myTableView reloadData];
+     }];
+
+}
+
+- (void)loadDetails{
+   
     sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
     [sq addLimitId:pageUserName];
     arrayCount = [sq find];
     if (arrayCount!= nil && [arrayCount count] == 1)
         so = [arrayCount objectAtIndex:0];
-
+    
     
     follower = [[STreamObject alloc]init];
     [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
@@ -86,7 +99,7 @@
     following  = [[STreamObject alloc]init];
     [following loadAll:[NSString stringWithFormat:@"%@Following",pageUserName]];
     allFollowingKey = [following getAllKeys];
-
+    
     sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
     [sq whereEqualsTo:@"userName" forValue:pageUserName];
     array = [sq find];
@@ -94,9 +107,9 @@
     STreamObject *loggedInUserFollowingStream = [[STreamObject alloc] init];
     [loggedInUserFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",[cache getLoginUserName]]];
     loggedInUserFollowing = [loggedInUserFollowingStream getAllKeys];
-    
-    
+
 }
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 5;
