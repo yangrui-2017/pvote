@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <arcstreamsdk/STreamObject.h>
 
-@interface CommentsViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
+@interface CommentsViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextViewDelegate>
 {
     UITableView *myTableView;
 }
 
 @property (strong,nonatomic) UIImageView *oneImageView;
 @property (strong,nonatomic) UIImageView *twoImageView;
+@property (strong,nonatomic) UIImageView *headImageView;
+@property (strong,nonatomic) UITextView *contentView;
+@property (strong,nonatomic) UILabel *nameLable;
 @property (strong,nonatomic) STreamObject *rowObject;
 @end

@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface PhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 {
     
 }
 @property (strong ,nonatomic) UIImageView * imageView2;
 @property (strong ,nonatomic) UIImageView * imageView;
 @property (strong ,nonatomic) UIImagePickerController *imagePicker;
-@property (strong ,nonatomic) UITextField *message;
+@property (strong ,nonatomic) UITextView *message;
 @property (strong ,nonatomic) UITableView *myTableView;
 @end

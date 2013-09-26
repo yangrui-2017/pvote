@@ -98,9 +98,10 @@
         
         
         
-        _message = [[UITextField alloc]initWithFrame:CGRectMake(20, 160, 280, 100)];
-        _message.borderStyle =UITextBorderStyleLine;
+        _message = [[UITextView alloc]initWithFrame:CGRectMake(20, 160, 280, 100)];
+        _message.font = [UIFont systemFontOfSize:20];
         _message.backgroundColor = [UIColor grayColor];
+        _message.alpha = 0.4;
         _message.delegate = self;
         [cell addSubview:_message];
     }
@@ -110,9 +111,13 @@
 {
     return _myTableView.bounds.size.height;//416
 }
-//UITextFied
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self.message resignFirstResponder];
+//UITextView
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
     return YES;
 }
 -(void) selectLeftAction:(UIBarButtonItem *)item {
