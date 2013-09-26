@@ -92,27 +92,31 @@
     [test setObjectId:[rowObject objectId]];
     [test loadAll:[rowObject objectId]];
     allKeys = [test getAllKeys];
-    for (NSString *key in allKeys){
-        
-        NSMutableDictionary *comme = [test getValue:key];
-        NSEnumerator *con = [comme keyEnumerator];
-        NSString *dicKey = [con nextObject];
-        if (dicKey){
-          NSString *contents  = [comme objectForKey:dicKey];
-            NSLog(@"%@", contents);
-            [contentsArray addObject:contents];
-            [userNameArray addObject:dicKey];
+    if ([allKeys count]!=0 ) {
+        for (NSString *key in allKeys){
+            
+            NSMutableDictionary *comme = [test getValue:key];
+            NSEnumerator *con = [comme keyEnumerator];
+            NSString *dicKey = [con nextObject];
+            if (dicKey){
+                NSString *contents  = [comme objectForKey:dicKey];
+                NSLog(@"%@", contents);
+                [contentsArray addObject:contents];
+                [userNameArray addObject:dicKey];
+            }
+            NSLog(@"dicKey%@",dicKey);
+            
         }
-        NSLog(@"dicKey%@",dicKey);
-        
+
     }
-    [myTableView reloadData];
+       [myTableView reloadData];
     
 }
 
 //创建cell上控件
 -(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
 {
+    
     if (indexPath.row == 0) {
         
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 30, 150, 150)];
@@ -124,7 +128,7 @@
         [cell addSubview:self.twoImageView];
         
     }else{
-        
+        [self getCellHeight:indexPath.row];
         headImageView =  [[UIImageView alloc]initWithFrame:CGRectMake(0, 10, 40, 40)];
         [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [cell addSubview:headImageView];
@@ -132,8 +136,9 @@
         nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 30)];
         [cell addSubview:nameLable];
         
-        contentView =[[UITextView alloc]initWithFrame:CGRectMake(60, 30, 260, 30)];
+        contentView =[[UITextView alloc]initWithFrame:CGRectMake(60, 30, 260, [self getCellHeight:indexPath.row])];
         contentView.delegate = self;
+        contentView.font = [UIFont systemFontOfSize:15];
         contentView.backgroundColor = [UIColor clearColor];
         [cell addSubview:contentView];
        
@@ -175,11 +180,41 @@
     }
     return cell;
 }
+-(CGFloat)getCellHeight:(NSInteger)row
+{
+    // 列寬
+    CGFloat contentWidth =self.view.frame.size.width-85;
+    CGFloat height = 0.0;
+    // 设置字体
+    UIFont *font = [UIFont systemFontOfSize:15];
+    
+    if (contentsArray.count != 0) {
+      
+        // 显示的内容
+        NSString *content = [contentsArray objectAtIndex:row-1];
+        
+        // 计算出显示完內容需要的最小尺寸
+        CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 3000)];
+        
+        
+        if (size.height<30) {
+            height = 60;
+        }else
+        {
+            height = size.height+60;//40
+        }
+    }
+    
+    // 返回需要的高度
+    return height;
+    
+}
+
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
         return 200;
     }else{
-        return 60;
+        return  [self getCellHeight:indexPath.row];
     }
 }
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView{
