@@ -125,7 +125,7 @@
         self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 80, 40)];
         self.vote1Lable.textColor = [UIColor redColor];
         self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:22];
-        self.vote1Lable.backgroundColor = [UIColor whiteColor];
+        self.vote1Lable.backgroundColor = [UIColor clearColor];
         [cellView addSubview:self.vote1Lable];
         
         self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 40, 150, 150)];
@@ -137,7 +137,7 @@
         self.vote2Lable.textColor = [UIColor greenColor];
         self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:22];
         self.vote2Lable.textAlignment = NSTextAlignmentRight;
-        self.vote2Lable.backgroundColor = [UIColor whiteColor];
+        self.vote2Lable.backgroundColor = [UIColor clearColor];
         [cellView addSubview:self.vote2Lable];
         
         self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 40, 150, 150)];
@@ -150,7 +150,7 @@
         self.countLable.textAlignment = NSTextAlignmentCenter;
         self.countLable.font = [UIFont fontWithName:@"Arial" size:24];
         self.countLable.textAlignment = NSTextAlignmentCenter;
-        self.countLable.backgroundColor = [UIColor whiteColor];
+        self.countLable.backgroundColor = [UIColor clearColor];
         [cellView addSubview:self.countLable];
         [cell addSubview:cellView];
         

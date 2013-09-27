@@ -246,6 +246,9 @@
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 390,cell.frame.size.width , 10)];
+        view.backgroundColor = [UIColor whiteColor];
+        [cell.backgroundView addSubview:view];
         
 //        UIImageView *imageview=[[UIImageView alloc] initWithImage:[UIImage  imageNamed:@"one.jpg"]];
 //        imageview.frame=cell.frame;

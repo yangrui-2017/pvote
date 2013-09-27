@@ -91,14 +91,14 @@
         cell.backgroundView = backgrdView;
         
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 10, 130, 130)];
-        self.imageView .backgroundColor = [UIColor grayColor];
+        self.imageView .backgroundColor = [UIColor lightGrayColor];
         self.imageView .userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
         [ self.imageView  addGestureRecognizer:singleTap];
         [cell addSubview: self.imageView ];
         
         self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(170, 10, 130, 130)];
-        self.imageView2 .backgroundColor = [UIColor grayColor];
+        self.imageView2 .backgroundColor = [UIColor lightGrayColor];
         self.imageView2 .userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
         [ self.imageView2  addGestureRecognizer:singleTap2];

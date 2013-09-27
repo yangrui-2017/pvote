@@ -11,7 +11,7 @@
 #import <arcstreamsdk/STreamUser.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import <arcstreamsdk/STreamFile.h>
-
+#import "LoginViewController.h"
 
 @interface RegisterViewController ()
 {
@@ -82,7 +82,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * cellName =@"CellID";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
+    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell==nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         
@@ -93,31 +93,31 @@
         cell.backgroundView = backgrdView;
         
         self.imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-100)/2, 20, 100, 100)];
-        self.imageview.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.3];
         self.imageview.userInteractionEnabled = YES;
+        self.imageview.backgroundColor = [UIColor lightGrayColor];
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked)];
         [ self.imageview  addGestureRecognizer:singleTap];
-        [self.myTableView addSubview:self.imageview];
+        [cell.contentView addSubview:self.imageview];
         
         self.nameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 140, self.view.frame.size.width - 40, 40)];
         self.nameText.placeholder = @"E-mail Name";
         self.nameText.borderStyle = UITextBorderStyleLine;
         self.nameText.delegate = self;
-        [self.myTableView addSubview:self.nameText];
+        [cell.contentView addSubview:self.nameText];
         
         self.passwordText = [[UITextField alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width - 40,40)];
         self.passwordText.placeholder = @"Password";
         self.passwordText.borderStyle =UITextBorderStyleLine;
         self.passwordText.delegate = self;
         [self.passwordText setSecureTextEntry:YES];//
-        [self.myTableView addSubview:self.passwordText];
+        [cell.contentView addSubview:self.passwordText];
         
         self.rePassword = [[UITextField alloc]initWithFrame:CGRectMake(20, 260, self.view.frame.size.width - 40, 40)];
         self.rePassword.placeholder = @"Re_type Password";
         self.rePassword.borderStyle = UITextBorderStyleLine;
         [self.rePassword setSecureTextEntry:YES];
         self.rePassword.delegate = self;
-        [self.myTableView addSubview:self.rePassword];
+        [cell.contentView addSubview:self.rePassword];
         
         self.dateOfBirthText = [[UITextField alloc]initWithFrame:CGRectMake(20, 320, self.view.frame.size.width - 40, 40)];
         self.dateOfBirthText.placeholder = @"Date of birth";
@@ -125,24 +125,24 @@
         self.dateOfBirthText.inputView = datePicker;
         self.dateOfBirthText.inputAccessoryView = toolBar;
         self.dateOfBirthText.delegate = self;
-        [self.myTableView addSubview:self.dateOfBirthText];
+        [cell.contentView addSubview:self.dateOfBirthText];
         
         self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 380, self.view.frame.size.width - 40, 40)];
         self.genderText.placeholder = @"Gender";
         self.genderText.borderStyle = UITextBorderStyleLine;
         self.genderText.delegate = self;
-        [self.myTableView addSubview:self.genderText];
+        [cell.contentView addSubview:self.genderText];
         
         UIButton *dateButton = [UIButton buttonWithType:UIButtonTypeCustom];
         dateButton.frame = CGRectMake(20, 380, self.view.frame.size.width - 40, 40);
         [dateButton addTarget:self action:@selector(dateButton:) forControlEvents:UIControlEventTouchUpInside];
-        [self.myTableView addSubview:dateButton];
+        [cell.contentView addSubview:dateButton];
         
         self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [self.registerButton setFrame:CGRectMake(20, 440, self.view.frame.size.width - 40, 40)];
         [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
         [self.registerButton addTarget:self action:@selector(registerClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self.myTableView addSubview:self.registerButton];
+        [cell.contentView addSubview:self.registerButton];
     }
     
     return cell;
@@ -239,7 +239,9 @@
         NSLog(@"%@", error);
         
     }
-    
+    LoginViewController *loginView = [[LoginViewController alloc]init];
+    [self.navigationController pushViewController:loginView animated:YES];
+
 }
 //* UIPickerView
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -312,15 +314,18 @@
 #pragma mark UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1)
-    {
-        [self addPhoto];
+    if (isAddImage) {
+        if (buttonIndex == 1)
+        {
+            [self addPhoto];
+        }
+        else if(buttonIndex == 2)
+        {
+            [self takePhoto];
+        }
+
     }
-    else if(buttonIndex == 2)
-    {
-        [self takePhoto];
-    }
-    isAddImage = NO;
+        isAddImage = NO;
 
 }
 
@@ -328,6 +333,7 @@
 -(void) imageClicked{
     isAddImage = YES;
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄", nil];
+    alert.delegate = self;
     [alert show];
     
 }

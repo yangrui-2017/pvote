@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <arcstreamsdk/STreamObject.h>
 
-@interface CommentsViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextViewDelegate,UITextFieldDelegate>
+@interface CommentsViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate>
 {
     UITableView *myTableView;
 }

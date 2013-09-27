@@ -76,6 +76,8 @@
     contentsText.layer.borderColor = [UIColor grayColor].CGColor;
     contentsText.layer.borderWidth =1.0;
     contentsText.layer.cornerRadius =5.0;
+    contentsText.text = @"请输入您的评论";
+    contentsText.textColor = [UIColor lightGrayColor];
     UIBarButtonItem * contentsItem = [[UIBarButtonItem alloc] initWithCustomView:contentsText];
     
     UIButton * senderButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -157,11 +159,13 @@
         [cell addSubview:headImageView];
         
         nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 30)];
+        nameLable.textColor = [UIColor blueColor];
         nameLable.backgroundColor = [UIColor clearColor];
         [cell addSubview:nameLable];
         
-        contentView =[[UITextView alloc]initWithFrame:CGRectMake(60, 30, 260, [self getCellHeight:indexPath.row])];
+        contentView =[[UITextView alloc]initWithFrame:CGRectMake(50, 30, 260, [self getCellHeight:indexPath.row])];
         contentView.delegate = self;
+        contentView.textAlignment = NSTextAlignmentLeft;
         contentView.font = [UIFont systemFontOfSize:15];
         contentView.backgroundColor = [UIColor clearColor];
         [cell addSubview:contentView];
@@ -241,6 +245,13 @@
         return  [self getCellHeight:indexPath.row];
     }
 }
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    contentsText.text=@"";
+    contentsText.textColor = [UIColor blackColor];
+    return YES;
+}
+
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView{
     
     return YES;
@@ -291,7 +302,12 @@
     
     
     UIToolbar *toolbar = (UIToolbar *)[self.view viewWithTag:TOOLBARTAG];
-	toolbar.frame = CGRectMake(0.0f, (float)(480.0-h-40.0), 320.0f, 40.0f);
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
+        toolbar.frame = CGRectMake(0.0f, (float)(480.0-h-105.0), 320.0f, 40.0f);
+    }else{
+        toolbar.frame = CGRectMake(0.0f, (float)(480.0-h-40.0), 320.0f, 40.0f);
+    }
 //	UITableView *tableView = (UITableView *)[self.view viewWithTag:TABLEVIEWTAG];
 //	tableView.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-40.0));
 }
