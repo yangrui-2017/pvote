@@ -12,6 +12,8 @@
 #import <arcstreamsdk/STreamObject.h>
 #import "MainViewController.h"
 #import "MBProgressHUD.h"
+#import "FollowingViewController.h"
+#import "FollowerViewController.h"
 @interface InformationViewController ()
 {
     ImageCache *cache;
@@ -29,7 +31,9 @@
     NSString *pageUserName;
     NSMutableArray *array;
     NSMutableArray *loggedInUserFollowing;
-
+    NSString *pImageId;
+    int threeCount;
+    int fourCount;
 }
 @end
 
@@ -176,7 +180,7 @@
     }
     
     userMetaData = [cache getUserMetadata:pageUserName];
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    pImageId = [userMetaData objectForKey:@"profileImageId"];
     if ([cache getImage:pImageId]){
         imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
     }else{
@@ -206,10 +210,12 @@
     if (indexPath.row ==3) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
         countLable.text =[NSString stringWithFormat:@"%d",[allFollowingKey count]];
+        threeCount = [countLable.text intValue];
     }
     if (indexPath.row ==4) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
         countLable.text =[NSString stringWithFormat:@"%d",[allFollowerKey count]];
+        fourCount = [countLable.text intValue];
     }
     nameLablel.text = pageUserName;
     return cell;
@@ -321,6 +327,35 @@
             }];
         
     }
+    //following
+    if (indexPath.row == 3) {
+        if (threeCount) {
+            FollowingViewController *followingView = [[FollowingViewController alloc]init];
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"读取中...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+
+            } completionBlock:^{
+                [self.navigationController pushViewController:followingView animated:YES];
+             }];
+        }
+    }
+    //follower
+    if (indexPath.row == 4) {
+        if (fourCount) {
+            FollowerViewController *followerView = [[FollowerViewController alloc]init];
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"读取中...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                [followerView setFollowerArray:allFollowerKey];
+            } completionBlock:^{
+                [self.navigationController pushViewController:followerView animated:YES];
+            }];
+        }
+    }
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -328,5 +363,4 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end

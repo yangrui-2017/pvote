@@ -117,10 +117,7 @@
 -(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
-        backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
-        cell.backgroundView = backgrdView;
-        
+    
         cellView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 190)];
         self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 80, 40)];
         self.vote1Lable.textColor = [UIColor redColor];
@@ -183,7 +180,9 @@
     if (cell==nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+        backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+        cell.backgroundView = backgrdView;
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
     

@@ -45,6 +45,8 @@
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
 		0EBB400217F0A6E2007E789E /* VoteResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBB400117F0A6E2007E789E /* VoteResults.m */; };
+		0ED0E89E17F53CA000B4B636 /* FollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */; };
+		0ED0E8A117F55B9A00B4B636 /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */; };
 		0EDFB13617EEB8C500949081 /* YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13517EEB8C500949081 /* YIFullScreenScroll.m */; };
 		0EDFB13C17EEB95B00949081 /* UIView+YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13B17EEB95B00949081 /* UIView+YIFullScreenScroll.m */; };
 		0EDFB13E17EEBB4A00949081 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFB13D17EEBB4A00949081 /* Placeholder.png */; };
@@ -121,6 +123,10 @@
 		03F7D12F17E7009A00FBCE96 /* MainViewTableViewRfresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewTableViewRfresh.h; path = classes/MainViewTableViewRfresh.h; sourceTree = "<group>"; };
 		0EBB400017F0A6E2007E789E /* VoteResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteResults.h; sourceTree = "<group>"; };
 		0EBB400117F0A6E2007E789E /* VoteResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoteResults.m; sourceTree = "<group>"; };
+		0ED0E89C17F53CA000B4B636 /* FollowingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FollowingViewController.h; path = classes/FollowingViewController.h; sourceTree = "<group>"; };
+		0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FollowingViewController.m; path = classes/FollowingViewController.m; sourceTree = "<group>"; };
+		0ED0E89F17F55B9A00B4B636 /* FollowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FollowerViewController.h; path = classes/FollowerViewController.h; sourceTree = "<group>"; };
+		0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FollowerViewController.m; path = classes/FollowerViewController.m; sourceTree = "<group>"; };
 		0EDFB13417EEB8C500949081 /* YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YIFullScreenScroll.h; path = FullScreenScroll/YIFullScreenScroll.h; sourceTree = "<group>"; };
 		0EDFB13517EEB8C500949081 /* YIFullScreenScroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YIFullScreenScroll.m; path = FullScreenScroll/YIFullScreenScroll.m; sourceTree = "<group>"; };
 		0EDFB13A17EEB95B00949081 /* UIView+YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+YIFullScreenScroll.h"; path = "FullScreenScroll/UIView+YIFullScreenScroll.h"; sourceTree = "<group>"; };
@@ -276,6 +282,10 @@
 				03C78E8B17E84C830091D094 /* FireViewController.m */,
 				03C78E8D17E84CC70091D094 /* InformationViewController.h */,
 				03C78E8E17E84CC70091D094 /* InformationViewController.m */,
+				0ED0E89C17F53CA000B4B636 /* FollowingViewController.h */,
+				0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */,
+				0ED0E89F17F55B9A00B4B636 /* FollowerViewController.h */,
+				0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */,
 				03C78E9017E84D120091D094 /* UserInformationViewController.h */,
 				03C78E9117E84D120091D094 /* UserInformationViewController.m */,
 				0EBB400017F0A6E2007E789E /* VoteResults.h */,
@@ -440,6 +450,8 @@
 				03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */,
 				03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */,
 				03C78E8C17E84C830091D094 /* FireViewController.m in Sources */,
+				0ED0E8A117F55B9A00B4B636 /* FollowerViewController.m in Sources */,
+				0ED0E89E17F53CA000B4B636 /* FollowingViewController.m in Sources */,
 				0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */,
 				03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */,
 				03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */,
