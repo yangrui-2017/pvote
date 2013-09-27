@@ -57,6 +57,10 @@
     self.myTableView.backgroundColor = [UIColor clearColor];
     self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
     
+    UIView *backgrdView = [[UIView alloc] initWithFrame:_myTableView.frame];
+    backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+    _myTableView.backgroundView = backgrdView;
+    
     // 建立 UIDatePicker
     datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, -(self.view.bounds.size.height), self.view.bounds.size.width, 100)];
     datePicker.datePickerMode = UIDatePickerModeDate;
@@ -83,6 +87,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+        backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+        cell.backgroundView = backgrdView;
         
         self.imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-100)/2, 20, 100, 100)];
         self.imageview.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.3];

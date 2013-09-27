@@ -11,6 +11,7 @@
 #import <arcstreamsdk/STreamObject.h>
 #import "ImageCache.h"
 #import "MBProgressHUD.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -18,10 +19,12 @@
 {
     NSString *leftImageId;
     NSString *rightImageId;
-    UITextView *contentsView;
+//    UITextField *contentsText;
+    UITextView *contentsText;
     NSArray *allKeys;
     NSMutableArray *userNameArray;
     NSMutableArray *contentsArray;
+    UIToolbar *toolBar;
 }
 @end
 
@@ -49,23 +52,31 @@
     rightImageId = [rowObject getValue:@"file2"];
     userNameArray = [[NSMutableArray alloc]init];
     contentsArray = [[NSMutableArray alloc]init];
-    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-80)];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.tag =TABLEVIEWTAG;
     myTableView.separatorStyle=YES;//UITableView每个cell之间的默认分割线隐藏掉sel
     [self.view addSubview:myTableView];
     
-    UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
+        toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-80, self.view.frame.size.width, 40)];
+    }else{
+        toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
+    }
+    
     toolBar.backgroundColor= [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     toolBar.tag = TOOLBARTAG;
     [self.view addSubview:toolBar];
     NSMutableArray * array = [[NSMutableArray alloc] initWithCapacity:0];
     
-    contentsView = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 250, 40)];
-    contentsView.delegate = self;
-    contentsView.font = [UIFont systemFontOfSize:18.0f];
-    UIBarButtonItem * contentsItem = [[UIBarButtonItem alloc] initWithCustomView:contentsView];
+    contentsText = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 250, 40)];
+    contentsText.delegate = self;
+    contentsText.font = [UIFont systemFontOfSize:18.0f];
+    contentsText.layer.borderColor = [UIColor grayColor].CGColor;
+    contentsText.layer.borderWidth =1.0;
+    contentsText.layer.cornerRadius =5.0;
+    UIBarButtonItem * contentsItem = [[UIBarButtonItem alloc] initWithCustomView:contentsText];
     
     UIButton * senderButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     senderButton.frame = CGRectMake(250, 0, 50, 40);
@@ -80,6 +91,13 @@
     //监听键盘高度的变换
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    // 键盘高度变化通知，ios5.0新增的
+#ifdef __IPHONE_5_0
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version >= 5.0) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    }
+#endif
 
 
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -91,7 +109,10 @@
     }completionBlock:^{
         [myTableView reloadData];
     }];
-   
+
+    UIView *backgrdView = [[UIView alloc] initWithFrame:myTableView.frame];
+    backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+    myTableView.backgroundView = backgrdView;
 }
 - (void)loadComments{
     STreamObject *test = [[STreamObject alloc] init];
@@ -136,6 +157,7 @@
         [cell addSubview:headImageView];
         
         nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 30)];
+        nameLable.backgroundColor = [UIColor clearColor];
         [cell addSubview:nameLable];
         
         contentView =[[UITextView alloc]initWithFrame:CGRectMake(60, 30, 260, [self getCellHeight:indexPath.row])];
@@ -155,7 +177,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier ];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath ];
     if (cell==nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -199,7 +221,7 @@
         CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 3000)];
         
         
-        if (size.height<30) {
+        if (size.height<=30) {
             height = 60;
         }else
         {
@@ -241,7 +263,7 @@
     STreamObject *comment = [[STreamObject alloc] init];
     [comment setObjectId:[rowObject objectId]];
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-    [dic setObject:contentsView.text forKey:[cache getLoginUserName]];
+    [dic setObject:contentsText.text forKey:[cache getLoginUserName]];
     [comment addStaff:longValue withObject:dic];
     [comment update];
     
@@ -255,19 +277,23 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self addComments];
     } completionBlock:^{
-        contentsView.text = @"";
-        [contentsView resignFirstResponder];
+        contentsText.text = @"";
+        [contentsText resignFirstResponder];
     }];
     
 }
-
+//UITextFied
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
 -(void) autoMovekeyBoard: (float) h{
     
     
     UIToolbar *toolbar = (UIToolbar *)[self.view viewWithTag:TOOLBARTAG];
 	toolbar.frame = CGRectMake(0.0f, (float)(480.0-h-40.0), 320.0f, 40.0f);
-	UITableView *tableView = (UITableView *)[self.view viewWithTag:TABLEVIEWTAG];
-	tableView.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-40.0));
+//	UITableView *tableView = (UITableView *)[self.view viewWithTag:TABLEVIEWTAG];
+//	tableView.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-40.0));
 }
 
 #pragma mark -

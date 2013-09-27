@@ -71,6 +71,10 @@
     myTableView.delegate = self;
     [self.view addSubview:myTableView];
     
+    UIView *backgrdView = [[UIView alloc] initWithFrame:myTableView.frame];
+    backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+    myTableView.backgroundView = backgrdView;
+    
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
@@ -110,6 +114,52 @@
 
 }
 
+//创建cell上控件
+-(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row ==0) {
+        
+        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+        backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+        cell.backgroundView = backgrdView;
+        
+        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 80, 80)];
+        imageView.image = [UIImage imageNamed:@"headImage.jpg"];
+        [cell.contentView addSubview:imageView];
+        
+        nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 50)];
+        nameLablel.textColor = [UIColor blackColor];
+        nameLablel.textAlignment = NSTextAlignmentCenter;
+        nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
+        nameLablel.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:nameLablel];
+        followerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [followerButton setFrame:CGRectMake(210, 10, 120, 50)];
+        [followerButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
+        [followerButton addTarget:self action:@selector(followButton:) forControlEvents:UIControlEventTouchUpInside];
+        if (isPush && ![userName isEqualToString:[cache getLoginUserName]]) {
+            [cell.contentView addSubview:followerButton];
+        }else{
+        }
+    }else{
+        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+        backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+        cell.backgroundView = backgrdView;
+        
+        lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 240, 50)];
+        lable.textAlignment = NSTextAlignmentCenter;
+        lable.font = [UIFont fontWithName:@"Arial" size:24];
+        lable.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:lable];
+        
+        countLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 0, 80, 50)];
+        countLable.textAlignment = NSTextAlignmentCenter;
+        countLable.font = [UIFont fontWithName:@"Arial" size:24];
+        countLable.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:countLable];
+    }
+
+}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 5;
@@ -121,40 +171,10 @@
     if (cell==nil) {
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
-        if (indexPath.row ==0) {
-            imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 80, 80)];
-            imageView.image = [UIImage imageNamed:@"headImage.jpg"];
-            [cell.contentView addSubview:imageView];
-            
-            nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 50)];
-            nameLablel.textColor = [UIColor blackColor];
-            
-            nameLablel.textAlignment = NSTextAlignmentCenter;
-            nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
-            nameLablel.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:nameLablel];
-            followerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [followerButton setFrame:CGRectMake(210, 10, 120, 50)];
-            [followerButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
-            [followerButton addTarget:self action:@selector(followButton:) forControlEvents:UIControlEventTouchUpInside];
-            if (isPush && ![userName isEqualToString:[cache getLoginUserName]]) {
-                [cell.contentView addSubview:followerButton];
-            }else{
-            }
-        }else{
-            lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 240, 50)];
-            lable.textAlignment = NSTextAlignmentCenter;
-            lable.font = [UIFont fontWithName:@"Arial" size:24];
-            lable.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:lable];
-            
-            countLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 0, 80, 50)];
-            countLable.textAlignment = NSTextAlignmentCenter;
-            countLable.font = [UIFont fontWithName:@"Arial" size:24];
-            countLable.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:countLable];
-        }
+        
+        [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
+    
     userMetaData = [cache getUserMetadata:pageUserName];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     if ([cache getImage:pImageId]){

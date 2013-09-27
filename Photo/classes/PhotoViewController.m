@@ -69,6 +69,10 @@
     [self.view addSubview:self.myTableView];
     self.myTableView.backgroundColor = [UIColor clearColor];
     self.myTableView.separatorStyle=NO;//UITableView每个cell之间的默认分割线隐藏掉
+    //background
+    UIView *backgrdView = [[UIView alloc] initWithFrame:_myTableView.frame];
+    backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+    _myTableView.backgroundView = backgrdView;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -80,8 +84,12 @@
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
     if (cell==nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+        backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+        cell.backgroundView = backgrdView;
+        
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 10, 130, 130)];
         self.imageView .backgroundColor = [UIColor grayColor];
         self.imageView .userInteractionEnabled = YES;
@@ -110,7 +118,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _myTableView.bounds.size.height;//416
+    return _myTableView.bounds.size.height;//
 }
 //UITextView
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -118,7 +126,8 @@
     
     if (textView.text.length>40)
     {
-        UIAlertView * alert=[[UIAlertView alloc] initWithTitle:@"提示" message:@"您已输入140个字" delegate:nil cancelButtonTitle:@"返回" otherButtonTitles: nil];
+        UIAlertView * alert=[[UIAlertView alloc] initWithTitle:@"提示" message:@"您输入超过40个字了" delegate:nil cancelButtonTitle:@"返回" otherButtonTitles: nil];
+        alert.delegate = self;
         [alert show];
         return NO;
     }
@@ -126,13 +135,13 @@
     {
         return YES;
     }
-
     if ([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
         return NO;
     }else{
         return YES;
     }
+
 }
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
@@ -140,7 +149,10 @@
     _message.textColor = [UIColor blackColor];
     return YES;
 }
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+     [_message resignFirstResponder];
+}
 -(void) selectLeftAction:(UIBarButtonItem *)item {
 //    LoginViewController *loginView = [[LoginViewController alloc]init];
     [self.navigationController popToRootViewControllerAnimated:YES];

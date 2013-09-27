@@ -78,6 +78,10 @@
     self.myTableView.separatorStyle=YES;//UITableView每个cell之间的默认分割线隐藏掉sel
     self.myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
     [self.view addSubview:self.myTableView];
+    //background
+    UIView *backgrdView = [[UIView alloc] initWithFrame:_myTableView.frame];
+    backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
+    _myTableView.backgroundView = backgrdView;
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
@@ -156,7 +160,7 @@
 {
     
     self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.imageView setFrame:CGRectMake(5, 10, 60, 60)];
+    [self.imageView setFrame:CGRectMake(5, 15, 60, 60)];
     [self.imageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
     [self.imageView setTag:indexPath.row];
     [self.imageView addTarget:self action:@selector(headImageClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -166,15 +170,15 @@
     self.name.enabled = NO;
     [cell.contentView addSubview:self.name];
     
-    self.message = [[UITextView alloc]initWithFrame:CGRectMake(90, 40, 200, 40)];
+    self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 80)];
     self.message.font =[UIFont systemFontOfSize:15.0f];
-    [self.message setEditable:NO];
-    self.message.showsVerticalScrollIndicator= YES;
-    self.message.delegate = self;
     self.message .backgroundColor = [UIColor clearColor];
+    //自动折行设置
+    self.message.lineBreakMode = NSLineBreakByCharWrapping;
+    self.message.numberOfLines = 0;
     [cell.contentView addSubview:self.message];
     
-    self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 90, 40, 20)];
+    self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 160, 40, 20)];
     self.vote1Lable.textColor = [UIColor redColor];
     self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
     self.vote1Lable.textAlignment = NSTextAlignmentCenter;
@@ -182,13 +186,13 @@
     [cell.contentView addSubview:self.vote1Lable];
     
     self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.oneImageView setFrame:CGRectMake(5, 110, 150, 150)];
+    [self.oneImageView setFrame:CGRectMake(5, 180, 150, 150)];
     [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.oneImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.oneImageView];
     
-    self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 90, 40, 20)];
+    self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 160, 40, 20)];
     self.vote2Lable.textColor = [UIColor redColor];
     self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
     self.vote2Lable.textAlignment = NSTextAlignmentCenter;
@@ -196,7 +200,7 @@
     [cell.contentView addSubview:self.vote2Lable];
     
     self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.twoImageView setFrame:CGRectMake(165, 110, 150, 150)];
+    [self.twoImageView setFrame:CGRectMake(165, 180, 150, 150)];
     [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.twoImageView setTag:indexPath.row];
@@ -207,7 +211,7 @@
     [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
     [clickButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     clickButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-    [clickButton setFrame:CGRectMake(220, 260, 100, 50)];
+    [clickButton setFrame:CGRectMake(220, 340, 100, 50)];
     [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:clickButton];
     
@@ -216,7 +220,7 @@
     [commentButton setTitle:@"评论" forState:UIControlStateNormal];
     [commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     commentButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-    [commentButton setFrame:CGRectMake(10, 260, 100, 50)];
+    [commentButton setFrame:CGRectMake(10, 340, 100, 50)];
     [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:commentButton];
 
@@ -435,7 +439,7 @@
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 330;
+    return 400;
 }
 
 //head image clicked
