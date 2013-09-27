@@ -165,6 +165,7 @@
         
         contentView =[[UITextView alloc]initWithFrame:CGRectMake(50, 30, 260, [self getCellHeight:indexPath.row])];
         contentView.delegate = self;
+        [contentView setEditable:NO];
         contentView.textAlignment = NSTextAlignmentLeft;
         contentView.font = [UIFont systemFontOfSize:15];
         contentView.backgroundColor = [UIColor clearColor];
