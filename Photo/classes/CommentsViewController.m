@@ -21,7 +21,7 @@
     NSString *rightImageId;
 //    UITextField *contentsText;
     UITextView *contentsText;
-    NSArray *allKeys;
+    NSMutableArray *allKeys;
     NSMutableArray *userNameArray;
     NSMutableArray *contentsArray;
     UIToolbar *toolBar;
@@ -120,7 +120,12 @@
     STreamObject *test = [[STreamObject alloc] init];
     [test setObjectId:[rowObject objectId]];
     [test loadAll:[rowObject objectId]];
-    allKeys = [test getAllKeys];
+    NSArray *temp = [NSMutableArray arrayWithArray:[test getAllKeys]];
+    temp = [temp sortedArrayUsingComparator:^NSComparisonResult(NSString *a, NSString *b){
+        return [b compare:a];
+    }];
+    allKeys = [NSMutableArray arrayWithArray:temp];
+
     if ([allKeys count]!=0 ) {
         for (NSString *key in allKeys){
             
@@ -278,6 +283,9 @@
     [dic setObject:contentsText.text forKey:[cache getLoginUserName]];
     [comment addStaff:longValue withObject:dic];
     [comment update];
+    [contentsArray insertObject:contentsText.text atIndex:0];
+    [userNameArray insertObject:[cache getLoginUserName] atIndex:0];
+    [allKeys insertObject:[rowObject objectId] atIndex:0];
     
 }
 
@@ -291,6 +299,7 @@
     } completionBlock:^{
         contentsText.text = @"";
         [contentsText resignFirstResponder];
+        [myTableView reloadData];
     }];
     
 }
