@@ -118,7 +118,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _myTableView.bounds.size.height;//
+    return _myTableView.bounds.size.height+100;//
 }
 //UITextView
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
