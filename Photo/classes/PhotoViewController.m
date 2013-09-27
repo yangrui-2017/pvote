@@ -56,7 +56,10 @@
     self.title = @"拍 照";
     
     self.navigationController.navigationItem.backBarButtonItem = NO;
-    
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
+    leftItem.tintColor = [UIColor blackColor];
+    self.navigationItem.leftBarButtonItem = leftItem;
+
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"提交" style:UIBarButtonItemStyleDone target:self action:@selector(selectRightAction:)];
     self.navigationItem.rightBarButtonItem = rightItem;
 //    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
@@ -154,9 +157,10 @@
      [_message resignFirstResponder];
 }
 -(void) selectLeftAction:(UIBarButtonItem *)item {
-//    LoginViewController *loginView = [[LoginViewController alloc]init];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+
+    [_message  resignFirstResponder];
 }
+
 -(void) selectRightAction:(UIBarButtonItem *)item{
     
     file1 = [[STreamFile alloc] init];
