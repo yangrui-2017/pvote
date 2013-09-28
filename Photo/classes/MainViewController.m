@@ -26,6 +26,10 @@
     STreamCategoryObject *votes;   
     YIFullScreenScroll* _fullScreenDelegate;
     STreamQuery *st;
+    
+    UIActivityIndicatorView *imageViewActivity;
+    UIActivityIndicatorView *oneImageViewActivity;
+    UIActivityIndicatorView *twoImageViewActivity;
 }
 
 @end
@@ -158,7 +162,25 @@
 //创建cell上控件
 -(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
 {
+    imageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [imageViewActivity setCenter:CGPointMake(35, 44)];
+    [imageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [cell addSubview:imageViewActivity];
+    [imageViewActivity startAnimating];
     
+    oneImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [oneImageViewActivity setCenter:CGPointMake(77, 260)];
+    [oneImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [cell addSubview:oneImageViewActivity];
+    [oneImageViewActivity startAnimating];
+    
+    twoImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [twoImageViewActivity setCenter:CGPointMake(240, 260)];
+    [twoImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [cell addSubview:twoImageViewActivity];
+    [twoImageViewActivity startAnimating];
+    
+
     self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.imageView setFrame:CGRectMake(5, 15, 60, 60)];
     [self.imageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
@@ -170,7 +192,7 @@
     self.name.enabled = NO;
     [cell.contentView addSubview:self.name];
     
-    self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 80)];
+    self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 40)];
     self.message.font =[UIFont systemFontOfSize:15.0f];
     self.message .backgroundColor = [UIColor clearColor];
     //自动折行设置
@@ -178,7 +200,7 @@
     self.message.numberOfLines = 0;
     [cell.contentView addSubview:self.message];
     
-    self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 160, 40, 20)];
+    self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 140, 40, 20)];
     self.vote1Lable.textColor = [UIColor redColor];
     self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
     self.vote1Lable.textAlignment = NSTextAlignmentCenter;
@@ -186,13 +208,13 @@
     [cell.contentView addSubview:self.vote1Lable];
     
     self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.oneImageView setFrame:CGRectMake(5, 180, 150, 150)];
+    [self.oneImageView setFrame:CGRectMake(5, 160, 150, 150)];
     [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.oneImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.oneImageView];
     
-    self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 160, 40, 20)];
+    self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 140, 40, 20)];
     self.vote2Lable.textColor = [UIColor redColor];
     self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
     self.vote2Lable.textAlignment = NSTextAlignmentCenter;
@@ -200,7 +222,7 @@
     [cell.contentView addSubview:self.vote2Lable];
     
     self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.twoImageView setFrame:CGRectMake(165, 180, 150, 150)];
+    [self.twoImageView setFrame:CGRectMake(165, 160, 150, 150)];
     [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
     [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.twoImageView setTag:indexPath.row];
@@ -211,7 +233,7 @@
     [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
     [clickButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     clickButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-    [clickButton setFrame:CGRectMake(220, 340, 100, 50)];
+    [clickButton setFrame:CGRectMake(220, 310, 100, 50)];
     [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:clickButton];
     
@@ -220,7 +242,7 @@
     [commentButton setTitle:@"评论" forState:UIControlStateNormal];
     [commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     commentButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-    [commentButton setFrame:CGRectMake(10, 340, 100, 50)];
+    [commentButton setFrame:CGRectMake(10, 310, 100, 50)];
     [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:commentButton];
 
@@ -246,7 +268,7 @@
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 390,cell.frame.size.width , 10)];
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 360,cell.frame.size.width , 10)];
         view.backgroundColor = [UIColor whiteColor];
         [cell.backgroundView addSubview:view];
         
@@ -309,6 +331,8 @@
         ImageDataFile *files = [imageCache getImages:[so objectId]];
         [self.oneImageView setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
         [self.twoImageView setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
+        [oneImageViewActivity stopAnimating];
+        [twoImageViewActivity stopAnimating];
     }else{
         ImageDownload *imageDownload = [[ImageDownload alloc] init];
         [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
@@ -332,6 +356,7 @@
         }else{
             [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]] forState:UIControlStateNormal];
         }
+        [imageViewActivity stopAnimating];
     }else{
         STreamUser *user = [[STreamUser alloc] init];
         [user loadUserMetadata:self.name.text response:^(BOOL succeed, NSString *error){
@@ -442,7 +467,7 @@
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 400;
+    return 370;
 }
 
 //head image clicked

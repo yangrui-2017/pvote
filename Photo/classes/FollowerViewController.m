@@ -18,6 +18,7 @@
     NSMutableDictionary *userMetaData;
     NSMutableArray *loggedInUserFollowing;
     NSString *pageUserName;
+    UIActivityIndicatorView *imageViewActivity;
 }
 @end
 
@@ -77,6 +78,12 @@
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
         
+        imageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [imageViewActivity setCenter:CGPointMake(30,22)];
+        [imageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [cell addSubview:imageViewActivity];
+        [imageViewActivity startAnimating];
+        
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 2, 40, 40)];
         [cell.contentView addSubview:imageView];
         
@@ -97,6 +104,7 @@
     pImageId = [userMetaData objectForKey:@"profileImageId"];
     if ([cache getImage:pImageId]){
         imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
+        [imageViewActivity stopAnimating];
     }else{
         [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }

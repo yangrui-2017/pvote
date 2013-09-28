@@ -34,6 +34,7 @@
     NSString *pImageId;
     int threeCount;
     int fourCount;
+    UIActivityIndicatorView *imageViewActivity;
 }
 @end
 
@@ -122,7 +123,11 @@
 -(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row ==0) {
-        
+        imageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        [imageViewActivity setCenter:CGPointMake(50, 50)];
+        [imageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [cell addSubview:imageViewActivity];
+        [imageViewActivity startAnimating];
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
@@ -183,10 +188,10 @@
     pImageId = [userMetaData objectForKey:@"profileImageId"];
     if ([cache getImage:pImageId]){
         imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
+        [imageViewActivity stopAnimating];
     }else{
         [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }
-
     if ([loggedInUserFollowing containsObject:pageUserName]) {
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
     }else{
