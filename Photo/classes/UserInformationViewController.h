@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UserInformationViewController : UIViewController
+@interface UserInformationViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
+@property (strong,nonatomic) UITableView *myTableView;
+@property (strong,nonatomic) UIImageView *headImage;
+@property (strong,nonatomic) UILabel *nameLabel;
+@property (strong,nonatomic) UILabel *votesLabel;
+@property (strong,nonatomic) UIButton *followButton;
 
 @end
