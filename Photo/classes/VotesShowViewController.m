@@ -64,7 +64,13 @@
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     
-    [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
+   // [HUD showWhileExecuting:@selector(loadVotes) onTarget:self withObject:nil animated:YES];
+    
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadVotes];
+    }completionBlock:^{
+         [self.tableView reloadData];
+    }];
     
     UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
@@ -103,7 +109,7 @@
     [vo setF2:vote2];
     [imageCache addVotesResults:[rowObject objectId] withVoteResult:vo];
     
-    [self.tableView reloadData];
+   
 
 }
 - (void)didReceiveMemoryWarning

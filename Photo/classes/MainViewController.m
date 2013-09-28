@@ -411,20 +411,28 @@
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
             [so update];
+            NSString *error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
             
         }else if([votedKey isEqualToString:@"f1voted"]){
           
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            NSString *error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [loggedInUserVotesResults removeObjectForKey:[sorow objectId]];
             
         }else{
             
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            NSString *error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
             [so update];
+            error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
             
         }
@@ -459,20 +467,28 @@
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
             [so update];
+            NSString *error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
         }
         
         else if([votedKey isEqualToString:@"f2voted"]){
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            NSString *error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [loggedInUserVotesResults removeObjectForKey:[sorow objectId]];
             
         }else{
             
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            NSString *error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
             [so update];
+            error = [so errorMessage];
+            NSLog(@"error: %@", error);
             [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
         }
 

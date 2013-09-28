@@ -66,7 +66,10 @@ static NSMutableString *loginUserName;
 }
 
 -(NSData *)getImage:(NSString *)fileId{
-    return [_selfImageDictionary objectForKey:fileId];
+    NSData *data =  [_selfImageDictionary objectForKey:fileId];
+    if (data)
+       NSLog(@"%d", [data length]);
+    return data;
 }
 
 -(ImageDataFile *)getImages:(NSString *)objectId{
