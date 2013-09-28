@@ -2,29 +2,36 @@
 //  UserInformationViewController.m
 //  Photo
 //
-//  Created by wangshuai on 13-9-17.
+//  Created by wangsh on 13-9-28.
 //  Copyright (c) 2013年 wangshuai. All rights reserved.
 //
 
 #import "UserInformationViewController.h"
-
+#import "MBProgressHUD.h"
+#import "InformationViewController.h"
+#import <arcstreamsdk/STreamQuery.h>
+#import <arcstreamsdk/STreamObject.h>
+#import "ImageCache.h"
 @interface UserInformationViewController ()
 {
     UIActivityIndicatorView *imageViewActivity;
+    STreamObject *so;
+    NSMutableArray *nameArray;
+    NSMutableArray *sos;
+    ImageCache *cache;
+     NSMutableArray *loggedInUserFollowing;
 }
 @end
 
 @implementation UserInformationViewController
-
-@synthesize myTableView;
 @synthesize headImage;
 @synthesize nameLabel;
 @synthesize votesLabel;
 @synthesize followButton;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
     }
@@ -35,21 +42,46 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    myTableView.delegate = self;
-    myTableView.dataSource = self;
-    [self.view addSubview:myTableView];
+    
+    cache = [ImageCache sharedObject];
+    nameArray = [[NSMutableArray alloc]init];
+    sos = [[NSMutableArray alloc]init];
+   
     //background
-    UIView *backgrdView = [[UIView alloc] initWithFrame:myTableView.frame];
+    UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
-    myTableView.backgroundView = backgrdView;
-
+    self.tableView.backgroundView = backgrdView;
+    
+    STreamObject *loggedInUserFollowingStream = [[STreamObject alloc] init];
+    [loggedInUserFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",[cache getLoginUserName]]];
+    loggedInUserFollowing = [NSMutableArray arrayWithArray:[loggedInUserFollowingStream getAllKeys]];
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadDetails];
+    }completionBlock:^{
+        [self.tableView reloadData];
+    }];
+    
 }
+
+- (void)loadDetails{
+    STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
+    sos = [sq listSortedStreamObjectsBasedOnKeySize:10];
+    for ( STreamObject *sto in sos) {
+        [nameArray addObject:[sto objectId]];
+    }
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return [nameArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,14 +107,12 @@
         
         nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 100, 40)];
         nameLabel.font = [UIFont fontWithName:@"Arial" size:16.0f];
-        nameLabel.text = @"wdgvgs";
         nameLabel.textAlignment = NSTextAlignmentCenter;
         nameLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLabel];
         
         votesLabel = [[UILabel alloc]initWithFrame:CGRectMake(220, 0, 100, 30)];
         votesLabel.font = [UIFont fontWithName:@"Arial" size:16.0f];
-        votesLabel.text = @"wdgvgs";
         votesLabel.textAlignment = NSTextAlignmentCenter;
         votesLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:votesLabel];
@@ -91,24 +121,68 @@
         [followButton setFrame:CGRectMake(220, 30, 100, 30)];
         followButton.tag = indexPath.row;
         [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [followButton setTitle:@"取消关注" forState:UIControlStateNormal];
         [followButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
-        [followButton addTarget:self action:@selector(followButton:) forControlEvents:UIControlEventTouchUpInside];
+        [followButton addTarget:self action:@selector(followButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:followButton];
     }
+    if ([loggedInUserFollowing containsObject:[nameArray objectAtIndex:indexPath.row]]) {
+        [followButton setTitle:@"取消关注" forState:UIControlStateNormal];
+        [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    }else{
+        [followButton setTitle:@"关注" forState:UIControlStateNormal];
+        [followButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    }
+    NSMutableDictionary *userMetaData = [cache getUserMetadata:[nameArray objectAtIndex:indexPath.row]];
+    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+    if ([cache getImage:pImageId]){
+        headImage.image = [UIImage imageWithData:[cache getImage:pImageId]];
+        [imageViewActivity stopAnimating];
+    }else{
+        [headImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
+    }
+    so =[sos objectAtIndex:indexPath.row];
+    nameLabel.text = [nameArray objectAtIndex:indexPath.row];
+    votesLabel.text = [NSString stringWithFormat:@"%d",[so size]];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
 }
--(void)followButton:(UIButton *)button{
-    
-}
-- (void)didReceiveMemoryWarning
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    InformationViewController *inforView = [[InformationViewController alloc]init];
+    [inforView setUserName:[nameArray objectAtIndex:indexPath.row ]];
+    inforView.isPush = YES;
+    [self.navigationController pushViewController:inforView animated:YES];
+}
+-(void)followButtonClicked:(UIButton *)button{
+     NSString *pageUserName = [nameArray objectAtIndex:button.tag];
+    STreamObject *loggedInUser = [[STreamObject alloc] init];
+    STreamObject *follower = [[STreamObject alloc]init];
+    [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
+    
+    if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
+        [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+        [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
+        //for table view update
+        [loggedInUserFollowing removeObject:pageUserName];
+        [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    }
+    if ([button.titleLabel.text isEqualToString:@"关注"]) {
+        
+        [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+        [loggedInUser addStaff:pageUserName withObject:@""];
+        [loggedInUser update];
+        
+        [follower addStaff:[cache getLoginUserName] withObject:@""];
+        [follower update];
+        
+        //for table view update
+        [loggedInUserFollowing addObject:pageUserName];
+    }
+    [self.tableView reloadData];
+ 
 }
 
 @end

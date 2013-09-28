@@ -38,12 +38,12 @@
 		03C49B3617E145EE00AE7E3B /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49B3517E145EE00AE7E3B /* RegisterViewController.m */; };
 		03C78E8C17E84C830091D094 /* FireViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8B17E84C830091D094 /* FireViewController.m */; };
 		03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8E17E84CC70091D094 /* InformationViewController.m */; };
-		03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E9117E84D120091D094 /* UserInformationViewController.m */; };
 		03C78E9417E851770091D094 /* public_titlebac.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C78E9317E851770091D094 /* public_titlebac.png */; };
 		03CEA0F217F44D1800D36DAC /* ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CEA0F117F44D1800D36DAC /* ph.png */; };
 		03E40DE417F6DBC0006510F7 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E40DE317F6DBC0006510F7 /* arcstreamsdk.framework */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
+		0E91710F17F68C4F004E7638 /* UserInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E91710E17F68C4F004E7638 /* UserInformationViewController.m */; };
 		0EBB400217F0A6E2007E789E /* VoteResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBB400117F0A6E2007E789E /* VoteResults.m */; };
 		0ED0E89E17F53CA000B4B636 /* FollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */; };
 		0ED0E8A117F55B9A00B4B636 /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */; };
@@ -111,8 +111,6 @@
 		03C78E8B17E84C830091D094 /* FireViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FireViewController.m; path = classes/FireViewController.m; sourceTree = "<group>"; };
 		03C78E8D17E84CC70091D094 /* InformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InformationViewController.h; path = classes/InformationViewController.h; sourceTree = "<group>"; };
 		03C78E8E17E84CC70091D094 /* InformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InformationViewController.m; path = classes/InformationViewController.m; sourceTree = "<group>"; };
-		03C78E9017E84D120091D094 /* UserInformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInformationViewController.h; path = classes/UserInformationViewController.h; sourceTree = "<group>"; };
-		03C78E9117E84D120091D094 /* UserInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInformationViewController.m; path = classes/UserInformationViewController.m; sourceTree = "<group>"; };
 		03C78E9317E851770091D094 /* public_titlebac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = public_titlebac.png; sourceTree = "<group>"; };
 		03CEA0F117F44D1800D36DAC /* ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ph.png; sourceTree = "<group>"; };
 		03E40DE317F6DBC0006510F7 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
@@ -121,6 +119,8 @@
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
 		03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageDownload.m; path = classes/ImageDownload.m; sourceTree = "<group>"; };
 		03F7D12F17E7009A00FBCE96 /* MainViewTableViewRfresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewTableViewRfresh.h; path = classes/MainViewTableViewRfresh.h; sourceTree = "<group>"; };
+		0E91710D17F68C4F004E7638 /* UserInformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInformationViewController.h; path = classes/UserInformationViewController.h; sourceTree = "<group>"; };
+		0E91710E17F68C4F004E7638 /* UserInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInformationViewController.m; path = classes/UserInformationViewController.m; sourceTree = "<group>"; };
 		0EBB400017F0A6E2007E789E /* VoteResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteResults.h; sourceTree = "<group>"; };
 		0EBB400117F0A6E2007E789E /* VoteResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoteResults.m; sourceTree = "<group>"; };
 		0ED0E89C17F53CA000B4B636 /* FollowingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FollowingViewController.h; path = classes/FollowingViewController.h; sourceTree = "<group>"; };
@@ -282,12 +282,12 @@
 				03C78E8B17E84C830091D094 /* FireViewController.m */,
 				03C78E8D17E84CC70091D094 /* InformationViewController.h */,
 				03C78E8E17E84CC70091D094 /* InformationViewController.m */,
+				0E91710D17F68C4F004E7638 /* UserInformationViewController.h */,
+				0E91710E17F68C4F004E7638 /* UserInformationViewController.m */,
 				0ED0E89C17F53CA000B4B636 /* FollowingViewController.h */,
 				0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */,
 				0ED0E89F17F55B9A00B4B636 /* FollowerViewController.h */,
 				0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */,
-				03C78E9017E84D120091D094 /* UserInformationViewController.h */,
-				03C78E9117E84D120091D094 /* UserInformationViewController.m */,
 				0EBB400017F0A6E2007E789E /* VoteResults.h */,
 				0EBB400117F0A6E2007E789E /* VoteResults.m */,
 			);
@@ -436,6 +436,7 @@
 			files = (
 				03C49AF117E102FC00AE7E3B /* main.m in Sources */,
 				0EBB400217F0A6E2007E789E /* VoteResults.m in Sources */,
+				0E91710F17F68C4F004E7638 /* UserInformationViewController.m in Sources */,
 				03C49AF517E102FC00AE7E3B /* AppDelegate.m in Sources */,
 				03C49B1B17E1036F00AE7E3B /* PhotoViewController.m in Sources */,
 				0EDFB13617EEB8C500949081 /* YIFullScreenScroll.m in Sources */,
@@ -454,7 +455,6 @@
 				0ED0E89E17F53CA000B4B636 /* FollowingViewController.m in Sources */,
 				0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */,
 				03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */,
-				03C78E9217E84D130091D094 /* UserInformationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
