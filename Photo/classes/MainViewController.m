@@ -26,6 +26,7 @@
     STreamCategoryObject *votes;   
     YIFullScreenScroll* _fullScreenDelegate;
     STreamQuery *st;
+    NSMutableDictionary *loggedInUserVotesResults;
     
     UIActivityIndicatorView *imageViewActivity;
     UIActivityIndicatorView *oneImageViewActivity;
@@ -48,7 +49,8 @@
 @synthesize userName;
 @synthesize votesArray;
 @synthesize isPushFromVotesGiven;
-
+@synthesize selectOneImage;
+@synthesize selectTwoImage;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -75,6 +77,8 @@
     } 
     
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
+    loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
+    
        
     self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.myTableView.delegate = self;
@@ -132,13 +136,20 @@
     for (STreamObject *allVotes in votesArray){
         int f1 = 0;
         int f2 = 0;
+        VoteResults *vo = [[VoteResults alloc] init];
+        int saved = 0;
         for (STreamObject *vote in results){
             NSString *voted = [vote getValue:[allVotes objectId]];
+            if (voted != nil && ([[imageCache getLoginUserName] isEqualToString:[vote objectId]]) && saved != 1){
+                [loggedInUserVotesResults setObject:vote forKey:[allVotes objectId]];
+                saved = 1;
+            }
             if (voted != nil && [voted isEqualToString:@"f1voted"])
                 f1++;
             if (voted != nil && [voted isEqualToString:@"f2voted"])
                 f2++;
         }
+        saved = 0;
         int total = f1 + f2;
         int vote1count;
         int vote2count;
@@ -147,10 +158,11 @@
             vote2count = ((float)f2/total)*100;
             NSString *vote1 = [NSString stringWithFormat:@"%d%%",vote1count];
             NSString *vote2 = [NSString stringWithFormat:@"%d%%",vote2count];
-            VoteResults *vo = [[VoteResults alloc] init];
+           
             [vo setObjectId:[allVotes objectId]];
             [vo setF1:vote1];
             [vo setF2:vote2];
+            
             [imageCache addVotesResults:[allVotes objectId] withVoteResult:vo];
             
         }else{
@@ -245,6 +257,12 @@
     [commentButton setFrame:CGRectMake(10, 310, 100, 50)];
     [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:commentButton];
+    
+    selectOneImage = [[UIImageView alloc] initWithFrame:CGRectMake(115, 270, 40, 40)];
+    [cell.contentView addSubview:selectOneImage];
+    
+    selectTwoImage = [[UIImageView alloc] initWithFrame:CGRectMake(275, 270, 40, 40)];
+    [cell.contentView addSubview:selectTwoImage];
 
 }
 
@@ -272,10 +290,6 @@
         view.backgroundColor = [UIColor whiteColor];
         [cell.backgroundView addSubview:view];
         
-//        UIImageView *imageview=[[UIImageView alloc] initWithImage:[UIImage  imageNamed:@"one.jpg"]];
-//        imageview.frame=cell.frame;
-//        cell.backgroundView=imageview;
-        
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
         
     }
@@ -301,6 +315,16 @@
     [self downloadDoubleImage:so];
     [self loadUserMetadataAndDownloadUserProfileImage];
     
+    STreamObject *voted = [loggedInUserVotesResults objectForKey:[so objectId]];
+    if (voted != nil && [[voted objectId] isEqualToString:[imageCache getLoginUserName]]){
+        NSString *voteResult = [voted getValue:[so objectId]];
+        if ([voteResult isEqualToString: @"f1voted"]){
+            selectOneImage.image = [UIImage imageNamed:@"tick.png"];
+        }
+        if ([voteResult isEqualToString: @"f2voted"]){
+            selectTwoImage.image = [UIImage imageNamed:@"tick.png"];
+        }
+    }
     
     return cell;
 }
@@ -387,11 +411,13 @@
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
             [so update];
+            [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
             
         }else if([votedKey isEqualToString:@"f1voted"]){
           
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            [loggedInUserVotesResults removeObjectForKey:[sorow objectId]];
             
         }else{
             
@@ -399,6 +425,7 @@
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
             [so addStaff:[sorow objectId] withObject:@"f1voted"];
             [so update];
+            [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
             
         }
     }
@@ -432,12 +459,13 @@
             //update category voted
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
             [so update];
+            [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
         }
         
         else if([votedKey isEqualToString:@"f2voted"]){
-            
             //update category voted
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
+            [loggedInUserVotesResults removeObjectForKey:[sorow objectId]];
             
         }else{
             
@@ -445,6 +473,7 @@
             [so removeKey:[sorow objectId] forObjectId:[so objectId]];
             [so addStaff:[sorow objectId] withObject:@"f2voted"];
             [so update];
+            [loggedInUserVotesResults setObject:so forKey:[sorow objectId]];
         }
 
     }

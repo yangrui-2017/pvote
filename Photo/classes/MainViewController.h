@@ -29,4 +29,6 @@
 @property (assign)BOOL isPush;
 @property (assign)BOOL isPushFromVotesGiven;
 @property (strong,nonatomic) NSString * userName;
+@property (strong,nonatomic) UIImageView *selectOneImage;
+@property (strong,nonatomic) UIImageView *selectTwoImage;
 @end

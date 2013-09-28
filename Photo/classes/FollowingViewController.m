@@ -17,6 +17,7 @@
     ImageCache * cache;
     NSMutableDictionary *userMetaData;
     NSMutableArray *loggedInUserFollowing;
+    NSMutableArray *userFollowing;
     UIActivityIndicatorView *imageViewActivity;
 }
 @end
@@ -26,7 +27,7 @@
 @synthesize nameLabel;
 @synthesize followingButton;
 @synthesize pImageId;
-
+@synthesize userName;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -45,6 +46,10 @@
     [loggedInUserFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",[cache getLoginUserName]]];
     loggedInUserFollowing = [NSMutableArray arrayWithArray:[loggedInUserFollowingStream getAllKeys]];
     
+    STreamObject *userFollowingStream = [[STreamObject alloc] init];
+    [userFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",userName]];
+    userFollowing = [NSMutableArray arrayWithArray:[userFollowingStream getAllKeys]];
+    
     UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     self.tableView.backgroundView = backgrdView;
@@ -60,7 +65,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [loggedInUserFollowing count];
+    return [userFollowing count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -95,10 +100,20 @@
         [followingButton setFrame:CGRectMake(200, 0, 100, 44)];
         followingButton.tag = indexPath.row;
         [followingButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [followingButton setTitle:@"取消关注" forState:UIControlStateNormal];
         [followingButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
         [followingButton addTarget:self action:@selector(followingButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:followingButton];
+    }
+    if ([userName isEqualToString:[cache getLoginUserName]]) {
+       [followingButton setTitle:@"取消关注" forState:UIControlStateNormal];
+    }else{
+        for (NSString *key in userFollowing) {
+            if ([loggedInUserFollowing containsObject:key]) {
+                 [followingButton setTitle:@"关注" forState:UIControlStateNormal];
+            }else{
+                [followingButton setTitle:@"取消关注" forState:UIControlStateNormal];
+            }
+        }
     }
     userMetaData = [cache getUserMetadata:[loggedInUserFollowing objectAtIndex:indexPath.row]];
     pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -108,7 +123,7 @@
     }else{
         [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }
-    nameLabel.text = [loggedInUserFollowing objectAtIndex:indexPath.row];
+    nameLabel.text = [userFollowing objectAtIndex:indexPath.row];
     return cell;
 }
 -(void)followingButton:(UIButton *)button
@@ -120,7 +135,7 @@
     [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
     //for table view update
     [loggedInUserFollowing removeObject:pageUserName];
-    [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", userName]];
     [self.tableView reloadData];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -13,5 +13,6 @@
 @synthesize objectId;
 @synthesize f1;
 @synthesize f2;
+@synthesize userName;
 
 @end

@@ -14,4 +14,5 @@
 @property (strong,nonatomic) UILabel  *nameLabel;
 @property (strong,nonatomic) UIButton *followingButton;
 @property (retain,nonatomic) NSString *pImageId;
+@property (retain,nonatomic) NSString *userName;
 @end

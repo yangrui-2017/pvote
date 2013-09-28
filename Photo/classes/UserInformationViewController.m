@@ -124,16 +124,22 @@
         [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [followButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
         [followButton addTarget:self action:@selector(followButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.contentView addSubview:followButton];
+       
     }
-    if ([loggedInUserFollowing containsObject:[nameArray objectAtIndex:indexPath.row]]) {
-        [followButton setTitle:@"取消关注" forState:UIControlStateNormal];
-        [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    if ([[nameArray objectAtIndex:indexPath.row] isEqualToString:[cache getLoginUserName]]) {
+        votesLabel.frame =CGRectMake(220, 10, 100, 40);
     }else{
-        [followButton setTitle:@"关注" forState:UIControlStateNormal];
-        [followButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [cell addSubview:followButton];
+        if ([loggedInUserFollowing containsObject:[nameArray objectAtIndex:indexPath.row]]) {
+            [followButton setTitle:@"取消关注" forState:UIControlStateNormal];
+            [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        }else{
+            [followButton setTitle:@"关注" forState:UIControlStateNormal];
+            [followButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        }
+
     }
-    NSMutableDictionary *userMetaData = [cache getUserMetadata:[nameArray objectAtIndex:indexPath.row]];
+       NSMutableDictionary *userMetaData = [cache getUserMetadata:[nameArray objectAtIndex:indexPath.row]];
     NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
     if ([cache getImage:pImageId]){
         headImage.image = [UIImage imageWithData:[cache getImage:pImageId]];

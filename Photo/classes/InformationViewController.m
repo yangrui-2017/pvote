@@ -340,7 +340,7 @@
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];
             [HUD showAnimated:YES whileExecutingBlock:^{
-
+                [followingView setUserName:pageUserName];
             } completionBlock:^{
                 [self.navigationController pushViewController:followingView animated:YES];
              }];
