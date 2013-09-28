@@ -25,6 +25,7 @@
     NSMutableArray *userNameArray;
     NSMutableArray *contentsArray;
     UIToolbar *toolBar;
+    UIActivityIndicatorView *imageViewActivity;
 }
 @end
 
@@ -159,8 +160,14 @@
         [cell addSubview:self.twoImageView];
         
     }else{
+        imageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [imageViewActivity setCenter:CGPointMake(22,25)];
+        [imageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [cell.contentView addSubview:imageViewActivity];
+        [imageViewActivity startAnimating];
+        
         [self getCellHeight:indexPath.row];
-        headImageView =  [[UIImageView alloc]initWithFrame:CGRectMake(0, 10, 40, 40)];
+        headImageView =  [[UIImageView alloc]initWithFrame:CGRectMake(5, 10, 40, 40)];
         [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [cell addSubview:headImageView];
         

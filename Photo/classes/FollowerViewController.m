@@ -74,6 +74,7 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
@@ -88,14 +89,14 @@
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 2, 40, 40)];
         [cell.contentView addSubview:imageView];
         
-        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 100, 40)];
+        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 44)];
         nameLabel.font = [UIFont fontWithName:@"Arial" size:16.0f];
         nameLabel.textAlignment = NSTextAlignmentCenter;
         nameLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLabel];
         
         followerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [followerButton setFrame:CGRectMake(220, 10, 100, 40)];
+        [followerButton setFrame:CGRectMake(200, 0, 100, 44)];
         followerButton.tag = indexPath.row;
         [followerButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
         [followerButton addTarget:self action:@selector(followerButton:) forControlEvents:UIControlEventTouchUpInside];

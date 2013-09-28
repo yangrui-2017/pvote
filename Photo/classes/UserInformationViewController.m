@@ -91,6 +91,7 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];

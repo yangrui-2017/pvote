@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InformationViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface InformationViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
     
 }
@@ -20,4 +20,6 @@
 @property (copy,nonatomic) NSString *userName;
 @property (assign) BOOL isPush;
 @property (strong,nonatomic) UIButton * followerButton;
+@property (strong,nonatomic) UITextField *signatureText;
+
 @end

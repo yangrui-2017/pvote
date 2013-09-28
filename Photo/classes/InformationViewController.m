@@ -138,8 +138,8 @@
         
         nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 50)];
         nameLablel.textColor = [UIColor blackColor];
-        nameLablel.textAlignment = NSTextAlignmentCenter;
-        nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
+//        nameLablel.textAlignment = NSTextAlignmentCenter;
+//        nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
         nameLablel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLablel];
         followerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -151,19 +151,20 @@
         }else{
         }
     }else{
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
         
-        lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 240, 50)];
-        lable.textAlignment = NSTextAlignmentCenter;
-        lable.font = [UIFont fontWithName:@"Arial" size:24];
+        lable = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 240, 50)];
+//        lable.textAlignment = NSTextAlignmentCenter;
+//        lable.font = [UIFont fontWithName:@"Arial" size:24];
         lable.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:lable];
         
-        countLable = [[UILabel alloc]initWithFrame:CGRectMake(240, 0, 80, 50)];
-        countLable.textAlignment = NSTextAlignmentCenter;
-        countLable.font = [UIFont fontWithName:@"Arial" size:24];
+        countLable = [[UILabel alloc]initWithFrame:CGRectMake(230, 0, 60, 50)];
+        countLable.textAlignment = NSTextAlignmentRight;
+//        countLable.font = [UIFont fontWithName:@"Arial" size:24];
         countLable.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:countLable];
     }
@@ -180,7 +181,6 @@
     if (cell==nil) {
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
-        
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
     
