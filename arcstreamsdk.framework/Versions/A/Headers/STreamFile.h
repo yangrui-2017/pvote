@@ -35,6 +35,7 @@
 @property(retain) STreamAccessControl *accessControl;
 @property(retain) ASINetworkQueue *networkQueue;
 @property(retain) ASINetworkQueue *downloadNetwrokQueue;
+@property(copy) NSString *errorMessage;
 
 typedef void (^DelegateCall)(float);
 typedef void (^FinishCall)(NSString *);
@@ -58,6 +59,7 @@ typedef void (^FinishDownload)(NSData *, NSString *);
  @param view An UI component for displaying uploading progress.
  */
 - (void)downloadAsFile: (NSString *)path fileId:(NSString *)objectId view:(UIProgressView *)processView;
+
 
 /*!
  Download the file as NSData object.

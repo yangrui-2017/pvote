@@ -36,7 +36,7 @@
 		03C78E8C17E84C830091D094 /* FireViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8B17E84C830091D094 /* FireViewController.m */; };
 		03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8E17E84CC70091D094 /* InformationViewController.m */; };
 		03CEA0F217F44D1800D36DAC /* ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CEA0F117F44D1800D36DAC /* ph.png */; };
-		03E40DE417F6DBC0006510F7 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E40DE317F6DBC0006510F7 /* arcstreamsdk.framework */; };
+		03E40DE817F73D04006510F7 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E40DE717F73D04006510F7 /* arcstreamsdk.framework */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
 		0E91710F17F68C4F004E7638 /* UserInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E91710E17F68C4F004E7638 /* UserInformationViewController.m */; };
@@ -106,7 +106,7 @@
 		03C78E8D17E84CC70091D094 /* InformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InformationViewController.h; path = classes/InformationViewController.h; sourceTree = "<group>"; };
 		03C78E8E17E84CC70091D094 /* InformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InformationViewController.m; path = classes/InformationViewController.m; sourceTree = "<group>"; };
 		03CEA0F117F44D1800D36DAC /* ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ph.png; sourceTree = "<group>"; };
-		03E40DE317F6DBC0006510F7 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
+		03E40DE717F73D04006510F7 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03F7D12917E6FA6500FBCE96 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageCache.h; path = classes/ImageCache.h; sourceTree = "<group>"; };
 		03F7D12A17E6FA6500FBCE96 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageCache.m; path = classes/ImageCache.m; sourceTree = "<group>"; };
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
@@ -146,7 +146,7 @@
 				03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */,
 				03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */,
 				03C49AE917E102FC00AE7E3B /* CoreGraphics.framework in Frameworks */,
-				03E40DE417F6DBC0006510F7 /* arcstreamsdk.framework in Frameworks */,
+				03E40DE817F73D04006510F7 /* arcstreamsdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +186,7 @@
 		03C49AE317E102FC00AE7E3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				03E40DE317F6DBC0006510F7 /* arcstreamsdk.framework */,
+				03E40DE717F73D04006510F7 /* arcstreamsdk.framework */,
 				033F4F9A17E229530081DF34 /* libsqlite3.dylib */,
 				03C49B2617E11C9900AE7E3B /* libz.dylib */,
 				03C49B2417E11C9200AE7E3B /* MobileCoreServices.framework */,
