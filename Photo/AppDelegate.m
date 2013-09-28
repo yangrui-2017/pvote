@@ -28,13 +28,13 @@
     mainVC.title=@"主页";
     photoVC.title=@"拍照";
     fireVC.title=@"火";
-    userInfoVC.title=@"用户信息";
+    userInfoVC.title=@"#1";
     myInfoVC.title=@"个人信息";
     
     UITabBarItem *mainBar=[[UITabBarItem alloc] initWithTitle:@"主页" image: [UIImage imageNamed:@""]tag:10001];
     UITabBarItem *fireBar=[[UITabBarItem alloc] initWithTitle:@"火" image:[UIImage imageNamed:@""] tag:1002];
     UITabBarItem *photoBar=[[UITabBarItem alloc] initWithTitle:@"拍照" image: [UIImage imageNamed:@""]tag:10001];
-    UITabBarItem *userBar=[[UITabBarItem alloc] initWithTitle:@"用户信息" image:[UIImage imageNamed:@""] tag:1002];
+    UITabBarItem *userBar=[[UITabBarItem alloc] initWithTitle:@"#1" image:[UIImage imageNamed:@""] tag:1002];
     UITabBarItem *myBar=[[UITabBarItem alloc] initWithTitle:@"个人信息" image:[UIImage imageNamed:@""] tag:1002];
     
     mainVC.tabBarItem=mainBar;

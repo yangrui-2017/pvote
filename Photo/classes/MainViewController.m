@@ -169,13 +169,13 @@
     [imageViewActivity startAnimating];
     
     oneImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [oneImageViewActivity setCenter:CGPointMake(77, 260)];
+    [oneImageViewActivity setCenter:CGPointMake(77, 240)];
     [oneImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [cell addSubview:oneImageViewActivity];
     [oneImageViewActivity startAnimating];
     
     twoImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [twoImageViewActivity setCenter:CGPointMake(240, 260)];
+    [twoImageViewActivity setCenter:CGPointMake(240, 240)];
     [twoImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [cell addSubview:twoImageViewActivity];
     [twoImageViewActivity startAnimating];

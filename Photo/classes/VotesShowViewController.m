@@ -52,6 +52,7 @@
 {
     [super viewDidLoad];
  
+    self.title = @"投票";
 //    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
 //    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
     leftImageId = [rowObject getValue:@"file1"];

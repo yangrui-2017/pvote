@@ -40,6 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"粉丝列表";
     cache = [ImageCache sharedObject];
     
     STreamObject *loggedInUserFollowingStream = [[STreamObject alloc] init];
