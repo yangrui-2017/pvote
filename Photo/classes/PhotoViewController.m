@@ -167,18 +167,15 @@
     
     [file1 postData:imageData1 finished:^(NSString *response){
             NSLog(@"res: %@", response);
+           file2 = [[STreamFile alloc] init];
+           [file2 postData:imageData2 finished:^(NSString *response){
+            NSLog(@"res: %@", response);
+          }byteSent:^(float percentage){
+            NSLog(@"total: %f", percentage);
+          }];
         }byteSent:^(float percentage){
             NSLog(@"total: %f", percentage);
      }];
-    
-
-    file2 = [[STreamFile alloc] init];
-    
-    [file2 postData:imageData2 finished:^(NSString *response){
-        NSLog(@"res: %@", response);
-    }byteSent:^(float percentage){
-        NSLog(@"total: %f", percentage);
-    }];
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:HUD];
@@ -186,7 +183,8 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self upload];
     } completionBlock:^{
-        [APPDELEGATE showLoginSucceedView];
+        if ([file1 fileId] != nil && [file2 fileId] != nil)
+            [APPDELEGATE showLoginSucceedView];
     }];
     
 }
@@ -195,11 +193,18 @@
     sleep(5);
     NSString *file1Id = [file1 fileId];
     NSString *file2Id = [file2 fileId];
+    int loopCount = 0;
     while(file1Id == nil || file2Id == nil){
         sleep(2);
+        loopCount++;
+        if (loopCount > 18)
+            break;
         file1Id = [file1 fileId];
         file2Id = [file2 fileId];
     }
+    
+    if (file1Id == nil || file2Id == nil)
+        return;
     
     NSDate *now = [[NSDate alloc] init];
     long millionsSecs = [now timeIntervalSince1970];
