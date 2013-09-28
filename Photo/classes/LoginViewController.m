@@ -132,6 +132,7 @@
 }
 -(void)loginUser
 {
+    NSLog(@"name = %@,pass= %@",self.name.text,self.password.text);
     [user logIn:self.name.text withPassword:self.password.text];
     NSString *error = [user errorMessage];
     NSLog(@"error = %@",error);
