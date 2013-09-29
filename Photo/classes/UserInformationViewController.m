@@ -112,14 +112,14 @@
         nameLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLabel];
         
-        votesLabel = [[UILabel alloc]initWithFrame:CGRectMake(220, 0, 100, 30)];
+        votesLabel = [[UILabel alloc]initWithFrame:CGRectMake(210, 0, 100, 30)];
         votesLabel.font = [UIFont fontWithName:@"Arial" size:16.0f];
         votesLabel.textAlignment = NSTextAlignmentCenter;
         votesLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:votesLabel];
         
         followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [followButton setFrame:CGRectMake(220, 30, 100, 30)];
+        [followButton setFrame:CGRectMake(210, 30, 100, 30)];
         followButton.tag = indexPath.row;
         [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [followButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];

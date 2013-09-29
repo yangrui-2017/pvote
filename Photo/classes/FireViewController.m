@@ -21,6 +21,10 @@
     NSMutableDictionary *loggedInUserVotesResults;
     NSMutableArray *votesArray;
     ImageCache *imageCache;
+    UIActivityIndicatorView *firstLeftActivity;
+    UIActivityIndicatorView *firstRightActivity;
+    UIActivityIndicatorView *secondLeftActivity;
+    UIActivityIndicatorView *secondRightActivity;
 }
 @end
 
@@ -81,6 +85,7 @@
 //创建cell上控件
 -(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
 {
+    
     leftView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 150, 80)];
     leftView.backgroundColor = [UIColor whiteColor];
     [cell.contentView addSubview:leftView];
@@ -90,6 +95,30 @@
     if ((2*indexPath.row+1)< [votesArray count]) {
         [cell.contentView addSubview:rightView];
     }
+    firstLeftActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [firstLeftActivity setCenter:CGPointMake(38, 40)];
+    [firstLeftActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [leftView addSubview:firstLeftActivity];
+    [firstLeftActivity startAnimating];
+    
+    firstRightActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [firstRightActivity setCenter:CGPointMake(112, 40)];
+    [firstRightActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [leftView addSubview:firstRightActivity];
+    [firstRightActivity startAnimating];
+    
+    secondLeftActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [secondLeftActivity setCenter:CGPointMake(38, 40)];
+    [secondLeftActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [rightView addSubview:secondLeftActivity];
+    [secondLeftActivity startAnimating];
+    secondRightActivity= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [secondRightActivity setCenter:CGPointMake(112, 40)];
+    [secondRightActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [rightView addSubview:secondRightActivity];
+    [secondRightActivity startAnimating];
+    
+
     firstLeftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [firstLeftButton setFrame:CGRectMake(3, 5, 70, 70)];
     [firstLeftButton addTarget:self action:@selector(leftButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -149,6 +178,8 @@
         ImageDataFile *files = [imageCache getImages:[so objectId]];
         [firstLeftButton setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
         [firstRightButton setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
+        [firstLeftActivity startAnimating];
+        [firstRightActivity stopAnimating];
     }else{
         ImageDownload *imageDownload = [[ImageDownload alloc] init];
         [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
@@ -164,6 +195,8 @@
         ImageDataFile *files = [imageCache getImages:[so objectId]];
         [secondLeftButton setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
         [secondRightButton setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
+        [secondLeftActivity stopAnimating];
+        [secondRightActivity stopAnimating];
     }else{
         ImageDownload *imageDownload = [[ImageDownload alloc] init];
         [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
