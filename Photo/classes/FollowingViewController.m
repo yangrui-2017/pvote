@@ -121,7 +121,7 @@
             if ([key isEqualToString:[cache getLoginUserName]]) {
             }else{
                 [followingButton setTitle:@"关注" forState:UIControlStateNormal];
-                [followingButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+                [followingButton setTitleColor:[UIColor redColor]  forState:UIControlStateNormal];
             }
             
         }
@@ -150,7 +150,7 @@
     [keyFollower update];
     
     //for table view update
-    [loggedInUserFollowing addObject:key];
+    [loggedInUserFollowing addObject:pageUserName];
 }
 - (void)unFollowAction{
     [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
@@ -211,7 +211,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     InformationViewController *inforView = [[InformationViewController alloc]init];
-    [inforView setUserName:[loggedInUserFollowing objectAtIndex:indexPath.row]];
+    [inforView setUserName:[userFollowing objectAtIndex:indexPath.row]];
     [self.navigationController pushViewController:inforView animated:YES];
 }
 // Override to support conditional editing of the table view.

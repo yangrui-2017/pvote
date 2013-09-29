@@ -17,6 +17,7 @@
 @property (strong,nonatomic) UILabel *nameLablel;
 @property (strong,nonatomic) UILabel *lable;
 @property (strong,nonatomic) UILabel *countLable;
+@property (strong,nonatomic) UITextField *textFied;
 @property (copy,nonatomic) NSString *userName;
 @property (assign) BOOL isPush;
 @property (strong,nonatomic) UIButton * followerButton;

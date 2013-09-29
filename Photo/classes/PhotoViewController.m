@@ -24,9 +24,7 @@
     NSData *imageData2;
     STreamFile *file1;
     STreamFile *file2;
- 
-    
-    
+    UIToolbar* keyboardDoneButtonView;
 }
 @end
 
@@ -47,7 +45,11 @@
     }
     return self;
 }
-
+-(void)pickerDoneClicked
+{
+    UITextView* view = (UITextView*)[self.view viewWithTag:1001];
+    [view resignFirstResponder];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -55,10 +57,21 @@
     
     self.title = @"拍 照";
     
+    keyboardDoneButtonView = [[UIToolbar alloc] init];
+    keyboardDoneButtonView.barStyle = UIBarStyleDefault;
+    keyboardDoneButtonView.translucent = YES;
+    keyboardDoneButtonView.tintColor = nil;
+    [keyboardDoneButtonView sizeToFit];
+    
+//    UIBarButtonItem *SpaceButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//                                                                               target:nil  action:nil];
+//    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:@"完成"
+//                                                                   style:UIBarButtonItemStyleDone target:self
+//                                                                  action:@selector(pickerDoneClicked)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(pickerDoneClicked)];
+    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:doneButton, nil]];
+    
     self.navigationController.navigationItem.backBarButtonItem = NO;
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
-    leftItem.tintColor = [UIColor blackColor];
-    self.navigationItem.leftBarButtonItem = leftItem;
 
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"提交" style:UIBarButtonItemStyleDone target:self action:@selector(selectRightAction:)];
     self.navigationItem.rightBarButtonItem = rightItem;
@@ -110,15 +123,19 @@
         
         
         _message = [[UITextView alloc]initWithFrame:CGRectMake(20, 160, 280, 100)];
+        _message.keyboardType = UIKeyboardTypeASCIICapable;
         _message.font = [UIFont systemFontOfSize:20];
         _message.backgroundColor = [UIColor grayColor];
         _message.text = @"请输入此刻想法40字之内";
         _message.textColor = [UIColor lightGrayColor];
         _message.delegate = self;
+        _message.tag =1001;
+        _message.inputAccessoryView =keyboardDoneButtonView;
         [cell addSubview:_message];
     }
     return cell;
 }
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return _myTableView.bounds.size.height+80;//
@@ -148,17 +165,13 @@
 }
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    _message.text=@"";
+//    _message.text=@"";
     _message.textColor = [UIColor blackColor];
     return YES;
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
      [_message resignFirstResponder];
-}
--(void) selectLeftAction:(UIBarButtonItem *)item {
-
-    [_message  resignFirstResponder];
 }
 
 -(void) selectRightAction:(UIBarButtonItem *)item{

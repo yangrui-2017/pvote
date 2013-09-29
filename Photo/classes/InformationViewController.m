@@ -35,6 +35,7 @@
     int threeCount;
     int fourCount;
     UIActivityIndicatorView *imageViewActivity;
+    UIToolbar* keyboardDoneButtonView;
 }
 @end
 
@@ -48,6 +49,7 @@
 @synthesize userName;
 @synthesize isPush;
 @synthesize followerButton;
+@synthesize textFied;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,10 +63,22 @@
     [self.myTableView reloadData];
     NSLog(@"");
 }
+-(void)pickerDoneClicked
+{
+    UITextView* view = (UITextView*)[self.view viewWithTag:1001];
+    [view resignFirstResponder];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+//    keyboardDoneButtonView = [[UIToolbar alloc] init];
+//    keyboardDoneButtonView.barStyle = UIBarStyleDefault;
+//    keyboardDoneButtonView.translucent = YES;
+//    keyboardDoneButtonView.tintColor = nil;
+//    [keyboardDoneButtonView sizeToFit];
+//    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(pickerDoneClicked)];
+//    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:doneButton, nil]];
     cache = [ImageCache sharedObject];
     if (userName != nil)
         pageUserName = userName;
@@ -136,12 +150,22 @@
         imageView.image = [UIImage imageNamed:@"headImage.jpg"];
         [cell.contentView addSubview:imageView];
         
-        nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 50)];
+        nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 40)];
         nameLablel.textColor = [UIColor blackColor];
 //        nameLablel.textAlignment = NSTextAlignmentCenter;
 //        nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
         nameLablel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLablel];
+        
+        textFied = [[UITextField alloc]initWithFrame:CGRectMake(100, 50, 200, 50)];
+        textFied.textColor = [UIColor blackColor];
+        textFied.placeholder= @"Tap me to add information about youself!";
+        textFied.delegate = self;
+        textFied.backgroundColor = [UIColor clearColor];
+        textFied.inputAccessoryView = keyboardDoneButtonView;
+        textFied.tag = 1001;
+        [cell.contentView addSubview:textFied];
+
         followerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [followerButton setFrame:CGRectMake(210, 10, 120, 50)];
         [followerButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
@@ -343,6 +367,19 @@
             [self.navigationController pushViewController:followerView animated:YES];
         }
     }
+}
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textFied resignFirstResponder];
+    return YES;
+}
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+
+}
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+
+    return YES;
 }
 - (void)didReceiveMemoryWarning
 {
