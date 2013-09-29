@@ -35,7 +35,9 @@
 
 - (void) logIn: (NSString *)userName withPassword:(NSString *)password;
 
-- (NSString *)convertToJsonString: (NSMutableDictionary *)data;
+- (void)updateUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData;
+
+- (NSString *)convertToJsonString: (NSString *)userName withMetadata:(NSMutableDictionary *)data;
 
 /*!
  Check if the user exists in the application. The method returns immediately once it is called.

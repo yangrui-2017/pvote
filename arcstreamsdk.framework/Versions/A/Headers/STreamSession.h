@@ -86,4 +86,6 @@
 
 +(NSMutableString *) listSortedObjectUrl;
 
++(NSMutableString *) getUpdateUserMetadataUrl;
+
 @end

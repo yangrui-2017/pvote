@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		032373A817F8889400383316 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032373A717F8889400383316 /* arcstreamsdk.framework */; };
 		033F4F9917E229170081DF34 /* sqlService.m in Sources */ = {isa = PBXBuildFile; fileRef = 033F4F9817E229170081DF34 /* sqlService.m */; };
 		033F4F9B17E229530081DF34 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 033F4F9A17E229530081DF34 /* libsqlite3.dylib */; };
 		035E698517E13512001279F6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 035E698417E13512001279F6 /* MBProgressHUD.m */; };
@@ -35,7 +36,6 @@
 		03C49B3617E145EE00AE7E3B /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49B3517E145EE00AE7E3B /* RegisterViewController.m */; };
 		03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8E17E84CC70091D094 /* InformationViewController.m */; };
 		03CEA0F217F44D1800D36DAC /* ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CEA0F117F44D1800D36DAC /* ph.png */; };
-		03E40DE817F73D04006510F7 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E40DE717F73D04006510F7 /* arcstreamsdk.framework */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
 		0E91710F17F68C4F004E7638 /* UserInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E91710E17F68C4F004E7638 /* UserInformationViewController.m */; };
@@ -63,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		032373A717F8889400383316 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		033F4F9717E229170081DF34 /* sqlService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlService.h; path = classes/sqlService.h; sourceTree = "<group>"; };
 		033F4F9817E229170081DF34 /* sqlService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = sqlService.m; path = classes/sqlService.m; sourceTree = "<group>"; };
 		033F4F9A17E229530081DF34 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -104,7 +105,6 @@
 		03C78E8D17E84CC70091D094 /* InformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InformationViewController.h; path = classes/InformationViewController.h; sourceTree = "<group>"; };
 		03C78E8E17E84CC70091D094 /* InformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InformationViewController.m; path = classes/InformationViewController.m; sourceTree = "<group>"; };
 		03CEA0F117F44D1800D36DAC /* ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ph.png; sourceTree = "<group>"; };
-		03E40DE717F73D04006510F7 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03F7D12917E6FA6500FBCE96 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageCache.h; path = classes/ImageCache.h; sourceTree = "<group>"; };
 		03F7D12A17E6FA6500FBCE96 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageCache.m; path = classes/ImageCache.m; sourceTree = "<group>"; };
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
@@ -146,7 +146,7 @@
 				03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */,
 				03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */,
 				03C49AE917E102FC00AE7E3B /* CoreGraphics.framework in Frameworks */,
-				03E40DE817F73D04006510F7 /* arcstreamsdk.framework in Frameworks */,
+				032373A817F8889400383316 /* arcstreamsdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +186,7 @@
 		03C49AE317E102FC00AE7E3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				03E40DE717F73D04006510F7 /* arcstreamsdk.framework */,
+				032373A717F8889400383316 /* arcstreamsdk.framework */,
 				033F4F9A17E229530081DF34 /* libsqlite3.dylib */,
 				03C49B2617E11C9900AE7E3B /* libz.dylib */,
 				03C49B2417E11C9200AE7E3B /* MobileCoreServices.framework */,
