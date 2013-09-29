@@ -20,6 +20,10 @@
     NSMutableArray *userFollowing;
     UIActivityIndicatorView *imageViewActivity;
     NSString * key;
+    
+    NSString * pageUserName;
+    STreamObject *loggedInUser;
+    STreamObject *follower;
 }
 @end
 
@@ -102,7 +106,7 @@
         followingButton.tag = indexPath.row;
         [followingButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
         [followingButton addTarget:self action:@selector(followingButton:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.contentView addSubview:followingButton];
+         [cell.contentView addSubview:followingButton];
     }
     if ([userName isEqualToString:[cache getLoginUserName]]) {
         [followingButton setTitle:@"取消关注" forState:UIControlStateNormal];
@@ -110,17 +114,17 @@
         
     }else{
         key = [userFollowing objectAtIndex:indexPath.row];
-        if ([key isEqualToString:[cache getLoginUserName]]) {
-        }
         if ([loggedInUserFollowing containsObject:key]) {
             [followingButton setTitle:@"取消关注" forState:UIControlStateNormal];
             [followingButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         }else{
-            [followingButton setTitle:@"关注" forState:UIControlStateNormal];
-            [followingButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            if ([key isEqualToString:[cache getLoginUserName]]) {
+            }else{
+                [followingButton setTitle:@"关注" forState:UIControlStateNormal];
+                [followingButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            }
+            
         }
-        
-        
     }
     userMetaData = [cache getUserMetadata:[userFollowing objectAtIndex:indexPath.row]];
     pImageId = [userMetaData objectForKey:@"profileImageId"];
@@ -134,69 +138,81 @@
     cell.tag = indexPath.row;
     return cell;
 }
+- (void)followAction{
+    [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    [loggedInUser addStaff:pageUserName withObject:@""];
+    [loggedInUser update];
+    
+    STreamObject *keyFollower = [[STreamObject alloc]init];
+    [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
+    [keyFollower setObjectId:[NSString stringWithFormat:@"%@Follower", pageUserName]];
+    [keyFollower addStaff:[cache getLoginUserName] withObject:@""];
+    [keyFollower update];
+    
+    //for table view update
+    [loggedInUserFollowing addObject:key];
+}
+- (void)unFollowAction{
+    [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
+    //for table view update
+    [loggedInUserFollowing removeObject:pageUserName];
+    [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+}
 -(void)followingButton:(UIButton *)button
 {
-    NSString * pageUserName = [userFollowing objectAtIndex:button.tag];
-    STreamObject *loggedInUser = [[STreamObject alloc] init];
-    STreamObject *follower = [[STreamObject alloc]init];
+    pageUserName = [userFollowing objectAtIndex:button.tag];
+    loggedInUser = [[STreamObject alloc] init];
+    follower = [[STreamObject alloc]init];
 
-    if ([userName isEqualToString:[cache getLoginUserName]]) {
+     if ([userName isEqualToString:[cache getLoginUserName]]) {
         NSArray *visiblecells = [self.tableView visibleCells];
         for(UITableViewCell *cell in visiblecells)
         {
             if(cell.tag == button.tag)
             {
-                [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-                [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
-                //for table view update
-                [loggedInUserFollowing removeObject:pageUserName];
-                [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-                [userFollowing removeObjectAtIndex:[cell tag]];
-                [self.tableView reloadData];
+                MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+                HUD.labelText = @"读取中...";
+                [self.view addSubview:HUD];
+                [HUD showAnimated:YES whileExecutingBlock:^{
+                    [self unFollowAction];
+                }completionBlock:^{
+                    [userFollowing removeObjectAtIndex:[cell tag]];
+                    [self.tableView reloadData];
+                }];
                 break;
             }
         }
     }else{
         if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-            [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-            [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
-            //for table view update
-            [loggedInUserFollowing removeObject:pageUserName];
-            [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-            [self.tableView reloadData];
-    
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"读取中...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                [self unFollowAction];
+            }completionBlock:^{
+                [self.tableView reloadData];
+            }];
+            return;
         }
-        if ([button.titleLabel.text isEqualToString:@"关注"]) {
-            
-            [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-            [loggedInUser addStaff:key withObject:@""];
-            [loggedInUser update];
-            
-            STreamObject *keyFollower = [[STreamObject alloc]init];
-            [keyFollower setObjectId:[NSString stringWithFormat:@"%@Foller", key]];
-            [keyFollower addStaff:[cache getLoginUserName] withObject:@""];
-            [keyFollower update];
-            
-            //for table view update
-            [loggedInUserFollowing addObject:key];
-            [self.tableView reloadData];
-        }
+         if ([button.titleLabel.text isEqualToString:@"关注"]) {
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"读取中...";
+            [self.view addSubview:HUD];
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                [self followAction];
+            }completionBlock:^{
+                [self.tableView reloadData];
+            }];
+         }
     }
-    
-    
+    [self.tableView reloadData];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     InformationViewController *inforView = [[InformationViewController alloc]init];
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"读取中...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [inforView setUserName:[loggedInUserFollowing objectAtIndex:indexPath.row]];
-    } completionBlock:^{
-        [self.navigationController pushViewController:inforView animated:YES];
-    }];
-
+    [inforView setUserName:[loggedInUserFollowing objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:inforView animated:YES];
 }
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -215,11 +231,6 @@
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
-}
-
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
 }
 
 // Override to support conditional rearranging of the table view.

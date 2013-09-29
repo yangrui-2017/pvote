@@ -19,6 +19,8 @@
     NSMutableArray *loggedInUserFollowing;
     NSString *pageUserName;
     UIActivityIndicatorView *imageViewActivity;
+    STreamObject *loggedInUser;
+    STreamObject *follower;
 }
 @end
 
@@ -121,46 +123,60 @@
 
     return cell;
 }
-
+-(void)followerAction
+{
+    [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    [loggedInUser addStaff:pageUserName withObject:@""];
+    [loggedInUser update];
+    
+    [follower addStaff:[cache getLoginUserName] withObject:@""];
+    [follower update];
+    
+    //for table view update
+    [loggedInUserFollowing addObject:pageUserName];
+}
+-(void)unFollowAction
+{
+    [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+    [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
+    //for table view update
+    [loggedInUserFollowing removeObject:pageUserName];
+    [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+}
 -(void)followerButton:(UIButton *)button
 {
     pageUserName = [followerArray objectAtIndex:button.tag];
-    STreamObject *loggedInUser = [[STreamObject alloc] init];
-    STreamObject *follower = [[STreamObject alloc]init];
+    loggedInUser = [[STreamObject alloc] init];
+    follower = [[STreamObject alloc]init];
     [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-        [loggedInUser removeKey:pageUserName forObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-        [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
-        //for table view update
-        [loggedInUserFollowing removeObject:pageUserName];
-        [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"读取中...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self unFollowAction];
+        }completionBlock:^{
+            [self.tableView reloadData];
+        }];
     }
     if ([button.titleLabel.text isEqualToString:@"关注"]) {
-        
-        [loggedInUser setObjectId:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
-        [loggedInUser addStaff:pageUserName withObject:@""];
-        [loggedInUser update];
-        
-        [follower addStaff:[cache getLoginUserName] withObject:@""];
-        [follower update];
-        
-        //for table view update
-        [loggedInUserFollowing addObject:pageUserName];
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        HUD.labelText = @"读取中...";
+        [self.view addSubview:HUD];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self followerAction];
+        }completionBlock:^{
+            [self.tableView reloadData];
+        }];
     }
     [self.tableView reloadData];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     InformationViewController *inforView = [[InformationViewController alloc]init];
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"读取中...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [inforView setUserName:[followerArray objectAtIndex:indexPath.row]];
-    } completionBlock:^{
-        [self.navigationController pushViewController:inforView animated:YES];
-    }];
+    [inforView setUserName:[followerArray objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:inforView animated:YES];
     
 }
 // Override to support conditional editing of the table view.

@@ -295,17 +295,11 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 1) {
-        if (count!=0) {
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"读取中...";
-            [self.view addSubview:HUD];
+        if (count!=0)   {
             MainViewController * mainVC = [[MainViewController alloc]init];
-            [HUD showAnimated:YES whileExecutingBlock:^{
-                mainVC.isPush = YES;
-                mainVC.userName = nameLablel.text;
-             } completionBlock:^{
-                 [self.navigationController pushViewController:mainVC animated:YES];
-            }];
+            mainVC.isPush = YES;
+            mainVC.userName = nameLablel.text;
+           [self.navigationController pushViewController:mainVC animated:YES];
         }
     }
     if (indexPath.row == 2) {
@@ -336,33 +330,19 @@
     if (indexPath.row == 3) {
         if (threeCount) {
             FollowingViewController *followingView = [[FollowingViewController alloc]init];
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"读取中...";
-            [self.view addSubview:HUD];
-            [HUD showAnimated:YES whileExecutingBlock:^{
-                [followingView setUserName:pageUserName];
-            } completionBlock:^{
-                [self.navigationController pushViewController:followingView animated:YES];
-             }];
+            [followingView setUserName:pageUserName];
+            [self.navigationController pushViewController:followingView animated:YES];
         }
     }
     //follower
     if (indexPath.row == 4) {
         if (fourCount) {
             FollowerViewController *followerView = [[FollowerViewController alloc]init];
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"读取中...";
-            [self.view addSubview:HUD];
-            [HUD showAnimated:YES whileExecutingBlock:^{
-                [followerView setFollowerArray:allFollowerKey];
-            } completionBlock:^{
-                [self.navigationController pushViewController:followerView animated:YES];
-            }];
+            [followerView setFollowerArray:allFollowerKey];
+            [self.navigationController pushViewController:followerView animated:YES];
         }
     }
-
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
