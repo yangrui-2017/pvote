@@ -221,7 +221,10 @@
     
     NSDate *now = [[NSDate alloc] init];
     long millionsSecs = [now timeIntervalSince1970];
-    NSString *longValue = [NSString stringWithFormat:@"%lu", millionsSecs];
+    int i = arc4random();
+    long unique = millionsSecs + i;
+    
+    NSString *longValue = [NSString stringWithFormat:@"%lu", unique];
     
     ImageCache *cache = [[ImageCache alloc] init];
     NSString *userName = [cache getLoginUserName];
