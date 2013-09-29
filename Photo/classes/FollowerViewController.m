@@ -21,6 +21,8 @@
     UIActivityIndicatorView *imageViewActivity;
     STreamObject *loggedInUser;
     STreamObject *follower;
+    
+    NSMutableArray *userFollowing;
 }
 @end
 
@@ -39,6 +41,7 @@
 @synthesize followerButton;
 @synthesize followerArray;
 @synthesize pImageId;
+@synthesize userName;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -48,6 +51,10 @@
     STreamObject *loggedInUserFollowingStream = [[STreamObject alloc] init];
     [loggedInUserFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",[cache getLoginUserName]]];
     loggedInUserFollowing = [NSMutableArray arrayWithArray:[loggedInUserFollowingStream getAllKeys]];
+    
+    STreamObject *userFollowingStream = [[STreamObject alloc] init];
+    [userFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",userName]];
+    userFollowing = [NSMutableArray arrayWithArray:[userFollowingStream getAllKeys]];
     
     UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
@@ -113,12 +120,17 @@
         [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }
     nameLabel.text = [followerArray objectAtIndex:indexPath.row];
+    
     if ([loggedInUserFollowing containsObject:[followerArray objectAtIndex:indexPath.row]]) {
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
         [followerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     }else{
-        [followerButton setTitle:@"关注" forState:UIControlStateNormal];
-        [followerButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        if ([[followerArray objectAtIndex:indexPath.row] isEqualToString:[cache getLoginUserName]]) {
+            
+        }else{
+            [followerButton setTitle:@"关注" forState:UIControlStateNormal];
+            [followerButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        }
     }
 
     return cell;

@@ -339,6 +339,7 @@
         if (fourCount) {
             FollowerViewController *followerView = [[FollowerViewController alloc]init];
             [followerView setFollowerArray:allFollowerKey];
+            [followerView setUserName:pageUserName];
             [self.navigationController pushViewController:followerView animated:YES];
         }
     }
