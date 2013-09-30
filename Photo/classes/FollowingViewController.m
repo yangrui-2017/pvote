@@ -72,6 +72,10 @@
 {
     return [userFollowing count];
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -102,7 +106,9 @@
         [cell.contentView addSubview:nameLabel];
         
         followingButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [followingButton setFrame:CGRectMake(200, 0, 100, 44)];
+        [followingButton setFrame:CGRectMake(210, 10, 75, 30)];
+        [[followingButton  layer] setBorderWidth:1];
+        [[followingButton layer] setCornerRadius:5];
         followingButton.tag = indexPath.row;
         [followingButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
         [followingButton addTarget:self action:@selector(followingButton:) forControlEvents:UIControlEventTouchUpInside];

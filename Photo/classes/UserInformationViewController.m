@@ -116,22 +116,26 @@
         nameLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLabel];
         
-        votesLabel = [[UILabel alloc]initWithFrame:CGRectMake(210, 0, 100, 30)];
+        votesLabel = [[UILabel alloc]initWithFrame:CGRectMake(210, 0, 75, 30)];
         votesLabel.font = [UIFont fontWithName:@"Arial" size:16.0f];
         votesLabel.textAlignment = NSTextAlignmentCenter;
         votesLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:votesLabel];
         
         followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [followButton setFrame:CGRectMake(210, 30, 100, 30)];
+        [[followButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
+        [[followButton  layer] setBorderWidth:1];
+        
+        [followButton setFrame:CGRectMake(210, 30, 75, 30)];
         followButton.tag = indexPath.row;
         [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [[followButton layer] setCornerRadius:3];
         [followButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
         [followButton addTarget:self action:@selector(followButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
        
     }
     if ([[nameArray objectAtIndex:indexPath.row] isEqualToString:[cache getLoginUserName]]) {
-        votesLabel.frame =CGRectMake(210, 10, 100, 40);
+        votesLabel.frame =CGRectMake(210, 10, 75, 40);
     }else{
         [cell addSubview:followButton];
         if ([loggedInUserFollowing containsObject:[nameArray objectAtIndex:indexPath.row]]) {
@@ -158,7 +162,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 70;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

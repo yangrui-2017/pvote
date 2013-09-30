@@ -76,6 +76,11 @@
     return [followerArray count];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -105,9 +110,12 @@
         [cell.contentView addSubview:nameLabel];
         
         followerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [followerButton setFrame:CGRectMake(200, 0, 100, 44)];
+        [[followerButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
+        [[followerButton  layer] setBorderWidth:1];
+        [[followerButton layer] setCornerRadius:3];
+        [followerButton setFrame:CGRectMake(210, 10, 75, 30)];
         followerButton.tag = indexPath.row;
-        [followerButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
+        [followerButton.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
         [followerButton addTarget:self action:@selector(followerButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:followerButton];
     }
