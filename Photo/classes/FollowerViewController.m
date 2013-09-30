@@ -11,6 +11,7 @@
 #import "ImageCache.h"
 #import "MBProgressHUD.h"
 #import <arcstreamsdk/STreamObject.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface FollowerViewController ()
 {

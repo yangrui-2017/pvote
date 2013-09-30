@@ -12,6 +12,8 @@
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
 #import "ImageCache.h"
+#import <QuartzCore/QuartzCore.h>
+
 @interface UserInformationViewController ()
 {
     UIActivityIndicatorView *imageViewActivity;
