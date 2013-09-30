@@ -125,14 +125,14 @@
         [cell.contentView addSubview:votesLabel];
         
         followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [[followButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
+        [[followButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [[followButton  layer] setBorderWidth:1];
+         [[followButton layer] setCornerRadius:8];
         
         [followButton setFrame:CGRectMake(210, 30, 75, 30)];
         followButton.tag = indexPath.row;
         [followButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [[followButton layer] setCornerRadius:3];
-        [followButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
+        [followButton.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
         [followButton addTarget:self action:@selector(followButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
        
     }

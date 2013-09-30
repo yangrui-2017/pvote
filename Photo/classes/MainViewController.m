@@ -244,8 +244,11 @@
     clickButton.tag = indexPath.row;
     [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
     [clickButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    clickButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-    [clickButton setFrame:CGRectMake(220, 310, 100, 50)];
+    clickButton.titleLabel.font = [UIFont systemFontOfSize:11.0f];
+    [clickButton setFrame:CGRectMake(245, 315, 70, 25)];
+    [[clickButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[clickButton  layer] setBorderWidth:1];
+    [[clickButton layer] setCornerRadius:8];
     [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:clickButton];
     
@@ -253,8 +256,11 @@
     commentButton.tag = indexPath.row;
     [commentButton setTitle:@"评论" forState:UIControlStateNormal];
     [commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    commentButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-    [commentButton setFrame:CGRectMake(10, 310, 100, 50)];
+    commentButton.titleLabel.font = [UIFont systemFontOfSize:11.0f];
+    [commentButton setFrame:CGRectMake(5, 315, 50, 25)];
+    [[commentButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[commentButton  layer] setBorderWidth:1];
+    [[commentButton layer] setCornerRadius:8];
     [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:commentButton];
     

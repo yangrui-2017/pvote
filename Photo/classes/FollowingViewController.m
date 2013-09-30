@@ -109,9 +109,12 @@
         followingButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [followingButton setFrame:CGRectMake(210, 10, 75, 30)];
         [[followingButton  layer] setBorderWidth:1];
-        [[followingButton layer] setCornerRadius:5];
+        [[followingButton layer] setCornerRadius:8];
+        [[followingButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        
+        
         followingButton.tag = indexPath.row;
-        [followingButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
+        [followingButton.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
         [followingButton addTarget:self action:@selector(followingButton:) forControlEvents:UIControlEventTouchUpInside];
          [cell.contentView addSubview:followingButton];
     }

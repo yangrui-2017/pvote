@@ -159,7 +159,7 @@
         
         textFied = [[UITextField alloc]initWithFrame:CGRectMake(100, 50, 200, 50)];
         textFied.textColor = [UIColor blackColor];
-        textFied.placeholder= @"Tap me to add information about youself!";
+        textFied.placeholder= @"点击这里描述您的心情";
         textFied.delegate = self;
         textFied.backgroundColor = [UIColor clearColor];
         textFied.inputAccessoryView = keyboardDoneButtonView;
@@ -167,12 +167,12 @@
         [cell.contentView addSubview:textFied];
 
         followerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [[followerButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
+        [[followerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [[followerButton  layer] setBorderWidth:1];
-        [[followerButton layer] setCornerRadius:3];
+        [[followerButton layer] setCornerRadius:8];
         [followerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [followerButton setFrame:CGRectMake(210, 10, 120, 50)];
-        [followerButton.titleLabel setFont:[UIFont fontWithName:@"Arial" size:16.0f]];
+        [followerButton setFrame:CGRectMake(225, 20, 75, 30)];
+        [followerButton.titleLabel setFont:[UIFont fontWithName:@"Arial" size:14.0f]];
         [followerButton addTarget:self action:@selector(followButton:) forControlEvents:UIControlEventTouchUpInside];
         if (isPush && ![userName isEqualToString:[cache getLoginUserName]]) {
             [cell.contentView addSubview:followerButton];
