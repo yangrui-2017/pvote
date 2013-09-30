@@ -14,6 +14,8 @@
 #import "MBProgressHUD.h"
 #import "FollowingViewController.h"
 #import "FollowerViewController.h"
+#import <QuartzCore/QuartzCore.h>
+
 @interface InformationViewController ()
 {
     ImageCache *cache;

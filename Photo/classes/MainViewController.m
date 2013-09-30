@@ -21,6 +21,7 @@
 #import "VotesShowViewController.h"
 #import "InformationViewController.h"
 #import "CommentsViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MainViewController (){
     STreamCategoryObject *votes;   
