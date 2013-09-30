@@ -166,9 +166,13 @@
         textFied.tag = 1001;
         [cell.contentView addSubview:textFied];
 
-        followerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        followerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [[followerButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
+        [[followerButton  layer] setBorderWidth:1];
+        [[followerButton layer] setCornerRadius:3];
+        [followerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [followerButton setFrame:CGRectMake(210, 10, 120, 50)];
-        [followerButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
+        [followerButton.titleLabel setFont:[UIFont fontWithName:@"Arial" size:16.0f]];
         [followerButton addTarget:self action:@selector(followButton:) forControlEvents:UIControlEventTouchUpInside];
         if (isPush && ![userName isEqualToString:[cache getLoginUserName]]) {
             [cell.contentView addSubview:followerButton];
