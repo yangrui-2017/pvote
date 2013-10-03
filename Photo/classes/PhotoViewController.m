@@ -106,15 +106,17 @@
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
         
-        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 10, 130, 130)];
-        self.imageView .backgroundColor = [UIColor lightGrayColor];
+        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 150, 150)];
+       // self.imageView .backgroundColor = [UIColor lightGrayColor];
         self.imageView .userInteractionEnabled = YES;
+        [self.imageView setImage:[UIImage imageNamed:@"upload.png"]];
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
         [ self.imageView  addGestureRecognizer:singleTap];
         [cell addSubview: self.imageView ];
         
-        self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(170, 10, 130, 130)];
-        self.imageView2 .backgroundColor = [UIColor lightGrayColor];
+        self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(160, 10, 150, 150)];
+        //self.imageView2 .backgroundColor = [UIColor lightGrayColor];
+        [self.imageView2 setImage:[UIImage imageNamed:@"upload.png"]];
         self.imageView2 .userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
         [ self.imageView2  addGestureRecognizer:singleTap2];
