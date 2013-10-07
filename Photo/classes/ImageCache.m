@@ -10,15 +10,18 @@
 #import <arcstreamsdk/STreamFile.h>
 #import "ImageDataFile.h"
 #import "VoteResults.h"
+#import "FileCache.h"
 
 static NSMutableDictionary *_imageDictionary;
 static NSMutableDictionary *_selfImageDictionary;
 static NSMutableDictionary *_userMetaData;
 static NSMutableDictionary *_voteResults;
 static NSMutableString *loginUserName;
+static FileCache *fileCache;
+static NSMutableArray *_cachedSelfImageFiles;
+static NSMutableArray *_cachedFiles;
 
 @implementation ImageCache
-
 
 
 + (ImageCache *)sharedObject{
@@ -28,6 +31,9 @@ static NSMutableString *loginUserName;
      dispatch_once(&onceToken, ^{
         
          sharedInstance = [[ImageCache alloc] init];
+         fileCache = [FileCache sharedObject];
+         _cachedSelfImageFiles = [[NSMutableArray alloc] init];
+         _cachedFiles = [[NSMutableArray alloc] init];
          _imageDictionary = [[NSMutableDictionary alloc] init];
          _selfImageDictionary = [[NSMutableDictionary alloc] init];
          _userMetaData = [[NSMutableDictionary alloc] init];
@@ -58,22 +64,47 @@ static NSMutableString *loginUserName;
 
 -(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId
 {
+    if ([_cachedFiles count] >= 50){
+        NSString *oId = [_cachedFiles objectAtIndex:0];
+        [_imageDictionary removeObjectForKey:oId];
+        [_cachedFiles removeObjectAtIndex:0];
+    }
+    
+    [_cachedFiles addObject:objectId];
     [_imageDictionary setObject:imageFiles forKey:objectId];
+    
+}
+
+-(ImageDataFile *)getImages:(NSString *)objectId{
+    ImageDataFile *dataFile = [_imageDictionary objectForKey:objectId];
+    if (dataFile){
+    }
+    return dataFile;
 }
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId{
+    if ([_cachedSelfImageFiles count] >= 30){
+        NSString *fId = [_cachedSelfImageFiles objectAtIndex:0];
+        [_selfImageDictionary removeObjectForKey:fId];
+        [_cachedSelfImageFiles removeObjectAtIndex:0];
+        
+    }
+    [_cachedSelfImageFiles addObject:fileId];
     [_selfImageDictionary setObject:file forKey:fileId];
 }
 
 -(NSData *)getImage:(NSString *)fileId{
     NSData *data =  [_selfImageDictionary objectForKey:fileId];
-    if (data)
-       NSLog(@"%d", [data length]);
+    if (data){
+   //     NSLog(@"read self image file from memory %d", [data length]);
+    }
+    else{
+        data = [fileCache readFromFile:fileId];
+     //   if (data)
+       //     NSLog(@"read self image file from file %d", [data length]);
+    }
+    
     return data;
-}
-
--(ImageDataFile *)getImages:(NSString *)objectId{
-    return [_imageDictionary objectForKey:objectId];
 }
 
 -(void)addVotesResults:(NSString *)objectId withVoteResult:(VoteResults *)results{

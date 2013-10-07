@@ -70,7 +70,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"主 页";
+  //  self.title = @"主 页";
     if (!isPush) {
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
         leftItem.tintColor = [UIColor blackColor];

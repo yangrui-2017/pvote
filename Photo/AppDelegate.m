@@ -13,7 +13,9 @@
 #import "FireViewController.h"
 #import "UserInformationViewController.h"
 #import "InformationViewController.h"
+#import "UserDB.h"
 #import <arcstreamsdk/STreamSession.h>
+
 
 @implementation AppDelegate
 
@@ -81,6 +83,8 @@
     /*[STreamSession authenticate:@"9E6DA8D4057467427D0797BC2B12AFCE" secretKey:@"270740EE21B6F02F0FE69007F86E5B1D" clientKey:@"04869E41CCA70DD5F3500F00B6D83ACA" response:^(BOOL succeed, NSString *response){
         
     }];*/
+    UserDB *userDB = [[UserDB alloc] init];
+    [userDB initiDB];
     [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
             NSLog(@"res: %@", response);
     }];

@@ -11,4 +11,5 @@
 @implementation ImageDataFile
 @synthesize file1;
 @synthesize file2;
+
 @end

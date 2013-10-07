@@ -15,4 +15,6 @@
 }
 @property (retain,nonatomic)NSData *file1;
 @property (retain,nonatomic)NSData *file2;
+
+
 @end

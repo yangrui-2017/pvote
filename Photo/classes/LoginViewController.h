@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "sqlService.h"
+
 
 #define KFilename @"data.plist"
 
@@ -15,7 +15,7 @@
 {
 
     NSMutableArray *listData;
-    sqlTestList *sqlValue;
+
 }
 @property (retain,nonatomic) UITextField *name;
 @property (retain,nonatomic) UITextField *password;

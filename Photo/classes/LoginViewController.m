@@ -17,6 +17,7 @@
 #import "InformationViewController.h"
 #import "FireViewController.h"
 #import "ImageCache.h"
+#import "UserDB.h"
 
 
 @interface LoginViewController ()
@@ -109,11 +110,20 @@
         
     }else{
         
+        
+        
         HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"登录中...";
         [self.view addSubview:HUD];
         user = [[STreamUser alloc] init];
+        
+       // UserDB *userDB = [[UserDB alloc] init];
+       // [userDB logout];
+        
         ImageCache *cache = [ImageCache sharedObject];
+        NSString *userName = [cache getLoginUserName];
+        NSLog(@"%@", userName);
+        
         [cache setLoginUserName:_name.text];
         
         [HUD showAnimated:YES whileExecutingBlock:^{
@@ -134,26 +144,12 @@
 {
     NSLog(@"name = %@,pass= %@",self.name.text,self.password.text);
     [user logIn:self.name.text withPassword:self.password.text];
+    UserDB *userDB = [[UserDB alloc] init];
+    [userDB insertDB:0 name:self.name.text withPassword:self.password.text];
+    
     NSString *error = [user errorMessage];
     NSLog(@"error = %@",error);
-//    if ([error length] == 0) {
-//        
-//        //初始化数据库
-//        sqlService *sqlSer = [[sqlService alloc] init];
-//        
-//        //数据库插入
-//		
-//		sqlTestList *sqlInsert = [[sqlTestList alloc]init];
-//		sqlInsert.name = self.name.text;
-//		sqlInsert.password = self.password.text;
-//		
-//		//调用封装好的数据库插入函数
-//		if ([sqlSer insertTestList:sqlInsert]) {
-//            NSLog(@"插入数据成功");
-//		}else {
-//            NSLog(@"插入数据失败");
-//        }
-//    }
+
 }
 
 //registerButtonClicked
