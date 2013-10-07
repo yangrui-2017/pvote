@@ -92,13 +92,15 @@
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     _myTableView.backgroundView = backgrdView;
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self loadVotes];
     }completionBlock:^{
         [self.myTableView reloadData];
+         [HUD removeFromSuperview];
+         HUD = nil;
     }];
     
  

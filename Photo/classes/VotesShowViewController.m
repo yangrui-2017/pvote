@@ -60,7 +60,7 @@
     
     leftVoters = [[NSMutableArray alloc] init];
     rightVoters = [[NSMutableArray alloc] init];
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     
@@ -70,6 +70,7 @@
         [self loadVotes];
     }completionBlock:^{
          [self.tableView reloadData];
+         HUD = nil;
     }];
     
     UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];

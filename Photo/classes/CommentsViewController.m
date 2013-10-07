@@ -104,7 +104,7 @@
 #endif
 
 
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     //[HUD showWhileExecuting:@selector(loadComments) onTarget:self withObject:nil animated:YES];
@@ -112,6 +112,8 @@
         [self loadComments];
     }completionBlock:^{
         [myTableView reloadData];
+         [HUD removeFromSuperview];
+        HUD = nil;
     }];
 
     UIView *backgrdView = [[UIView alloc] initWithFrame:myTableView.frame];
@@ -299,7 +301,7 @@
 
 -(void)senderClicker{
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
@@ -308,6 +310,8 @@
         contentsText.text = @"";
         [contentsText resignFirstResponder];
         [myTableView reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
     }];
     
 }

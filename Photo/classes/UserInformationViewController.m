@@ -62,7 +62,7 @@
     [loggedInUserFollowingStream loadAll:[NSString stringWithFormat:@"%@Following",[cache getLoginUserName]]];
     loggedInUserFollowing = [NSMutableArray arrayWithArray:[loggedInUserFollowingStream getAllKeys]];
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     
@@ -70,6 +70,7 @@
         [self loadDetails];
     }completionBlock:^{
         [self.tableView reloadData];
+        HUD = nil;
     }];
     
 }
@@ -203,25 +204,29 @@
     [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"读取中...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self unFollowAction];
         }completionBlock:^{
             [self.tableView reloadData];
+             [HUD removeFromSuperview];
+            HUD = nil;
         }];
 
     }
     if ([button.titleLabel.text isEqualToString:@"关注"]) {
         
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"读取中...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self followAction];
         }completionBlock:^{
             [self.tableView reloadData];
+             [HUD removeFromSuperview];
+            HUD = nil;
         }];
 
     }

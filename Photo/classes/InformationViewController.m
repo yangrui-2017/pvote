@@ -96,7 +96,7 @@
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     myTableView.backgroundView = backgrdView;
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+   __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     
@@ -104,6 +104,8 @@
         [self loadDetails];
      }completionBlock:^{
         [self.myTableView reloadData];
+          [HUD removeFromSuperview];
+         HUD = nil;
      }];
 
 }
@@ -297,7 +299,7 @@
 -(void)followButton:(UIButton *)button
 {
     if ([button.titleLabel.text isEqualToString:@"关注"]){
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];
         
@@ -305,19 +307,23 @@
                 [self followAction];
             }completionBlock:^{
                [self.myTableView reloadData];
+                 [HUD removeFromSuperview];
+                HUD = nil;
             }];
         return;
     }
    
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"读取中...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self unFollowAction];
         }completionBlock:^{
             [self.myTableView reloadData];
+             [HUD removeFromSuperview];
+            HUD = nil;
         }];
     }
    
@@ -333,7 +339,7 @@
         }
     }
     if (indexPath.row == 2) {
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];
             MainViewController * mainVC = [[MainViewController alloc]init];
@@ -353,6 +359,8 @@
                 mainVC.isPushFromVotesGiven = YES;
             } completionBlock:^{
                 [self.navigationController pushViewController:mainVC animated:YES];
+                 [HUD removeFromSuperview];
+                HUD = nil;
             }];
         
     }

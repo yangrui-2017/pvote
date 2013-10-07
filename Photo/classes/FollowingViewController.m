@@ -181,7 +181,7 @@
         {
             if(cell.tag == button.tag)
             {
-                MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+                __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
                 HUD.labelText = @"读取中...";
                 [self.view addSubview:HUD];
                 [HUD showAnimated:YES whileExecutingBlock:^{
@@ -189,30 +189,36 @@
                 }completionBlock:^{
                     [userFollowing removeObjectAtIndex:[cell tag]];
                     [self.tableView reloadData];
+                     [HUD removeFromSuperview];
+                    HUD = nil;
                 }];
                 break;
             }
         }
     }else{
         if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];
             [HUD showAnimated:YES whileExecutingBlock:^{
                 [self unFollowAction];
             }completionBlock:^{
                 [self.tableView reloadData];
+                 [HUD removeFromSuperview];
+                HUD = nil;
             }];
             return;
         }
          if ([button.titleLabel.text isEqualToString:@"关注"]) {
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"读取中...";
             [self.view addSubview:HUD];
             [HUD showAnimated:YES whileExecutingBlock:^{
                 [self followAction];
             }completionBlock:^{
                 [self.tableView reloadData];
+                 [HUD removeFromSuperview];
+                HUD = nil;
             }];
          }
     }

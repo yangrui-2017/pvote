@@ -29,14 +29,14 @@ static NSMutableArray *cachedFiles;
 
 - (void)writeFile:(NSString *)fileName withData:(NSData *)data{
     
-    NSString *fName = [[self documentsPath] stringByAppendingPathComponent:fileName];
+    NSString *fName = [[self tempPath] stringByAppendingPathComponent:fileName];
     [data writeToFile:fName atomically:YES];
     
 }
 
 -(NSData *)readFromFile:(NSString *)fileName{
     
-    NSString *fName = [[self documentsPath] stringByAppendingPathComponent:fileName];
+    NSString *fName = [[self tempPath] stringByAppendingPathComponent:fileName];
   ///  NSData *content = [[NSData alloc] initWithContentsOfURL:[NSURL fileURLWithPath:fName]];
   //  return content;
     

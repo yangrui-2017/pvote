@@ -55,13 +55,15 @@
     self.tableView.backgroundView = backgrdView;
     self.tableView.separatorStyle = NO;
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self loadVotes];
     }completionBlock:^{
         [self.tableView reloadData];
+         [HUD removeFromSuperview];
+        HUD = nil;
     }];
 
 }

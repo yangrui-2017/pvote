@@ -136,6 +136,8 @@
                UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"该用户不存在，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertview show];
             }
+            [HUD removeFromSuperview];
+            HUD = nil;
         }];
     }
     

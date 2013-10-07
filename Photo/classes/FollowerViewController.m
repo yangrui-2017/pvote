@@ -173,23 +173,27 @@
     [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"读取中...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self unFollowAction];
         }completionBlock:^{
             [self.tableView reloadData];
+             [HUD removeFromSuperview];
+            HUD = nil;
         }];
     }
     if ([button.titleLabel.text isEqualToString:@"关注"]) {
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"读取中...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self followerAction];
         }completionBlock:^{
             [self.tableView reloadData];
+             [HUD removeFromSuperview];
+            HUD = nil;
         }];
     }
     [self.tableView reloadData];
