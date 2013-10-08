@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		032373A817F8889400383316 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032373A717F8889400383316 /* arcstreamsdk.framework */; };
 		033F4F9B17E229530081DF34 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 033F4F9A17E229530081DF34 /* libsqlite3.dylib */; };
+		03454394180420B300F1E726 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03454393180420B300F1E726 /* arcstreamsdk.framework */; };
 		035E698517E13512001279F6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 035E698417E13512001279F6 /* MBProgressHUD.m */; };
 		03A33F3B17E7308A004459C5 /* ImageDataFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A33F3A17E7308A004459C5 /* ImageDataFile.m */; };
 		03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE417E102FC00AE7E3B /* UIKit.framework */; };
@@ -70,8 +70,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		032373A717F8889400383316 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		033F4F9A17E229530081DF34 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		03454393180420B300F1E726 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		035E698317E13506001279F6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		035E698417E13512001279F6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		03A33F3917E7308A004459C5 /* ImageDataFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDataFile.h; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */,
 				03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */,
 				03C49AE917E102FC00AE7E3B /* CoreGraphics.framework in Frameworks */,
-				032373A817F8889400383316 /* arcstreamsdk.framework in Frameworks */,
+				03454394180420B300F1E726 /* arcstreamsdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +200,7 @@
 		03C49AE317E102FC00AE7E3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				032373A717F8889400383316 /* arcstreamsdk.framework */,
+				03454393180420B300F1E726 /* arcstreamsdk.framework */,
 				033F4F9A17E229530081DF34 /* libsqlite3.dylib */,
 				03C49B2617E11C9900AE7E3B /* libz.dylib */,
 				03C49B2417E11C9200AE7E3B /* MobileCoreServices.framework */,

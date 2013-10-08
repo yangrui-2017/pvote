@@ -32,6 +32,8 @@
  */
 +(void) authenticate: (NSString *)applicationId secretKey:(NSString *)secretKey clientKey: (NSString *)clientKey response:(void(^)(BOOL succeed, NSString *response))doStaff;
 
++ (NSString *) authenticate:(NSString *)appId secretKey:(NSString *)secretKey clientKey:(NSString *)clientKey;
+
 +(NSMutableString *) getStoreObjectUrl;
 
 +(NSMutableString *) getObjectUrl: (NSString *)objectId;
