@@ -165,6 +165,9 @@
         [cell addSubview:cellView];
         
     }else{
+        UIImageView *imageview  = [[UIImageView alloc]initWithFrame:CGRectMake(159, 0, 2, 60)];
+        imageview.image = [UIImage imageNamed:@"line.png"];
+        [cell addSubview:imageview];
         leftActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [leftActivity setCenter:CGPointMake(20, 22)];
         [leftActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -173,8 +176,7 @@
         rightActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [rightActivity setCenter:CGPointMake(300, 22)];
         [rightActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        [cell addSubview:rightActivity];
-        [rightActivity startAnimating];
+      
         self.leftImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 2, 40, 40)];
         [cell.contentView addSubview:self.leftImage];
         
@@ -211,6 +213,7 @@
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
+       
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
     
@@ -231,6 +234,8 @@
             }
         }
         if ([rightVoters count]!=0 &&[rightVoters count] - 1 >= (indexPath.row - 1)){
+            [cell addSubview:rightActivity];
+            [rightActivity startAnimating];
             [self.rightButton setTitle:[rightVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
             NSMutableDictionary *userMetaData = [cache getUserMetadata:[rightVoters objectAtIndex:(indexPath.row-1 )]];
             NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];

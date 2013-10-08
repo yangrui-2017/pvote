@@ -92,9 +92,9 @@
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
         
-        self.imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-150)/2, 10, 150, 150)];
+        self.imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-120)/2, 10, 120, 120)];
         self.imageview.userInteractionEnabled = YES;
-        self.imageview.image = [UIImage imageNamed:@"profileupload.png"];
+        self.imageview.image = [UIImage imageNamed:@"profile1.png"];
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked)];
         [ self.imageview  addGestureRecognizer:singleTap];
         [cell.contentView addSubview:self.imageview];

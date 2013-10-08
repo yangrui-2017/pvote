@@ -18,7 +18,7 @@
 #import "AppDelegate.h"
 @interface PhotoViewController ()
 {
-   
+    BOOL isAddImage;
     int clicked1;
     NSData *imageData1;
     NSData *imageData2;
@@ -75,8 +75,6 @@
 
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"提交" style:UIBarButtonItemStyleDone target:self action:@selector(selectRightAction:)];
     self.navigationItem.rightBarButtonItem = rightItem;
-//    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"back" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
-//    self.navigationItem.leftBarButtonItem = leftItem;
     
     self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height) style:UITableViewStylePlain];
     self.myTableView.delegate=self;
@@ -106,17 +104,17 @@
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
         
-        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 150, 150)];
+        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 10, 150, 150)];
        // self.imageView .backgroundColor = [UIColor lightGrayColor];
         self.imageView .userInteractionEnabled = YES;
-        [self.imageView setImage:[UIImage imageNamed:@"upload.png"]];
+        [self.imageView setImage:[UIImage imageNamed:@"upload2.png"]];
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
         [ self.imageView  addGestureRecognizer:singleTap];
         [cell addSubview: self.imageView ];
         
-        self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(160, 10, 150, 150)];
+        self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(165, 10, 150, 150)];
         //self.imageView2 .backgroundColor = [UIColor lightGrayColor];
-        [self.imageView2 setImage:[UIImage imageNamed:@"upload.png"]];
+        [self.imageView2 setImage:[UIImage imageNamed:@"upload2.png"]];
         self.imageView2 .userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
         [ self.imageView2  addGestureRecognizer:singleTap2];
@@ -124,7 +122,7 @@
         
         
         
-        _message = [[UITextView alloc]initWithFrame:CGRectMake(20, 160, 280, 100)];
+        _message = [[UITextView alloc]initWithFrame:CGRectMake(20, 170, 280, 100)];
         _message.keyboardType = UIKeyboardTypeASCIICapable;
         _message.font = [UIFont systemFontOfSize:20];
         _message.backgroundColor =[UIColor whiteColor];
@@ -173,6 +171,19 @@
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (isAddImage) {
+        if (buttonIndex == 1)
+        {
+            [self addPhoto];
+        }
+        else if(buttonIndex == 2)
+        {
+            [self takePhoto];
+        }
+        
+    }
+    isAddImage = NO;
+
      [_message resignFirstResponder];
 }
 
@@ -256,41 +267,79 @@
 }
 
 -(void) imageClicked:(UIImageView *)View{
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]==NO ) {
-        
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Camera Unavailable" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-        [alertView show];
-        return;
-    }
-    if (self.imagePicker == nil) {
-        
-        self.imagePicker = [[UIImagePickerController alloc]init];
-        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.imagePicker.delegate = self;
-   }
-
+//    
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]==NO ) {
+//        
+//        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Camera Unavailable" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+//        [alertView show];
+//        return;
+//    }
+//    if (self.imagePicker == nil) {
+//        
+//        self.imagePicker = [[UIImagePickerController alloc]init];
+//        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        self.imagePicker.delegate = self;
+//   }
+//    [self presentViewController:self.imagePicker animated:YES completion:NULL];
     clicked1 = 1;
-    [self presentViewController:self.imagePicker animated:YES completion:NULL];
+    isAddImage = YES;
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄", nil];
+    alert.delegate = self;
+    [alert show];
+
 }
 
 -(void) imageClicked2:(UIImageView *)View{
     
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]==NO ) {
-        
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Camera Unavailable" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-        [alertView show];
-        return;
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]==NO ) {
+//        
+//        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Camera Unavailable" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+//        [alertView show];
+//        return;
+//    }
+//    if (self.imagePicker == nil) {
+//        
+//        self.imagePicker = [[UIImagePickerController alloc]init];
+//        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        self.imagePicker.delegate = self;
+//    }
+//    [self presentViewController:self.imagePicker animated:YES completion:NULL];
+    
+    isAddImage = YES;
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄", nil];
+    alert.delegate = self;
+    [alert show];
+}
+#pragma mark - Tool Methods
+- (void)addPhoto
+{
+    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
+    imagePickerController.navigationBar.tintColor = [UIColor colorWithRed:72.0/255.0 green:106.0/255.0 blue:154.0/255.0 alpha:1.0];
+	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	imagePickerController.delegate = self;
+	imagePickerController.allowsEditing = NO;
+	[self presentViewController:imagePickerController animated:YES completion:NULL];
+}
+
+- (void)takePhoto
+{
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"该设备不支持拍照功能"
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"好", nil];
+        [alert show];
     }
-    if (self.imagePicker == nil) {
-        
-        self.imagePicker = [[UIImagePickerController alloc]init];
-        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.imagePicker.delegate = self;
+    else
+    {
+        UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePickerController.delegate = self;
+        imagePickerController.allowsEditing = NO;
+        [self presentViewController:imagePickerController animated:YES completion:NULL];
     }
-   
-   
-    [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -314,8 +363,6 @@
     clicked1 = 0;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
-
-
 -(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
     UIGraphicsBeginImageContext(newSize);
     [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
