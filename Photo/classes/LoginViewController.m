@@ -72,10 +72,10 @@
     
      if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
          
-         self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 50, 260, 50)];
-         self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 110, 260, 50)];
-         [self.loginButton setFrame:CGRectMake(30, 170, 120, 40)];
-         [self.registerButton setFrame:CGRectMake(170, 170, 120,40)];
+         self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 30, 260, 50)];
+         self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 90, 260, 50)];
+         [self.loginButton setFrame:CGRectMake(30, 150, 120, 40)];
+         [self.registerButton setFrame:CGRectMake(170, 150, 120,40)];
      }else{
          self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 60)];
          self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 140, 260, 60)];
