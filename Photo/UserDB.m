@@ -52,6 +52,12 @@
            
            [cache setLoginUserName:name];
            
+           if ([cache getLoginUserName]){
+               
+           }else{
+               
+           }
+           
        }
        sqlite3_finalize(statement);
         

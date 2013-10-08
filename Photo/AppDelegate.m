@@ -14,6 +14,7 @@
 #import "UserInformationViewController.h"
 #import "InformationViewController.h"
 #import "UserDB.h"
+#import "ImageCache.h"
 #import "MBProgressHUD.h"
 #import <arcstreamsdk/STreamSession.h>
 
@@ -97,15 +98,19 @@
     }];*/
     UserDB *userDB = [[UserDB alloc] init];
     [userDB initiDB];
-   
-    loginSuccess = NO;
+    
+    ImageCache *cache = [[ImageCache alloc]init];
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.window];
     HUD.labelText = @"读取中...";
     [self.window addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self auth];
     }completionBlock:^{
-        [self showMainView];
+        if ([cache getLoginUserName]) {
+            [self showLoginSucceedView];
+        }else{
+            [self showMainView];
+        }
         [HUD removeFromSuperview];
         HUD = nil;
     }];

@@ -127,7 +127,7 @@
         _message = [[UITextView alloc]initWithFrame:CGRectMake(20, 160, 280, 100)];
         _message.keyboardType = UIKeyboardTypeASCIICapable;
         _message.font = [UIFont systemFontOfSize:20];
-        _message.backgroundColor = [UIColor grayColor];
+        _message.backgroundColor =[UIColor whiteColor];
         _message.text = @"请输入此刻想法40字之内";
         _message.textColor = [UIColor lightGrayColor];
         _message.delegate = self;
@@ -140,7 +140,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _myTableView.bounds.size.height+80;//
+    return _myTableView.bounds.size.height+60;//
 }
 //UITextView
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

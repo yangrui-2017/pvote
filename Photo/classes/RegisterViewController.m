@@ -11,6 +11,7 @@
 #import <arcstreamsdk/STreamUser.h>
 #import <arcstreamsdk/STreamCategoryObject.h>
 #import <arcstreamsdk/STreamFile.h>
+#import <QuartzCore/QuartzCore.h>
 #import "LoginViewController.h"
 
 @interface RegisterViewController ()
@@ -31,7 +32,7 @@
 @synthesize imageview =_imageview;
 @synthesize myTableView = _myTableView;
 @synthesize actionSheet = _actionSheet;
-
+@synthesize backButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,7 +48,8 @@
 	// Do any additional setup after loading the view.
     
     self.title = @"注册";
-    self.genderArray = [[NSArray alloc]initWithObjects:@"--Select Gender--",@"Male",@"Female", nil];
+    self.navigationController.navigationBarHidden = YES;
+    self.genderArray = [[NSArray alloc]initWithObjects:@"--选择性别--",@"男",@"女", nil];
     
     self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height) style:UITableViewStylePlain];
     self.myTableView.delegate=self;
@@ -92,43 +94,43 @@
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
         
-        self.imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-100)/2, 20, 100, 100)];
+        self.imageview = [[UIImageView alloc]initWithFrame:CGRectMake((self.view.frame.size.width-150)/2, 10, 150, 150)];
         self.imageview.userInteractionEnabled = YES;
-        self.imageview.backgroundColor = [UIColor lightGrayColor];
+        self.imageview.image = [UIImage imageNamed:@"profileupload.png"];
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked)];
         [ self.imageview  addGestureRecognizer:singleTap];
         [cell.contentView addSubview:self.imageview];
         
-        self.nameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 140, self.view.frame.size.width - 40, 40)];
-        self.nameText.placeholder = @"E-mail Name";
+        self.nameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 140, self.view.frame.size.width - 40, 50)];
+        self.nameText.placeholder = @"登录名";
         self.nameText.borderStyle = UITextBorderStyleLine;
         self.nameText.delegate = self;
         [cell.contentView addSubview:self.nameText];
         
-        self.passwordText = [[UITextField alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width - 40,40)];
-        self.passwordText.placeholder = @"Password";
+        self.passwordText = [[UITextField alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width - 40,50)];
+        self.passwordText.placeholder = @"密码";
         self.passwordText.borderStyle =UITextBorderStyleLine;
         self.passwordText.delegate = self;
         [self.passwordText setSecureTextEntry:YES];//
         [cell.contentView addSubview:self.passwordText];
         
-        self.rePassword = [[UITextField alloc]initWithFrame:CGRectMake(20, 260, self.view.frame.size.width - 40, 40)];
-        self.rePassword.placeholder = @"Re_type Password";
+        self.rePassword = [[UITextField alloc]initWithFrame:CGRectMake(20, 260, self.view.frame.size.width - 40, 50)];
+        self.rePassword.placeholder = @"确认密码";
         self.rePassword.borderStyle = UITextBorderStyleLine;
         [self.rePassword setSecureTextEntry:YES];
         self.rePassword.delegate = self;
         [cell.contentView addSubview:self.rePassword];
         
-        self.dateOfBirthText = [[UITextField alloc]initWithFrame:CGRectMake(20, 320, self.view.frame.size.width - 40, 40)];
-        self.dateOfBirthText.placeholder = @"Date of birth";
+        self.dateOfBirthText = [[UITextField alloc]initWithFrame:CGRectMake(20, 320, self.view.frame.size.width - 40, 50)];
+        self.dateOfBirthText.placeholder = @"出生日期";
         self.dateOfBirthText.borderStyle = UITextBorderStyleLine;
         self.dateOfBirthText.inputView = datePicker;
         self.dateOfBirthText.inputAccessoryView = toolBar;
         self.dateOfBirthText.delegate = self;
         [cell.contentView addSubview:self.dateOfBirthText];
         
-        self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 380, self.view.frame.size.width - 40, 40)];
-        self.genderText.placeholder = @"Gender";
+        self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 380, self.view.frame.size.width - 40, 50)];
+        self.genderText.placeholder = @"性别";
         self.genderText.borderStyle = UITextBorderStyleLine;
         self.genderText.delegate = self;
         [cell.contentView addSubview:self.genderText];
@@ -138,15 +140,35 @@
         [dateButton addTarget:self action:@selector(dateButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:dateButton];
         
-        self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [[self.registerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[self.registerButton  layer] setBorderWidth:1];
+        [[self.registerButton layer] setCornerRadius:8];
+        [self.registerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        self.registerButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
         [self.registerButton setFrame:CGRectMake(20, 440, self.view.frame.size.width - 40, 40)];
         [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
         [self.registerButton addTarget:self action:@selector(registerClicked:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:self.registerButton];
+        //back
+        self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [[self.backButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[self.backButton  layer] setBorderWidth:1];
+        [[self.backButton layer] setCornerRadius:8];
+        [self.backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        self.backButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
+        [self.backButton setFrame:CGRectMake(20, 490, self.view.frame.size.width - 40, 40)];
+        [self.backButton setTitle:@"返回" forState:UIControlStateNormal];
+        [self.backButton addTarget:self action:@selector(backClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:self.backButton];
     }
     
     return cell;
     
+}
+-(void)backClicked:(id)sender{
+    LoginViewController * loginView = [[LoginViewController alloc]init];
+    [self.navigationController pushViewController:loginView animated:YES];
 }
 //done
 -(void) cancelPicker {

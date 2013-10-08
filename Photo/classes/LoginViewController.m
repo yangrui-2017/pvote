@@ -104,25 +104,7 @@
     self.registerButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
     [self.registerButton addTarget:self action:@selector(registerButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.registerButton];
-//
-    NSString *filePath = [self dataFilePath];
-    if ([[NSFileManager defaultManager]fileExistsAtPath:filePath]) {
-        
-        NSArray *array = [[NSArray alloc]initWithContentsOfFile:filePath];
-        self.name.text = [array objectAtIndex:[array count]-2];
-        self.password.text = [array objectAtIndex:[array count]-1];
-    }
-    UIApplication *app = [UIApplication sharedApplication];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:app];
-    
-}
--(void)applicationWillResignActive:(NSNotification *) notification{
-    
-    NSMutableArray * array = [[NSMutableArray alloc]init];
-    [array addObject:self.name.text];
-    [array addObject:self.password.text];
-    [array writeToFile:[self dataFilePath] atomically:YES];
-    
+
 }
 //loginButton
 -(void)loginButtonClicked{
@@ -154,7 +136,6 @@
             [self loginUser];
         } completionBlock:^{
            if ([[user errorMessage] length] == 0) {
-               APPDELEGATE.loginSuccess = YES;
                [APPDELEGATE showLoginSucceedView];
             }else{
                UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"该用户不存在，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];

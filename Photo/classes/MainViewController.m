@@ -375,7 +375,8 @@
 //查看投票
 -(void)clickedButton:(UIButton *)sender
 {
-    if (APPDELEGATE.loginSuccess) {
+    ImageCache * cache = [[ImageCache alloc]init];
+    if ([cache getLoginUserName]) {
         VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
         [votesView setRowObject:[votesArray objectAtIndex:sender.tag]];
         [self.navigationController pushViewController:votesView animated:YES];
@@ -389,7 +390,8 @@
 //comments button
 -(void)commentButtonClicked:(UIButton *)button
 {
-    if (APPDELEGATE.loginSuccess) {
+    ImageCache * cache = [[ImageCache alloc]init];
+    if ([cache getLoginUserName]){
         CommentsViewController *commentsView = [[CommentsViewController alloc]init];
         [commentsView setRowObject:[votesArray objectAtIndex:button.tag]];
         commentsView.hidesBottomBarWhenPushed = YES;
@@ -562,7 +564,8 @@
 -(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
     
     UITouch* touch = [[event allTouches] anyObject];
-    if (APPDELEGATE.loginSuccess) {
+    ImageCache * cache = [[ImageCache alloc]init];
+    if ([cache getLoginUserName]) {
         if (touch.tapCount == 2) {
             MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"投票中...";
@@ -586,7 +589,8 @@
 
 //head image clicked
 -(void) headImageClicked:(UIButton *)sender {
-    if (APPDELEGATE.loginSuccess) {
+    ImageCache * cache = [[ImageCache alloc]init];
+    if ([cache getLoginUserName]){
         STreamObject *so = [votesArray objectAtIndex:sender.tag];
         InformationViewController *informationView = [[InformationViewController alloc]init];
         informationView.userName = [so getValue:@"userName"];
