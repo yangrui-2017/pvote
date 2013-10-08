@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <arcstreamsdk/STreamObject.h>
-
-@interface VotesShowViewController : UITableViewController
+#import "MainViewTableViewRfresh.h"
+@interface VotesShowViewController : UITableViewController<MainViewTableViewRfresh>
 {
     
 }
@@ -20,6 +20,7 @@
 @property (strong,nonatomic) UIImageView *twoImageView;
 @property (strong,nonatomic) UIButton *leftButton;
 @property (strong,nonatomic) UIButton *rightButton;
+@property (strong,nonatomic) UIImageView *leftImage;
+@property (strong,nonatomic) UIImageView *rightImage;
 @property (strong,nonatomic) STreamObject *rowObject;
-
 @end

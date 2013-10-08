@@ -111,10 +111,6 @@
         [cell.contentView addSubview:nameLabel];
         
         followerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [[followerButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
-        [[followerButton  layer] setBorderWidth:1];
-        [[followerButton layer] setCornerRadius:8];
-        [[followerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [followerButton setFrame:CGRectMake(210, 10, 75, 30)];
         followerButton.tag = indexPath.row;
         [followerButton.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
@@ -132,12 +128,20 @@
     nameLabel.text = [followerArray objectAtIndex:indexPath.row];
     
     if ([loggedInUserFollowing containsObject:[followerArray objectAtIndex:indexPath.row]]) {
+        [[followerButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
+        [[followerButton  layer] setBorderWidth:1];
+        [[followerButton layer] setCornerRadius:8];
+        [[followerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
         [followerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     }else{
         if ([[followerArray objectAtIndex:indexPath.row] isEqualToString:[cache getLoginUserName]]) {
             
         }else{
+            [[followerButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
+            [[followerButton  layer] setBorderWidth:1];
+            [[followerButton layer] setCornerRadius:8];
+            [[followerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
             [followerButton setTitle:@"关注" forState:UIControlStateNormal];
             [followerButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         }

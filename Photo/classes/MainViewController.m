@@ -22,6 +22,9 @@
 #import "InformationViewController.h"
 #import "CommentsViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UserDB.h"
+#import "AppDelegate.h"
+
 
 @interface MainViewController (){
     STreamCategoryObject *votes;   
@@ -44,6 +47,8 @@
 @synthesize twoImageView =_twoImageView;
 @synthesize vote1Lable = _vote1Lable;
 @synthesize vote2Lable = _vote2Lable;
+@synthesize timeLabel;
+@synthesize timeImage;
 @synthesize clickButton;
 @synthesize commentButton;
 @synthesize isPush;
@@ -71,16 +76,12 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
   //  self.title = @"主 页";
-    if (!isPush) {
-        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStyleDone target:self action:@selector(selectLeftAction:)];
-        leftItem.tintColor = [UIColor blackColor];
-        self.navigationItem.leftBarButtonItem = leftItem;
-    } 
-    
+    if (!APPDELEGATE.loginSuccess) {
+        self.navigationController.tabBarController.tabBar.hidden = YES;
+    }
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
     
-       
     self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
@@ -111,11 +112,29 @@
 }
 
 
--(void)selectLeftAction:(id)sender{
-    LoginViewController *loginVC  =[[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginVC animated:YES];
-}
 
+- (NSString *)getTimeDiff:(long)diff{
+    
+    int seconds = (int)(diff);
+    if (seconds <= 60)
+        return [NSString stringWithFormat:@"%d秒", seconds];
+    int mins = seconds / 60;
+    if (mins <= 60)
+        return [NSString stringWithFormat:@"%d分", mins];
+    int hours = seconds / 3600;
+    if (hours <= 24)
+        return [NSString stringWithFormat:@"%d小时", hours];
+    int days = hours / 24;
+    if (days <= 30)
+        return [NSString stringWithFormat:@"%d天", days];
+    int months = days / 365;
+    if (months <= 12)
+        return [NSString stringWithFormat:@"%d月", months];
+    
+    int years = months / 12;
+    return [NSString stringWithFormat:@"%d年", years];
+   
+}
 - (void)loadVotes{
     if (isPush) {
         if (!isPushFromVotesGiven){
@@ -184,13 +203,13 @@
     [imageViewActivity startAnimating];
     
     oneImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [oneImageViewActivity setCenter:CGPointMake(77, 240)];
+    [oneImageViewActivity setCenter:CGPointMake(77, 200)];
     [oneImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [cell addSubview:oneImageViewActivity];
     [oneImageViewActivity startAnimating];
     
     twoImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [twoImageViewActivity setCenter:CGPointMake(240, 240)];
+    [twoImageViewActivity setCenter:CGPointMake(240, 200)];
     [twoImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [cell addSubview:twoImageViewActivity];
     [twoImageViewActivity startAnimating];
@@ -214,6 +233,17 @@
     self.message.lineBreakMode = NSLineBreakByCharWrapping;
     self.message.numberOfLines = 0;
     [cell.contentView addSubview:self.message];
+    
+    self.timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(268, 70, 50, 40)];
+    self.timeLabel.backgroundColor = [UIColor clearColor];
+    self.timeLabel.textAlignment = NSTextAlignmentLeft;
+    self.timeLabel.font =[UIFont systemFontOfSize:10.0f];
+    self.timeLabel.textColor = [UIColor blueColor];
+    [cell.contentView addSubview:self.timeLabel];
+    self.timeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"clock.png"]];
+    [self.timeImage setFrame:CGRectMake(250, 83, 16, 16)];
+    self.timeImage.backgroundColor = [UIColor clearColor];
+    [cell.contentView addSubview:self.timeImage];
     
     self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 110, 40, 20)];
     self.vote1Lable.textColor = [UIColor redColor];
@@ -283,7 +313,15 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-      STreamObject *so = [votesArray objectAtIndex:indexPath.row];
+    STreamObject *so = [votesArray objectAtIndex:indexPath.row];
+    
+    long lastModifiedTime = [[so lastModified] longValue];
+    NSDate *now = [[NSDate alloc] init];
+    long millionsSecs = [now timeIntervalSince1970];
+    long diff = millionsSecs - lastModifiedTime;
+    NSString *timeDiff = [self getTimeDiff:diff];
+    NSLog(@"%@", timeDiff);
+
     static NSString *cellName = @"cellName";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
@@ -305,7 +343,7 @@
     NSString *message = [so getValue:@"message"];
     self.message.text = message;
     self.name.text = [so getValue:@"userName"];
-   
+    self.timeLabel.text = timeDiff;
     ImageCache *imageCache = [ImageCache sharedObject];
     VoteResults *vo = [imageCache getResults:[so objectId]];
     if (vo){
@@ -340,18 +378,37 @@
 //查看投票
 -(void)clickedButton:(UIButton *)sender
 {
-    VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
-    [votesView setRowObject:[votesArray objectAtIndex:sender.tag]];
-    [self.navigationController pushViewController:votesView animated:YES];
+    if (APPDELEGATE.loginSuccess) {
+        VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
+        [votesView setRowObject:[votesArray objectAtIndex:sender.tag]];
+        [self.navigationController pushViewController:votesView animated:YES];
+    }else{
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
+        [alertView show];
+    }
+   
     
 }
 //comments button
 -(void)commentButtonClicked:(UIButton *)button
 {
-    CommentsViewController *commentsView = [[CommentsViewController alloc]init];
-    [commentsView setRowObject:[votesArray objectAtIndex:button.tag]];
-    commentsView.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:commentsView animated:YES];
+    if (APPDELEGATE.loginSuccess) {
+        CommentsViewController *commentsView = [[CommentsViewController alloc]init];
+        [commentsView setRowObject:[votesArray objectAtIndex:button.tag]];
+        commentsView.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:commentsView animated:YES];
+    }else{
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
+        [alertView show];
+    }
+    
+}
+#pragma mark UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1){
+        [APPDELEGATE showLoginView];
+   }
 }
 
 - (void)downloadDoubleImage: (STreamObject *)so{
@@ -508,12 +565,18 @@
 -(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
     
     UITouch* touch = [[event allTouches] anyObject];
-    if (touch.tapCount == 2) {
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"投票中...";
-        [self.view addSubview:HUD];
-        [HUD showWhileExecuting:@selector(voteTheTopicRight:) onTarget:self withObject:button animated:YES];
+    if (APPDELEGATE.loginSuccess) {
+        if (touch.tapCount == 2) {
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"投票中...";
+            [self.view addSubview:HUD];
+            [HUD showWhileExecuting:@selector(voteTheTopicRight:) onTarget:self withObject:button animated:YES];
+        }
+    }else{
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
     }
+    
 }
 - (void)reloadTable{
     [self.myTableView reloadData];
@@ -526,11 +589,17 @@
 
 //head image clicked
 -(void) headImageClicked:(UIButton *)sender {
-    STreamObject *so = [votesArray objectAtIndex:sender.tag];
-    InformationViewController *informationView = [[InformationViewController alloc]init];
-    informationView.userName = [so getValue:@"userName"];
-    informationView.isPush = YES;
-    [self.navigationController pushViewController:informationView animated:YES];
+    if (APPDELEGATE.loginSuccess) {
+        STreamObject *so = [votesArray objectAtIndex:sender.tag];
+        InformationViewController *informationView = [[InformationViewController alloc]init];
+        informationView.userName = [so getValue:@"userName"];
+        informationView.isPush = YES;
+        [self.navigationController pushViewController:informationView animated:YES];
+    }else{
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+   
 }
 
 #pragma mark Full Screen

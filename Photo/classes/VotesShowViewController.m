@@ -13,6 +13,7 @@
 #import "YIFullScreenScroll.h"
 #import "MainViewController.h"
 #import "MBProgressHUD.h"
+#import "ImageDownload.h"
 #import "InformationViewController.h"
 #import "CommentsViewController.h"
 @interface VotesShowViewController (){
@@ -25,6 +26,8 @@
     int vote2count;
     YIFullScreenScroll *_fullScreenDelegate;
     UIView *cellView;
+    UIActivityIndicatorView *leftActivity;
+    UIActivityIndicatorView *rightActivity;
 }
 
 @end
@@ -39,6 +42,8 @@
 @synthesize oneImageView;
 @synthesize twoImageView;
 @synthesize rowObject;
+@synthesize leftImage;
+@synthesize rightImage;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -129,7 +134,7 @@
         cellView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 190)];
         self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 80, 40)];
         self.vote1Lable.textColor = [UIColor redColor];
-        self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:22];
+        self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:18];
         self.vote1Lable.backgroundColor = [UIColor clearColor];
         [cellView addSubview:self.vote1Lable];
         
@@ -140,7 +145,7 @@
         
         self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(230, 0, 80, 40)];
         self.vote2Lable.textColor = [UIColor greenColor];
-        self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:22];
+        self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:18];
         self.vote2Lable.textAlignment = NSTextAlignmentRight;
         self.vote2Lable.backgroundColor = [UIColor clearColor];
         [cellView addSubview:self.vote2Lable];
@@ -153,21 +158,36 @@
         self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(110, 0, 100, 40)];
         self.countLable.textColor = [UIColor blackColor];
         self.countLable.textAlignment = NSTextAlignmentCenter;
-        self.countLable.font = [UIFont fontWithName:@"Arial" size:24];
+        self.countLable.font = [UIFont fontWithName:@"Arial" size:20];
         self.countLable.textAlignment = NSTextAlignmentCenter;
         self.countLable.backgroundColor = [UIColor clearColor];
         [cellView addSubview:self.countLable];
         [cell addSubview:cellView];
         
     }else{
-        self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 80,40)];
-        self.leftButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:22];
+        leftActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [leftActivity setCenter:CGPointMake(20, 22)];
+        [leftActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [cell addSubview:leftActivity];
+        [rightActivity startAnimating];
+        rightActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [rightActivity setCenter:CGPointMake(300, 22)];
+        [rightActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [cell addSubview:rightActivity];
+        [rightActivity startAnimating];
+        self.leftImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 2, 40, 40)];
+        [cell.contentView addSubview:self.leftImage];
+        
+        self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(40, 2, 80,40)];
+        self.leftButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:18];
         [self.leftButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [self.leftButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:self.leftButton];
         
-        self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(245, 0, 80,40)];
-        self.rightButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:22];
+        self.rightImage = [[UIImageView alloc]initWithFrame:CGRectMake(280, 2, 40, 40)];
+        [cell.contentView addSubview:self.rightImage];
+        self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 2, 80,40)];
+        self.rightButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:18];
         [self.rightButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
         [self.rightButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:self.rightButton];
@@ -196,27 +216,47 @@
     
     self.vote1Lable.text=[NSString stringWithFormat:@"%d%%",vote1count];
     self.vote2Lable.text=[NSString stringWithFormat:@"%d%%",vote2count];
-
-    if (indexPath.row != 0) {
-    
-        if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1))
-            [self.leftButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
-        if ([rightVoters count]!=0 &&[rightVoters count] - 1 >= (indexPath.row - 1))
-            [self.rightButton setTitle:[rightVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
-
-    }
     ImageCache *cache = [ImageCache sharedObject];
+    
+    if (indexPath.row != 0) {
+            if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1)){
+            [self.leftButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
+            NSMutableDictionary *userMetaData = [cache getUserMetadata:[leftVoters objectAtIndex:(indexPath.row-1 )]];
+            NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+            if ([cache getImage:pImageId]){
+                leftImage.image = [UIImage imageWithData:[cache getImage:pImageId]];
+                [leftActivity stopAnimating];
+            }else{
+                [leftImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            }
+        }
+        if ([rightVoters count]!=0 &&[rightVoters count] - 1 >= (indexPath.row - 1)){
+            [self.rightButton setTitle:[rightVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
+            NSMutableDictionary *userMetaData = [cache getUserMetadata:[rightVoters objectAtIndex:(indexPath.row-1 )]];
+            NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+            if ([cache getImage:pImageId]){
+                rightImage.image = [UIImage imageWithData:[cache getImage:pImageId]];
+                [rightActivity stopAnimating];
+            }else{
+                [rightImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            }
+        }
+}
+   
     ImageDataFile *dataFile = [cache getImages:[rowObject objectId]];
     self.oneImageView.image = [UIImage imageWithData:[dataFile file1]];
     self.twoImageView.image = [UIImage imageWithData:[dataFile file2]];
     self.countLable.text=[NSString stringWithFormat:@"投票数:%d", [result count]];
     return cell;
 }
+- (void)reloadTable{
+    [self.tableView reloadData];
+}
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
         return 230;
     }else{
-        return 40;
+        return 44;
     }
 }
 //

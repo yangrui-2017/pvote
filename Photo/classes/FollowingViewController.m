@@ -108,11 +108,6 @@
         
         followingButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [followingButton setFrame:CGRectMake(210, 10, 75, 30)];
-        [[followingButton  layer] setBorderWidth:1];
-        [[followingButton layer] setCornerRadius:8];
-        [[followingButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
-        
-        
         followingButton.tag = indexPath.row;
         [followingButton.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
         [followingButton addTarget:self action:@selector(followingButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -125,11 +120,17 @@
     }else{
         key = [userFollowing objectAtIndex:indexPath.row];
         if ([loggedInUserFollowing containsObject:key]) {
+            [[followingButton  layer] setBorderWidth:1];
+            [[followingButton layer] setCornerRadius:8];
+            [[followingButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
             [followingButton setTitle:@"取消关注" forState:UIControlStateNormal];
             [followingButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         }else{
             if ([key isEqualToString:[cache getLoginUserName]]) {
             }else{
+                [[followingButton  layer] setBorderWidth:1];
+                [[followingButton layer] setCornerRadius:8];
+                [[followingButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
                 [followingButton setTitle:@"关注" forState:UIControlStateNormal];
                 [followingButton setTitleColor:[UIColor redColor]  forState:UIControlStateNormal];
             }

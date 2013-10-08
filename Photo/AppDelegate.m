@@ -14,6 +14,7 @@
 #import "UserInformationViewController.h"
 #import "InformationViewController.h"
 #import "UserDB.h"
+#import "MBProgressHUD.h"
 #import <arcstreamsdk/STreamSession.h>
 
 
@@ -22,6 +23,7 @@
 @synthesize loginSuccess;
 
 -(void)showLoginSucceedView{
+    sleep(8);
     MainViewController * mainVC = [[MainViewController alloc]init];
     PhotoViewController *photoVC = [[PhotoViewController alloc]init];
     FireViewController * fireVC = [[FireViewController alloc]init];
@@ -63,12 +65,11 @@
     tabBar.viewControllers=array;
     [self.window setRootViewController:tabBar];
 }
--(void)showMainView{
+-(void)showLoginView{
     
-    MainViewController * mainVC = [[MainViewController alloc]init];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:mainVC];
+    LoginViewController *loginView = [[LoginViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
     [self.window setRootViewController:nav];
-    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -91,11 +92,16 @@
     
     //
     loginSuccess = NO;
-    
-    LoginViewController *loginView = [[LoginViewController alloc]init];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginView];
-    [self.window setRootViewController:nav];
-    
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.window];
+    HUD.labelText = @"读取中...";
+    [self.window addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self showLoginSucceedView];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+ 
     self.window.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     [self.window makeKeyAndVisible];
     return YES;

@@ -47,7 +47,7 @@
     
     
     if (data1 != nil && data2 != nil){
-        NSLog(@"read data1 & data2 from file system");
+       // NSLog(@"read data1 & data2 from file system");
         ImageDataFile *dataFile = [[ImageDataFile alloc] init];
         [dataFile setFile1:data1];
         [dataFile setFile2:data2];

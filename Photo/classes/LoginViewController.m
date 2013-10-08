@@ -53,7 +53,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //test commit from second edward
-    
     self.title = @"登录";
     self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 40)];
     self.name.placeholder=@"E-mail";
@@ -161,7 +160,10 @@
     [self.navigationController pushViewController:registerVC animated:YES];
     
 }
-
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [textField becomeFirstResponder];
+}
 //UITextFied
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.name resignFirstResponder];

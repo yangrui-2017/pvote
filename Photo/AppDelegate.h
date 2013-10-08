@@ -18,6 +18,6 @@
 @property (strong, nonatomic) UIWindow *window;
 
 -(void)showLoginSucceedView;
--(void)showMainView;
+-(void)showLoginView;
 
 @end

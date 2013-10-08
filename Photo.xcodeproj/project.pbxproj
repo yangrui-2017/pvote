@@ -54,6 +54,7 @@
 		0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB14017EEC9AC00949081 /* VotesShowViewController.m */; };
 		0EE23C4117F3E66C00F56F37 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE23C4017F3E66C00F56F37 /* CommentsViewController.m */; };
 		0EE23C4517F4198400F56F37 /* headImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EE23C4417F4198400F56F37 /* headImage.jpg */; };
+		0EE2FC5E1803CC32000761CF /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE2FC5D1803CC32000761CF /* clock.png */; };
 		0EE3708A17F7B73100E2E487 /* FireViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3708917F7B73100E2E487 /* FireViewController.m */; };
 		0EF9AE4318017B8100E78732 /* UserDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9AE4218017B8100E78732 /* UserDB.m */; };
 		0EF9AE4818025DCF00E78732 /* FileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9AE4718025DCF00E78732 /* FileCache.m */; };
@@ -140,6 +141,7 @@
 		0EE23C3F17F3E66C00F56F37 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentsViewController.h; path = classes/CommentsViewController.h; sourceTree = "<group>"; };
 		0EE23C4017F3E66C00F56F37 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentsViewController.m; path = classes/CommentsViewController.m; sourceTree = "<group>"; };
 		0EE23C4417F4198400F56F37 /* headImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = headImage.jpg; path = ../../headImage.jpg; sourceTree = "<group>"; };
+		0EE2FC5D1803CC32000761CF /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		0EE3708817F7B73100E2E487 /* FireViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FireViewController.h; path = classes/FireViewController.h; sourceTree = "<group>"; };
 		0EE3708917F7B73100E2E487 /* FireViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FireViewController.m; path = classes/FireViewController.m; sourceTree = "<group>"; };
 		0EF9AE4118017B8100E78732 /* UserDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDB.h; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 		03C49AD817E102FC00AE7E3B = {
 			isa = PBXGroup;
 			children = (
+				0EE2FC5D1803CC32000761CF /* clock.png */,
 				03C49AEA17E102FC00AE7E3B /* Photo */,
 				03C49B0817E102FC00AE7E3B /* PhotoTests */,
 				03C49AE317E102FC00AE7E3B /* Frameworks */,
@@ -403,6 +406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EE2FC5E1803CC32000761CF /* clock.png in Resources */,
 				03C49AEF17E102FC00AE7E3B /* InfoPlist.strings in Resources */,
 				0EDFB13E17EEBB4A00949081 /* Placeholder.png in Resources */,
 				0E6680C117FD9ECF00EA292C /* infor.png in Resources */,

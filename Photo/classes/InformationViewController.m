@@ -14,6 +14,8 @@
 #import "MBProgressHUD.h"
 #import "FollowingViewController.h"
 #import "FollowerViewController.h"
+#import "AppDelegate.h"
+#import "UserDB.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface InformationViewController ()
@@ -81,11 +83,16 @@
 //    [keyboardDoneButtonView sizeToFit];
 //    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(pickerDoneClicked)];
 //    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:doneButton, nil]];
-    cache = [ImageCache sharedObject];
+        cache = [ImageCache sharedObject];
     if (userName != nil)
         pageUserName = userName;
     else
         pageUserName = [cache getLoginUserName];
+    if ([pageUserName isEqualToString:[cache getLoginUserName]]) {
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登出" style:UIBarButtonItemStyleDone target:self action:@selector(selectLogoutAction:)];
+        self.navigationItem.leftBarButtonItem = leftItem;
+    }
+
 	// Do any additional setup after loading the view.
        myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     myTableView.dataSource = self;
@@ -109,7 +116,11 @@
      }];
 
 }
-
+-(void)selectLogoutAction:(id)sender{
+    UserDB *userDB = [[UserDB alloc] init];
+    [userDB logout];
+    [APPDELEGATE showLoginView];
+}
 - (void)loadDetails{
    
     sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
