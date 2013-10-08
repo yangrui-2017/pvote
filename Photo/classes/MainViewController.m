@@ -77,7 +77,7 @@
 	// Do any additional setup after loading the view.
   //  self.title = @"主 页";
     if (!APPDELEGATE.loginSuccess) {
-        self.navigationController.tabBarController.tabBar.hidden = YES;
+        self.tabBarController.tabBar.hidden = YES;
     }
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
@@ -333,7 +333,7 @@
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 360,cell.frame.size.width , 10)];
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 320,cell.frame.size.width , 10)];
         view.backgroundColor = [UIColor whiteColor];
         [cell.backgroundView addSubview:view];
         
@@ -573,7 +573,7 @@
             [HUD showWhileExecuting:@selector(voteTheTopicRight:) onTarget:self withObject:button animated:YES];
         }
     }else{
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
         [alertView show];
     }
     
