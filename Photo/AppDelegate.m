@@ -23,7 +23,6 @@
 @synthesize loginSuccess;
 
 -(void)showLoginSucceedView{
-    sleep(8);
     MainViewController * mainVC = [[MainViewController alloc]init];
     PhotoViewController *photoVC = [[PhotoViewController alloc]init];
     FireViewController * fireVC = [[FireViewController alloc]init];
@@ -72,6 +71,12 @@
     [self.window setRootViewController:nav];
 }
 
+-(void)auth{
+    
+    NSString *res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
+    NSLog(@"%@", res);
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -86,18 +91,15 @@
     }];*/
     UserDB *userDB = [[UserDB alloc] init];
     [userDB initiDB];
-    [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" response:^(BOOL succeed, NSString *response){
-            NSLog(@"res: %@", response);
-    }];
-    
-    //
+   
     loginSuccess = NO;
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.window];
     HUD.labelText = @"读取中...";
     [self.window addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
-        [self showLoginSucceedView];
+        [self auth];
     }completionBlock:^{
+        [self showLoginSucceedView];
         [HUD removeFromSuperview];
         HUD = nil;
     }];

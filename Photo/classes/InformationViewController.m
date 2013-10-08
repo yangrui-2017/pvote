@@ -54,6 +54,7 @@
 @synthesize isPush;
 @synthesize followerButton;
 @synthesize textFied;
+@synthesize image;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -199,7 +200,10 @@
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
         
-        lable = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 240, 50)];
+        image = [[UIImageView alloc]initWithFrame:CGRectMake(8, 9, 32, 32)];
+        [cell.contentView addSubview:image];
+        
+        lable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 240, 50)];
 //        lable.textAlignment = NSTextAlignmentCenter;
 //        lable.font = [UIFont fontWithName:@"Arial" size:24];
         lable.backgroundColor = [UIColor clearColor];
@@ -242,13 +246,16 @@
     }
     
     NSArray * dataArray =[[NSArray alloc]initWithObjects:@"上传数",@"投票数",@"关注数",@"粉丝数",nil];
+    NSArray *imageArray = [[NSArray alloc]initWithObjects:@"upload1.png",@"vote.png",@"following.png",@"follower.png", nil];
     if (indexPath.row ==1) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
+        image.image = [UIImage imageNamed:[imageArray objectAtIndex:indexPath.row-1]];
         countLable.text =[NSString stringWithFormat:@"%d",[array count]];
         count = [countLable.text intValue];
     }
     if (indexPath.row ==2) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
+        image.image = [UIImage imageNamed:[imageArray objectAtIndex:indexPath.row-1]];
         if ([so size]==0) {
             countLable.text = @"0";
         }else{
@@ -257,10 +264,12 @@
     }
     if (indexPath.row ==3) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
+        image.image = [UIImage imageNamed:[imageArray objectAtIndex:indexPath.row-1]];
         countLable.text =[NSString stringWithFormat:@"%d",[allFollowingKey count]];
         threeCount = [countLable.text intValue];
     }
     if (indexPath.row ==4) {
+        image.image = [UIImage imageNamed:[imageArray objectAtIndex:indexPath.row-1]];
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
         countLable.text =[NSString stringWithFormat:@"%d",[allFollowerKey count]];
         fourCount = [countLable.text intValue];

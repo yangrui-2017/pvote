@@ -22,5 +22,5 @@
 @property (assign) BOOL isPush;
 @property (strong,nonatomic) UIButton * followerButton;
 @property (strong,nonatomic) UITextField *signatureText;
-
+@property (strong,nonatomic) UIImageView *image;
 @end

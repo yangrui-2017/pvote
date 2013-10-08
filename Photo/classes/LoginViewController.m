@@ -54,28 +54,35 @@
 	// Do any additional setup after loading the view.
     //test commit from second edward
     self.title = @"登录";
-    self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 40)];
-    self.name.placeholder=@"E-mail";
+    self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 60)];
+    self.name.placeholder=@"登录名";
     self.name.borderStyle = UITextBorderStyleLine;
     self.name.delegate =self;
+    [self.name becomeFirstResponder];
     [self.view addSubview: self.name];
     
-    self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 120, 260, 40)];
-    self.password.placeholder=@"Password";
+    self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 140, 260, 60)];
+    self.password.placeholder=@"密码";
     self.password.borderStyle = UITextBorderStyleLine;
     [self.password setSecureTextEntry:YES];
     self.password.delegate =self;
     [self.view addSubview: self.password];
     //loginbutton 
     self.loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.loginButton setFrame:CGRectMake(30, 170, 260, 40)];
+    [self.loginButton setFrame:CGRectMake(30, 220, 120, 40)];
     [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
     [self.loginButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [[self.loginButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[self.loginButton  layer] setBorderWidth:1];
+    [[self.loginButton layer] setCornerRadius:8];
     [self.view addSubview:self.loginButton];
     
     //注册 registerButton
     self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.registerButton setFrame:CGRectMake(30, 230, 260,40)];
+    [self.registerButton setFrame:CGRectMake(170, 220, 120,40)];
+    [[self.registerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+    [[self.registerButton  layer] setBorderWidth:1];
+    [[self.registerButton layer] setCornerRadius:8];
     [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
     [self.registerButton addTarget:self action:@selector(registerButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.registerButton];
