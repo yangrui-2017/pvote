@@ -19,7 +19,6 @@
 @property (strong,nonatomic) UITextField *genderText;
 @property (strong,nonatomic) UITextField *dateOfBirthText;
 @property (strong,nonatomic) UIButton *registerButton;
-@property (strong,nonatomic) UIButton *backButton;
 @property (retain,nonatomic) NSArray *genderArray;
 @property (strong,nonatomic) UIImageView *imageview;
 @property (strong,nonatomic) UITableView *myTableView;

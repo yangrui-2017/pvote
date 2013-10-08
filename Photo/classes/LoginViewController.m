@@ -49,13 +49,24 @@
     NSString * documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:KFilename];
 }
+-(void)backlicked{
+    ImageCache * cache = [[ImageCache alloc]init];
+    if ([cache getLoginUserName]) {
+        [APPDELEGATE showLoginSucceedView];
+    }else{
+        [APPDELEGATE showMainView];
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //test commit from second edward
     self.title = @"登录";
-    self.navigationController.navigationBarHidden = YES;
+    
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backlicked)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     

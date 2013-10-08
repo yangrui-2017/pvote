@@ -32,7 +32,6 @@
 @synthesize imageview =_imageview;
 @synthesize myTableView = _myTableView;
 @synthesize actionSheet = _actionSheet;
-@synthesize backButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -48,10 +47,9 @@
 	// Do any additional setup after loading the view.
     
     self.title = @"注册";
-    self.navigationController.navigationBarHidden = YES;
     self.genderArray = [[NSArray alloc]initWithObjects:@"--选择性别--",@"男",@"女", nil];
     
-    self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height) style:UITableViewStylePlain];
+    self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
     self.myTableView.delegate=self;
     self.myTableView.dataSource=self;
     self.myTableView.showsVerticalScrollIndicator = NO;
@@ -150,26 +148,12 @@
         [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
         [self.registerButton addTarget:self action:@selector(registerClicked:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:self.registerButton];
-        //back
-        self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [[self.backButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
-        [[self.backButton  layer] setBorderWidth:1];
-        [[self.backButton layer] setCornerRadius:8];
-        [self.backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        self.backButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-        [self.backButton setFrame:CGRectMake(20, 490, self.view.frame.size.width - 40, 40)];
-        [self.backButton setTitle:@"返回" forState:UIControlStateNormal];
-        [self.backButton addTarget:self action:@selector(backClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.contentView addSubview:self.backButton];
-    }
+}
     
     return cell;
     
 }
--(void)backClicked:(id)sender{
-    LoginViewController * loginView = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginView animated:YES];
-}
+
 //done
 -(void) cancelPicker {
     if ([self.view endEditing:NO]) {
