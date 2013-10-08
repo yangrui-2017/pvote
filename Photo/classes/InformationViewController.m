@@ -118,9 +118,17 @@
 
 }
 -(void)selectLogoutAction:(id)sender{
-    UserDB *userDB = [[UserDB alloc] init];
-    [userDB logout];
-    [APPDELEGATE showLoginView];
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您确定要退出吗？" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    alertView.delegate = self;
+    [alertView show];
+   
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 1) {
+        UserDB *userDB = [[UserDB alloc] init];
+        [userDB logout];
+        [APPDELEGATE showLoginView];
+    }
 }
 - (void)loadDetails{
    

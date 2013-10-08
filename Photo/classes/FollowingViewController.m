@@ -115,6 +115,10 @@
     }
     if ([userName isEqualToString:[cache getLoginUserName]]) {
         [followingButton setTitle:@"取消关注" forState:UIControlStateNormal];
+        
+        [[followingButton  layer] setBorderWidth:1];
+        [[followingButton layer] setCornerRadius:8];
+        [[followingButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [followingButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         
     }else{
@@ -127,6 +131,7 @@
             [followingButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         }else{
             if ([key isEqualToString:[cache getLoginUserName]]) {
+                
             }else{
                 [[followingButton  layer] setBorderWidth:1];
                 [[followingButton layer] setCornerRadius:8];

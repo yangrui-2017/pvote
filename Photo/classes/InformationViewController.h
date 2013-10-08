@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InformationViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@interface InformationViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 {
     
 }
