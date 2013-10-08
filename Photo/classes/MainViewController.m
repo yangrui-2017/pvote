@@ -75,10 +75,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-  //  self.title = @"主 页";
-    if (!APPDELEGATE.loginSuccess) {
-        self.tabBarController.tabBar.hidden = YES;
-    }
+    self.title = @"主 页";
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
     

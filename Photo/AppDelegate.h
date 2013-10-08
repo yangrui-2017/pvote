@@ -19,5 +19,5 @@
 
 -(void)showLoginSucceedView;
 -(void)showLoginView;
-
+-(void)showMainView;
 @end

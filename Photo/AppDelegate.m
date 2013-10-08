@@ -64,6 +64,12 @@
     tabBar.viewControllers=array;
     [self.window setRootViewController:tabBar];
 }
+-(void)showMainView{
+    
+    MainViewController * mainVC = [[MainViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:mainVC];
+    [self.window setRootViewController:nav];
+}
 -(void)showLoginView{
     
     LoginViewController *loginView = [[LoginViewController alloc]init];
@@ -99,7 +105,7 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self auth];
     }completionBlock:^{
-        [self showLoginSucceedView];
+        [self showMainView];
         [HUD removeFromSuperview];
         HUD = nil;
     }];

@@ -11,6 +11,7 @@
 #import "RegisterViewController.h"
 #import "MainViewController.h"
 #import <arcstreamsdk/STreamUser.h>
+#import <QuartzCore/QuartzCore.h>
 #import "MBProgressHUD.h"
 #import "AppDelegate.h"
 #import "UserInformationViewController.h"
