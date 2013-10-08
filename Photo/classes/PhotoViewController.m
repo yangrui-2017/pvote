@@ -122,7 +122,7 @@
         
         
         
-        _message = [[UITextView alloc]initWithFrame:CGRectMake(20, 170, 280, 100)];
+        _message = [[UITextView alloc]initWithFrame:CGRectMake(5, 170, 310, 100)];
         _message.keyboardType = UIKeyboardTypeASCIICapable;
         _message.font = [UIFont systemFontOfSize:20];
         _message.backgroundColor =[UIColor whiteColor];
