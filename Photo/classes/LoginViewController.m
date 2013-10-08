@@ -56,15 +56,15 @@
     //test commit from second edward
     self.title = @"登录";
     self.navigationController.navigationBarHidden = YES;
-    self.loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
      if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
          
-         self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 10, 260, 50)];
-         self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 80, 260, 50)];
-         [self.loginButton setFrame:CGRectMake(30, 140, 120, 40)];
-         [self.registerButton setFrame:CGRectMake(170, 140, 120,40)];
+         self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 50, 260, 50)];
+         self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 110, 260, 50)];
+         [self.loginButton setFrame:CGRectMake(30, 170, 120, 40)];
+         [self.registerButton setFrame:CGRectMake(170, 170, 120,40)];
      }else{
          self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 60)];
          self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 140, 260, 60)];
@@ -87,6 +87,8 @@
     [self.view addSubview: self.password];
     //loginbutton 
     [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
+    [self.loginButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    self.loginButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
     [self.loginButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [[self.loginButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
     [[self.loginButton  layer] setBorderWidth:1];
@@ -98,6 +100,8 @@
     [[self.registerButton  layer] setBorderWidth:1];
     [[self.registerButton layer] setCornerRadius:8];
     [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
+    [self.registerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    self.registerButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
     [self.registerButton addTarget:self action:@selector(registerButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.registerButton];
 //
