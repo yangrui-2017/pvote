@@ -171,10 +171,18 @@
 //registerButton
 -(void) registerClicked:(UIButton *)button {
     if ([self.passwordText.text isEqualToString:self.rePassword.text]) {
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        __block  MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"注册中...";
         [self.view addSubview:HUD];
-        [HUD showWhileExecuting:@selector(registerUser) onTarget:self withObject:nil animated:YES];
+        
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self registerUser];
+         } completionBlock:^{
+             [HUD removeFromSuperview];
+             LoginViewController *loginView = [[LoginViewController alloc]init];
+             [self.navigationController pushViewController:loginView animated:YES];
+             HUD=nil;
+        }];
        
     }else{
         alertview = [[UIAlertView alloc]initWithTitle:@"Error" message:@"两次输入密码不同，请重新输入" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
@@ -245,8 +253,7 @@
         NSLog(@"%@", error);
         
     }
-    LoginViewController *loginView = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginView animated:YES];
+   
 
 }
 //* UIPickerView

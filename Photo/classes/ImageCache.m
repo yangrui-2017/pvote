@@ -64,7 +64,7 @@ static NSMutableArray *_cachedFiles;
 
 -(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId
 {
-    if ([_cachedFiles count] >= 50){
+    if ([_cachedFiles count] >= 40){
         NSString *oId = [_cachedFiles objectAtIndex:0];
         [_imageDictionary removeObjectForKey:oId];
         [_cachedFiles removeObjectAtIndex:0];

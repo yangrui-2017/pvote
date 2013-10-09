@@ -140,10 +140,14 @@
             votesArray = [st find];
         }
     }else{
-        votesArray = [votes load];
+        STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
+        NSDate *now = [[NSDate alloc] init];
+        [sq beforeDate:@"creationTime" before:now];
+        votesArray = [sq find];
         votesArray = [[NSMutableArray alloc] initWithArray:[[votesArray reverseObjectEnumerator]allObjects]];
-         st = [[STreamQuery alloc] initWithCategory:@"Voted"];
+        st = [[STreamQuery alloc] initWithCategory:@"Voted"];
     }
+    
     ImageCache *imageCache = [ImageCache sharedObject];
    
    
@@ -312,13 +316,13 @@
 {
     STreamObject *so = [votesArray objectAtIndex:indexPath.row];
     
-    long lastModifiedTime = [[so lastModified] longValue];
+    NSString *creationTimeStr = [so getValue:@"creationTime"];
+    long lastModifiedTime = [creationTimeStr longLongValue];
     NSDate *now = [[NSDate alloc] init];
     long millionsSecs = [now timeIntervalSince1970];
     long diff = millionsSecs - lastModifiedTime;
     NSString *timeDiff = [self getTimeDiff:diff];
-    NSLog(@"%@", timeDiff);
-
+    
     static NSString *cellName = @"cellName";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     

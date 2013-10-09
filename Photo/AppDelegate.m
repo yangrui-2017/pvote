@@ -80,8 +80,15 @@
 
 -(void)auth{
     
-    NSString *res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
-    NSLog(@"%@", res);
+    //test@gmail.com
+  //  NSString *res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
+   // NSLog(@"%@", res);
+    
+    
+    
+    //test1@gmail.com
+    NSString *res = [STreamSession authenticate:@"6CA747AF6D517C687A68520850C6571A" secretKey:@"6D1CA3A6F875B8C749C3B889780C5F44" clientKey:@"F1A01B41500DBAA4189EAD022A9EED02" ];
+     NSLog(@"%@", res);
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -91,7 +98,6 @@
 //    客户key: 01D901D6EFBA42145E54F52E465F407B
 //    安全key: 4EF482C15D849D04BA5D7BC940526EA3
 //    应用ID/key: 0093D2FD61600099DE1027E50C6C3F8D
-
 
     /*[STreamSession authenticate:@"9E6DA8D4057467427D0797BC2B12AFCE" secretKey:@"270740EE21B6F02F0FE69007F86E5B1D" clientKey:@"04869E41CCA70DD5F3500F00B6D83ACA" response:^(BOOL succeed, NSString *response){
         

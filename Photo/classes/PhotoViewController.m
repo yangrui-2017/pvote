@@ -248,6 +248,7 @@
     [vote addStaff:@"file2" withObject:file2Id];
     [vote addStaff:@"message" withObject:_message.text];
     [vote addStaff:@"userName" withObject:userName];
+    [vote addStaff:@"creationTime" withObject:[NSString stringWithFormat:@"%lu", millionsSecs]];
     
     STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     NSMutableArray *av = [[NSMutableArray alloc] init];
@@ -348,15 +349,15 @@
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     if (clicked1 == 1){
        self.imageView.image = image;
-       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(640, 640)];
       // imageData1 = UIImageJPEGRepresentation(image, 1);
-       imageData1 = UIImageJPEGRepresentation(sImage, 0.3);
+       imageData1 = UIImageJPEGRepresentation(sImage, 0.5);
     }
     else{
        self.imageView2.image = image;
-       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(150.0, 150.0)];
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(640, 640)];
      //  imageData2 = UIImageJPEGRepresentation(image, 1);
-       imageData2 = UIImageJPEGRepresentation(sImage, 0.3);
+       imageData2 = UIImageJPEGRepresentation(sImage, 0.5);
 
     }
     
