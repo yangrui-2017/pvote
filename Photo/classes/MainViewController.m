@@ -128,6 +128,8 @@
     return [NSString stringWithFormat:@"%d年", years];
    
 }
+
+
 - (void)loadVotes{
     if (isPush) {
         if (!isPushFromVotesGiven){
@@ -140,7 +142,15 @@
         NSDate *now = [[NSDate alloc] init];
         [sq beforeDate:@"creationTime" before:now];
         votesArray = [sq find];
-        votesArray = [[NSMutableArray alloc] initWithArray:[[votesArray reverseObjectEnumerator]allObjects]];
+        [votesArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            STreamObject *so1 = (STreamObject *)obj1;
+            STreamObject *so2 = (STreamObject *)obj2;
+            NSString *t1 = [so1 getValue:@"creationTime"];
+            NSString *t2 = [so2 getValue:@"creationTime"];
+
+            return [t2 compare:t1];
+
+        }];
         st = [[STreamQuery alloc] initWithCategory:@"Voted"];
     }
     
