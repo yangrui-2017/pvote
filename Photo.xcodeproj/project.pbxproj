@@ -35,6 +35,7 @@
 		03C49B3617E145EE00AE7E3B /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49B3517E145EE00AE7E3B /* RegisterViewController.m */; };
 		03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C78E8E17E84CC70091D094 /* InformationViewController.m */; };
 		03CEA0F217F44D1800D36DAC /* ph.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CEA0F117F44D1800D36DAC /* ph.png */; };
+		03CF5DF3180579E60082CBC0 /* SingleImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF5DF2180579E40082CBC0 /* SingleImageViewController.m */; };
 		03F7D12B17E6FA6500FBCE96 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12A17E6FA6500FBCE96 /* ImageCache.m */; };
 		03F7D12E17E6FAB100FBCE96 /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F7D12D17E6FAB100FBCE96 /* ImageDownload.m */; };
 		0E6680A517FD84E500EA292C /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E6680A417FD84E500EA292C /* home.png */; };
@@ -117,6 +118,8 @@
 		03C78E8D17E84CC70091D094 /* InformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InformationViewController.h; path = classes/InformationViewController.h; sourceTree = "<group>"; };
 		03C78E8E17E84CC70091D094 /* InformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InformationViewController.m; path = classes/InformationViewController.m; sourceTree = "<group>"; };
 		03CEA0F117F44D1800D36DAC /* ph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ph.png; sourceTree = "<group>"; };
+		03CF5DF1180579E30082CBC0 /* SingleImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleImageViewController.h; sourceTree = "<group>"; };
+		03CF5DF2180579E40082CBC0 /* SingleImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleImageViewController.m; sourceTree = "<group>"; };
 		03F7D12917E6FA6500FBCE96 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageCache.h; path = classes/ImageCache.h; sourceTree = "<group>"; };
 		03F7D12A17E6FA6500FBCE96 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageCache.m; path = classes/ImageCache.m; sourceTree = "<group>"; };
 		03F7D12C17E6FAB100FBCE96 /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownload.h; path = classes/ImageDownload.h; sourceTree = "<group>"; };
@@ -314,6 +317,8 @@
 				0EF9AE4218017B8100E78732 /* UserDB.m */,
 				0EF9AE4618025DCF00E78732 /* FileCache.h */,
 				0EF9AE4718025DCF00E78732 /* FileCache.m */,
+				03CF5DF1180579E30082CBC0 /* SingleImageViewController.h */,
+				03CF5DF2180579E40082CBC0 /* SingleImageViewController.m */,
 			);
 			name = classes;
 			sourceTree = "<group>";
@@ -509,6 +514,7 @@
 				0ED0E89E17F53CA000B4B636 /* FollowingViewController.m in Sources */,
 				0EDFB14117EEC9AC00949081 /* VotesShowViewController.m in Sources */,
 				03C78E8F17E84CC70091D094 /* InformationViewController.m in Sources */,
+				03CF5DF3180579E60082CBC0 /* SingleImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
