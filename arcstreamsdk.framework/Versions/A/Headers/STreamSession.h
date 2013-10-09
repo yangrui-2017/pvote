@@ -34,6 +34,8 @@
 
 + (NSString *) authenticate:(NSString *)appId secretKey:(NSString *)secretKey clientKey:(NSString *)clientKey;
 
++ (NSMutableString *)getListKeyFreUrl;
+
 +(NSMutableString *) getStoreObjectUrl;
 
 +(NSMutableString *) getObjectUrl: (NSString *)objectId;

@@ -48,6 +48,8 @@
 
 - (NSMutableArray *)listSortedStreamObjectsBasedOnKeySize:(int)limited;
 
+- (NSMutableArray *)listSortedStreamObjectsKeyFre:(int)limited;
+
 /*!
  Add a constraint to the query that requires a particular key's value and the values that are included in the provided values array
  @param key the key to check.
