@@ -17,7 +17,7 @@
 
 @interface FireViewController ()
 {
-    STreamCategoryObject *votes;
+    STreamQuery *votes;
     STreamQuery *st;
     NSMutableDictionary *loggedInUserVotesResults;
     NSMutableArray *votesArray;
@@ -73,10 +73,16 @@
 }
 -(void)loadVotes
 {
-    votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
+    votes = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
-    votesArray = [votes load];
-    votesArray = [[NSMutableArray alloc] initWithArray:[[votesArray reverseObjectEnumerator]allObjects]];
+    STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
+    NSMutableArray *top20 = [sq listSortedStreamObjectsKeyFre:30];
+   
+    for (NSString *lId in top20){
+        [votes addLimitId:lId];
+    }
+    
+    votesArray = [votes find];
     
 }
 - (void)didReceiveMemoryWarning
