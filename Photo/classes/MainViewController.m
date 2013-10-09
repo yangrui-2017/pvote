@@ -102,14 +102,9 @@
     }];
     
  
-//    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-//    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
-
-    
+    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
 }
-
-
-
 - (NSString *)getTimeDiff:(long)diff{
     
     int seconds = (int)(diff);
@@ -379,6 +374,7 @@
 //查看投票
 -(void)clickedButton:(UIButton *)sender
 {
+    [self tableView:self.myTableView];
     ImageCache * cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]) {
         VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
@@ -394,6 +390,7 @@
 //comments button
 -(void)commentButtonClicked:(UIButton *)button
 {
+    [self tableView:self.myTableView];
     ImageCache * cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]){
         CommentsViewController *commentsView = [[CommentsViewController alloc]init];
@@ -511,6 +508,7 @@
 
 -(void)buttonClickedLeft:(UIButton *)button withEvent:(UIEvent*)event {
     
+    [self tableView:self.myTableView];
     UITouch* touch = [[event allTouches] anyObject];
     if (touch.tapCount == 2) {
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -566,7 +564,7 @@
 }
 
 -(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
-    
+    [self tableView:self.myTableView];
     UITouch* touch = [[event allTouches] anyObject];
     ImageCache * cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]) {
@@ -590,9 +588,13 @@
 {
     return 330;
 }
-
+-(void)tableView:(UITableView *)tableView
+{
+    [_fullScreenDelegate showUIBarsWithScrollView:tableView animated:YES];
+}
 //head image clicked
 -(void) headImageClicked:(UIButton *)sender {
+    [self tableView:self.myTableView];
     ImageCache * cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]){
         STreamObject *so = [votesArray objectAtIndex:sender.tag];
@@ -604,7 +606,6 @@
         UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
     }
-   
 }
 
 #pragma mark Full Screen
@@ -621,7 +622,6 @@
         self.hidesBottomBarWhenPushed = NO;
     });
 }
-
 #pragma mark UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

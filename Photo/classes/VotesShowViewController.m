@@ -10,7 +10,6 @@
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
 #import "ImageCache.h"
-#import "YIFullScreenScroll.h"
 #import "MainViewController.h"
 #import "MBProgressHUD.h"
 #import "ImageDownload.h"
@@ -24,7 +23,6 @@
     NSString *rightImageId;
     int vote1count;
     int vote2count;
-    YIFullScreenScroll *_fullScreenDelegate;
     UIView *cellView;
     UIActivityIndicatorView *leftActivity;
     UIActivityIndicatorView *rightActivity;
@@ -58,8 +56,6 @@
     [super viewDidLoad];
  
     self.title = @"投票";
-//    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-//    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
     leftImageId = [rowObject getValue:@"file1"];
     rightImageId = [rowObject getValue:@"file2"];
     
@@ -277,41 +273,4 @@
     }];
 
 }
-#pragma mark Segue
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // hide tabBar when pushed & show again when popped
-    self.hidesBottomBarWhenPushed = YES;
-    
-    double delayInSeconds = UINavigationControllerHideShowBarDuration;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        self.hidesBottomBarWhenPushed = NO;
-    });
-}
-
-#pragma mark UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScroll:scrollView];
-}
-
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
-{
-    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
-}
-
-
 @end

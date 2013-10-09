@@ -42,7 +42,7 @@
     UINavigationBar* navBar = _viewController.navigationController.navigationBar;
     BOOL isNavBarExisting = navBar && navBar.superview && !navBar.hidden;
     if (isNavBarExisting) {
-        navBar.top = MIN(MAX(navBar.top-deltaY, STATUS_BAR_HEIGHT-navBar.height), STATUS_BAR_HEIGHT);
+        navBar.top = MIN(MAX(navBar.top-deltaY, STATUS_BAR_HEIGHT-navBar.height-20), STATUS_BAR_HEIGHT);
     }
     
     // toolbar
