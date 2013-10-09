@@ -176,7 +176,7 @@
         self.leftImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 2, 40, 40)];
         [cell.contentView addSubview:self.leftImage];
         
-        self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(40, 2, 80,40)];
+        self.leftButton = [[UIButton alloc]initWithFrame:CGRectMake(40, 2, 120,40)];
         self.leftButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:18];
         [self.leftButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [self.leftButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -184,7 +184,7 @@
         
         self.rightImage = [[UIImageView alloc]initWithFrame:CGRectMake(280, 2, 40, 40)];
         [cell.contentView addSubview:self.rightImage];
-        self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 2, 80,40)];
+        self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(160, 2, 120,40)];
         self.rightButton.titleLabel.font =[UIFont fontWithName:@"Arial" size:18];
         [self.rightButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
         [self.rightButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];

@@ -78,8 +78,13 @@
     self.title = @"主 页";
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
-    
-    self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]>= 7.0) {
+        self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+        _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
+    }else{
+        self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-44)];
+    }
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
     self.myTableView.separatorStyle=YES;//UITableView每个cell之间的默认分割线隐藏掉sel
@@ -100,10 +105,6 @@
          [HUD removeFromSuperview];
          HUD = nil;
     }];
-    
- 
-    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-    _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
 }
 - (NSString *)getTimeDiff:(long)diff{
     
@@ -374,7 +375,9 @@
 //查看投票
 -(void)clickedButton:(UIButton *)sender
 {
-    [self tableView:self.myTableView];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0) {
+        [self tableView:self.myTableView];
+    }
     ImageCache * cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]) {
         VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
@@ -390,7 +393,9 @@
 //comments button
 -(void)commentButtonClicked:(UIButton *)button
 {
-    [self tableView:self.myTableView];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0) {
+        [self tableView:self.myTableView];
+    }
     ImageCache * cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]){
         CommentsViewController *commentsView = [[CommentsViewController alloc]init];
@@ -508,7 +513,9 @@
 
 -(void)buttonClickedLeft:(UIButton *)button withEvent:(UIEvent*)event {
     
-    [self tableView:self.myTableView];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0) {
+        [self tableView:self.myTableView];
+    }
     UITouch* touch = [[event allTouches] anyObject];
     if (touch.tapCount == 2) {
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -564,7 +571,9 @@
 }
 
 -(void)buttonClickedRight:(UIButton *)button withEvent:(UIEvent*)event {
-    [self tableView:self.myTableView];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0) {
+        [self tableView:self.myTableView];
+    }
     UITouch* touch = [[event allTouches] anyObject];
     ImageCache * cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]) {

@@ -174,7 +174,7 @@
         imageView.image = [UIImage imageNamed:@"headImage.jpg"];
         [cell.contentView addSubview:imageView];
         
-        nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 80, 40)];
+        nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 120, 40)];
         nameLablel.textColor = [UIColor blackColor];
 //        nameLablel.textAlignment = NSTextAlignmentCenter;
 //        nameLablel.font = [UIFont fontWithName:@"Arial" size:20];

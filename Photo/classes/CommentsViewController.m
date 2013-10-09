@@ -173,7 +173,7 @@
         [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [cell addSubview:headImageView];
         
-        nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 30)];
+        nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 150, 30)];
         nameLable.textColor = [UIColor blueColor];
         nameLable.backgroundColor = [UIColor clearColor];
         [cell addSubview:nameLable];

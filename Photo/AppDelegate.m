@@ -102,6 +102,9 @@
     /*[STreamSession authenticate:@"9E6DA8D4057467427D0797BC2B12AFCE" secretKey:@"270740EE21B6F02F0FE69007F86E5B1D" clientKey:@"04869E41CCA70DD5F3500F00B6D83ACA" response:^(BOOL succeed, NSString *response){
         
     }];*/
+    
+    [[UITabBar appearance] setBackgroundColor:[UIColor blackColor]];
+    [[UITabBar appearance]setTintColor:[UIColor blackColor]];
     UserDB *userDB = [[UserDB alloc] init];
     [userDB initiDB];
     
