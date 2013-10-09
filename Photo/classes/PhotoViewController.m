@@ -16,8 +16,12 @@
 #import "ImageCache.h"
 #import "MainViewController.h"
 #import "AppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
+#import "QuestionViewController.h"
+
 @interface PhotoViewController ()
 {
+    BOOL isUpload;
     BOOL isAddImage;
     int clicked1;
     NSData *imageData1;
@@ -29,14 +33,13 @@
 @end
 
 @implementation PhotoViewController
-
-
-
 @synthesize imageView = _imageView;
 @synthesize imageView2 = _imageView2;
 @synthesize imagePicker = _imagePicker;
 @synthesize message = _message;
 @synthesize myTableView = _myTableView;
+@synthesize registerButton;
+@synthesize messages;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -54,9 +57,8 @@
 {
     [super viewDidLoad];
     clicked1 = 0;
-    
+    self.navigationItem.hidesBackButton = YES;
     self.title = @"拍 照";
-    
     keyboardDoneButtonView = [[UIToolbar alloc] init];
     keyboardDoneButtonView.barStyle = UIBarStyleDefault;
     keyboardDoneButtonView.translucent = YES;
@@ -72,9 +74,6 @@
     [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:doneButton, nil]];
     
     self.navigationController.navigationItem.backBarButtonItem = NO;
-
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"提交" style:UIBarButtonItemStyleDone target:self action:@selector(selectRightAction:)];
-    self.navigationItem.rightBarButtonItem = rightItem;
     
     self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height) style:UITableViewStylePlain];
     self.myTableView.delegate=self;
@@ -120,26 +119,53 @@
         [ self.imageView2  addGestureRecognizer:singleTap2];
         [cell addSubview: self.imageView2 ];
         
+        UIButton * button =[UIButton buttonWithType:UIButtonTypeCustom];
+        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [button setFrame:CGRectMake(5, 180, 310,120)];
+        [button setImage:[UIImage imageNamed:@"question2.png"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(questionButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:button];
+
         
-        
-        _message = [[UITextView alloc]initWithFrame:CGRectMake(5, 170, 310, 100)];
-        _message.keyboardType = UIKeyboardTypeASCIICapable;
+        _message = [[UITextView alloc]initWithFrame:CGRectMake(5, 0, 280, 120)];
         _message.font = [UIFont systemFontOfSize:20];
-        _message.backgroundColor =[UIColor whiteColor];
-        _message.text = @"请输入此刻想法40字之内";
-        _message.textColor = [UIColor lightGrayColor];
+        _message.backgroundColor =[UIColor clearColor];
         _message.delegate = self;
         _message.tag =1001;
         _message.inputAccessoryView =keyboardDoneButtonView;
-        [cell addSubview:_message];
+        [button addSubview:_message];
+        if (messages==nil) {
+            _message.textColor = [UIColor lightGrayColor];
+            _message.text = @"请输入此刻想法40字之内";
+        }else{
+            _message.text = messages;
+        }
+        
+        registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [[registerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[registerButton  layer] setBorderWidth:1];
+        [[registerButton layer] setCornerRadius:8];
+        [registerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        registerButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        [registerButton setFrame:CGRectMake(5, 320, 310, 40)];
+        [registerButton setTitle:@"提交" forState:UIControlStateNormal];
+        [registerButton addTarget:self action:@selector(selectRightAction:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:registerButton];
+
     }
     return cell;
 }
-
+-(void)questionButtonClicked
+{
+    QuestionViewController *questionView = [[QuestionViewController alloc]init];
+    [self.navigationController pushViewController:questionView animated:YES];
+}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _myTableView.bounds.size.height+60;//
+    return 400;//
 }
+
+#pragma mark - textViewDelegate
 //UITextView
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
@@ -167,52 +193,20 @@
 {
 //    _message.text=@"";
     _message.textColor = [UIColor blackColor];
+    CGRect frame =CGRectMake(0,-130, 320, 400);
+    self.myTableView.frame = frame;
     return YES;
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)textViewDidEndEditing:(UITextView *)textView
 {
-    if (isAddImage) {
-        if (buttonIndex == 1)
-        {
-            [self addPhoto];
-        }
-        else if(buttonIndex == 2)
-        {
-            [self takePhoto];
-        }
-        
-    }
-    isAddImage = NO;
-
-     [_message resignFirstResponder];
+    CGRect frame =CGRectMake(0,0, 320, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
+    self.myTableView.frame = frame;
 }
-
--(void) selectRightAction:(UIBarButtonItem *)item{
-    
-    file1 = [[STreamFile alloc] init];
-    
-    [file1 postData:imageData1 finished:^(NSString *response){
-            NSLog(@"res: %@", response);
-           file2 = [[STreamFile alloc] init];
-           [file2 postData:imageData2 finished:^(NSString *response){
-            NSLog(@"res: %@", response);
-          }byteSent:^(float percentage){
-            NSLog(@"total: %f", percentage);
-          }];
-        }byteSent:^(float percentage){
-            NSLog(@"total: %f", percentage);
-     }];
-    
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:HUD];
-    HUD.labelText = @"提交中...";
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self upload];
-    } completionBlock:^{
-        if ([file1 fileId] != nil && [file2 fileId] != nil)
-            [APPDELEGATE showLoginSucceedView];
-    }];
-    
+-(void) selectRightAction:(UIButton *)button{
+    isUpload = YES;
+    UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您确定要上传吗?" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    alertView.delegate = self;
+    [alertView show];
 }
 
 - (void)upload{
@@ -370,6 +364,50 @@
     UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
+}
+
+#pragma mark - alertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (isAddImage) {
+        if (buttonIndex == 1)
+        {
+            [self addPhoto];
+        }
+        else if(buttonIndex == 2)
+        {
+            [self takePhoto];
+        }
+        
+    }
+    if (isUpload) {
+        if (buttonIndex == 1) {
+            file1 = [[STreamFile alloc] init];
+            [file1 postData:imageData1 finished:^(NSString *response){
+                NSLog(@"res: %@", response);
+                file2 = [[STreamFile alloc] init];
+                [file2 postData:imageData2 finished:^(NSString *response){
+                    NSLog(@"res: %@", response);
+                }byteSent:^(float percentage){
+                    NSLog(@"total: %f", percentage);
+                }];
+            }byteSent:^(float percentage){
+                NSLog(@"total: %f", percentage);
+            }];
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:HUD];
+            HUD.labelText = @"提交中...";
+            [HUD showAnimated:YES whileExecutingBlock:^{
+                [self upload];
+            } completionBlock:^{
+                if ([file1 fileId] != nil && [file2 fileId] != nil)
+                    [APPDELEGATE showLoginSucceedView];
+            }];
+        }
+    }
+    isAddImage = NO;
+    isUpload = NO;
+    [_message resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning

@@ -17,4 +17,6 @@
 @property (strong ,nonatomic) UIImagePickerController *imagePicker;
 @property (strong ,nonatomic) UITextView *message;
 @property (strong ,nonatomic) UITableView *myTableView;
+@property (strong ,nonatomic) UIButton *registerButton;
+@property (copy,nonatomic) NSString *messages;
 @end

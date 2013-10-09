@@ -340,10 +340,11 @@
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 320,cell.frame.size.width , 10)];
-        view.backgroundColor = [UIColor whiteColor];
-        [cell.backgroundView addSubview:view];
-        
+        if ([votesArray count]-1 != indexPath.row) {
+            UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 320,cell.frame.size.width , 10)];
+            view.backgroundColor = [UIColor whiteColor];
+            [cell.backgroundView addSubview:view];
+        }
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
         
     }
