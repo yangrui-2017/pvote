@@ -11,7 +11,7 @@
 
 @interface MainViewController : UIViewController <UITableViewDelegate,UITableViewDataSource, MainViewTableViewRfresh,UITextViewDelegate>
 {
-   
+    NSMutableArray *votesArray;
 }
 
 @property (retain,nonatomic) UITableView *myTableView ;

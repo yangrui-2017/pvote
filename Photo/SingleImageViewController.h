@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MainViewController.h"
+#import <arcstreamsdk/STreamObject.h>
 
 @interface SingleImageViewController : MainViewController
 
+@property (retain,nonatomic) STreamObject * so;
 @end

@@ -161,7 +161,7 @@
         [cell addSubview:cellView];
         
     }else{
-        UIImageView *imageview  = [[UIImageView alloc]initWithFrame:CGRectMake(159, 0, 2, 60)];
+        UIImageView *imageview  = [[UIImageView alloc]initWithFrame:CGRectMake(159, 0, 2, 44)];
         imageview.image = [UIImage imageNamed:@"line.png"];
         [cell addSubview:imageview];
         leftActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];

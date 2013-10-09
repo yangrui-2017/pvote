@@ -7,13 +7,17 @@
 //
 
 #import "SingleImageViewController.h"
-
+#import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamQuery.h>
+#import "VoteResults.h"
+#import "ImageCache.h"
 @interface SingleImageViewController ()
 
 @end
 
 @implementation SingleImageViewController
 
+@synthesize so;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -26,6 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.votesArray = [[NSMutableArray alloc] init];
+    [self.votesArray addObject:so];
 	// Do any additional setup after loading the view.
 }
 
@@ -37,6 +43,44 @@
 
 - (void)loadVotes{
     
+    ImageCache *imageCache = [ImageCache sharedObject];
+    STreamQuery *st = [[STreamQuery alloc] initWithCategory:@"Voted"];
+    [st whereKeyExists:[so objectId]];
+    
+    NSMutableArray *sos = [st find];
+    int f1 = 0;
+    int f2 = 0;
+    
+    VoteResults *vo = [[VoteResults alloc] init];
+    for (STreamObject *so1 in sos){
+        NSString *voteUserName = [so1 objectId];
+        if ([so1 getValue:@"f1voted"])
+            f1++;
+        if ([so1 getValue:@"f2voted"])
+            f2++;
+    }
+    
+    int total = f1 + f2;
+    int vote1count;
+    int vote2count;
+    if (total) {
+        vote1count = ((float)f1/total)*100;
+        vote2count = ((float)f2/total)*100;
+        NSString *vote1 = [NSString stringWithFormat:@"%d%%",vote1count];
+        NSString *vote2 = [NSString stringWithFormat:@"%d%%",vote2count];
+        
+        [vo setObjectId:[so objectId]];
+        [vo setF1:vote1];
+        [vo setF2:vote2];
+        
+        [imageCache addVotesResults:[so objectId] withVoteResult:vo];
+        
+    }else{
+        vote1count=0;
+        vote2count=0;
+    }
+  
+
     
 }
 

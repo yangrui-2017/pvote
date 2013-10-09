@@ -13,6 +13,7 @@
 #import "ImageCache.h"
 #import "ImageDownload.h"
 #import "MBProgressHUD.h"
+#import "SingleImageViewController.h"
 
 @interface FireViewController ()
 {
@@ -25,6 +26,8 @@
     UIActivityIndicatorView *firstRightActivity;
     UIActivityIndicatorView *secondLeftActivity;
     UIActivityIndicatorView *secondRightActivity;
+    STreamObject *leftSo;
+     STreamObject *rightSo;
 }
 @end
 
@@ -54,6 +57,7 @@
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     self.tableView.backgroundView = backgrdView;
     self.tableView.separatorStyle = NO;
+    imageCache = [ImageCache sharedObject];
     
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     HUD.labelText = @"读取中...";
@@ -73,12 +77,7 @@
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
     votesArray = [votes load];
     votesArray = [[NSMutableArray alloc] initWithArray:[[votesArray reverseObjectEnumerator]allObjects]];
-    st = [[STreamQuery alloc] initWithCategory:@"Voted"];
-    imageCache = [ImageCache sharedObject];
-    [st setQueryLogicAnd:FALSE];
-    for (STreamObject *allVotes in votesArray){
-        [st whereKeyExists:[allVotes objectId]];
-    }
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -129,16 +128,19 @@
     [firstRightButton setFrame:CGRectMake(77, 5, 70, 70)];
     [firstRightButton addTarget:self action:@selector(leftButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftView addSubview:firstRightButton];
-    
+    firstLeftButton.tag = indexPath.row *2;
+    firstRightButton.tag =indexPath.row *2;
     
     secondLeftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [secondLeftButton setFrame:CGRectMake(3, 5, 70, 70)];
-    [secondLeftButton addTarget:self action:@selector(leftButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [secondLeftButton addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [rightView addSubview:secondLeftButton];
     secondRightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [secondRightButton setFrame:CGRectMake(77, 5, 70, 70)];
     [secondRightButton addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [rightView addSubview:secondRightButton];
+    secondLeftButton.tag = 2*indexPath.row+1;
+    secondRightButton.tag = 2*indexPath.row+1;
 
 }
 #pragma mark - Table view data source
@@ -161,10 +163,9 @@
 
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
-    STreamObject *leftSo = [votesArray objectAtIndex:indexPath.row *2];
+    leftSo = [votesArray objectAtIndex:indexPath.row *2];
      [self loadLeftImage:leftSo];
     int row = 2*indexPath.row+1;
-    STreamObject *rightSo;
     if (row <[votesArray count]) {
         rightSo = [votesArray objectAtIndex:row];
         [self loadRightImage:rightSo];
@@ -216,10 +217,16 @@
 }
 -(void)leftButtonClicked:(UIButton *)leftButton
 {
-
+    SingleImageViewController *singleView = [[SingleImageViewController alloc]init];
+    leftSo = [votesArray objectAtIndex:leftButton.tag];
+    [singleView setSo:leftSo];
+    [self.navigationController pushViewController:singleView animated:YES];
 }
 -(void)rightButtonClicked:(UIButton *)rightButton
 {
-    
+    SingleImageViewController *singleView = [[SingleImageViewController alloc]init];
+    rightSo = [votesArray objectAtIndex:rightButton.tag];
+    [singleView setSo:rightSo];
+    [self.navigationController pushViewController:singleView animated:YES];
 }
 @end
