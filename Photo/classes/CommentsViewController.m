@@ -72,9 +72,9 @@
     [self.view addSubview:toolBar];
     NSMutableArray * array = [[NSMutableArray alloc] initWithCapacity:0];
     
-    contentsText = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 250, 40)];
+    contentsText = [[UITextView alloc]initWithFrame:CGRectMake(0, 5, 250, 30)];
     contentsText.delegate = self;
-    contentsText.font = [UIFont systemFontOfSize:18.0f];
+    contentsText.font = [UIFont systemFontOfSize:14.0f];
     contentsText.layer.borderColor = [UIColor grayColor].CGColor;
     contentsText.layer.borderWidth =1.0;
     contentsText.layer.cornerRadius =5.0;
@@ -173,8 +173,9 @@
         [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [cell addSubview:headImageView];
         
-        nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 150, 30)];
+        nameLable = [[UILabel alloc]initWithFrame:CGRectMake(56, 0, 150, 30)];
         nameLable.textColor = [UIColor blueColor];
+        nameLable.font = [UIFont systemFontOfSize:15];
         nameLable.backgroundColor = [UIColor clearColor];
         [cell addSubview:nameLable];
         
@@ -182,7 +183,7 @@
         contentView.delegate = self;
         [contentView setEditable:NO];
         contentView.textAlignment = NSTextAlignmentLeft;
-        contentView.font = [UIFont systemFontOfSize:15];
+        contentView.font = [UIFont systemFontOfSize:13];
         contentView.backgroundColor = [UIColor clearColor];
         [cell addSubview:contentView];
        
