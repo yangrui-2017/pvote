@@ -17,7 +17,7 @@
 #import "ImageCache.h"
 #import "MBProgressHUD.h"
 #import <arcstreamsdk/STreamSession.h>
-
+#import <arcstreamsdk/STreamUser.h>
 
 @implementation AppDelegate
 
@@ -37,10 +37,12 @@
     
     UITabBarItem *mainBar=[[UITabBarItem alloc] initWithTitle:@"主页" image: [UIImage imageNamed:@"home.png"]tag:10001];
     UITabBarItem *fireBar=[[UITabBarItem alloc] initWithTitle:@"流行" image:[UIImage imageNamed:@"thumb.png"] tag:1002];
-    UITabBarItem *photoBar=[[UITabBarItem alloc] initWithTitle:@"拍照" image: [UIImage imageNamed:@"photo.png"]tag:10001];
-    UITabBarItem *userBar=[[UITabBarItem alloc] initWithTitle:@"排行榜" image:[UIImage imageNamed:@"trophy.png"] tag:1002];
-    UITabBarItem *myBar=[[UITabBarItem alloc] initWithTitle:@"个人信息" image:[UIImage imageNamed:@"infor.png"] tag:1002];
+    UITabBarItem *photoBar=[[UITabBarItem alloc] initWithTitle:@"拍照" image: [UIImage imageNamed:@"photo.png"]tag:10003];
+    UITabBarItem *userBar=[[UITabBarItem alloc] initWithTitle:@"排行榜" image:[UIImage imageNamed:@"trophy.png"] tag:1004];
     
+    UITabBarItem *myBar=[[UITabBarItem alloc] initWithTitle:@"个人信息" image:[UIImage imageNamed:@"infor.png"] tag:1005];
+
+
     mainVC.tabBarItem=mainBar;
     fireVC.tabBarItem=fireBar;
     photoVC.tabBarItem=photoBar;
@@ -84,8 +86,6 @@
   //  NSString *res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
    //NSLog(@"%@", res);
     
-    
-    
     //test1@gmail.com
     NSString *res = [STreamSession authenticate:@"6CA747AF6D517C687A68520850C6571A" secretKey:@"6D1CA3A6F875B8C749C3B889780C5F44" clientKey:@"F1A01B41500DBAA4189EAD022A9EED02" ];
      NSLog(@"%@", res);
@@ -103,32 +103,40 @@
         
     }];*/
     
+    imageview  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
+    imageview.image = [UIImage imageNamed:@"Default1.png"];
+    [self.window addSubview:imageview];
+    //初始化timmer
+    [NSTimer scheduledTimerWithTimeInterval: 5 target: self selector: @selector(logo:) userInfo: nil repeats: YES];
+
     [[UITabBar appearance] setBackgroundColor:[UIColor blackColor]];
     [[UITabBar appearance]setTintColor:[UIColor blackColor]];
     UserDB *userDB = [[UserDB alloc] init];
     [userDB initiDB];
     
-    ImageCache *cache = [[ImageCache alloc]init];
-    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.window];
-    HUD.labelText = @"读取中...";
-    [self.window addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self auth];
-    }completionBlock:^{
-        if ([cache getLoginUserName]) {
-            [self showLoginSucceedView];
-        }else{
-            [self showMainView];
-        }
-        [HUD removeFromSuperview];
-        HUD = nil;
-    }];
- 
+    
     self.window.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     [self.window makeKeyAndVisible];
     return YES;
 }
-
+-(void)logo:(NSTimer *)timer
+{
+    [self auth];
+     ImageCache *cache = [[ImageCache alloc]init];
+    if ([cache getLoginUserName]){
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:[cache getLoginUserName] response:^(BOOL succeed, NSString *resposne) {
+            if (succeed)
+                [cache saveUserMetadata:[cache getLoginUserName] withMetadata:[user userMetadata]];
+        }];
+        [self showLoginSucceedView];
+    }
+    else
+        [self showMainView];
+    [imageview removeFromSuperview];
+    [timer invalidate];
+    
+}
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

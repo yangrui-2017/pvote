@@ -528,11 +528,17 @@
         [self tableView:self.myTableView];
     }
     UITouch* touch = [[event allTouches] anyObject];
-    if (touch.tapCount == 2) {
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"投票中...";
-        [self.view addSubview:HUD];
-        [HUD showWhileExecuting:@selector(voteTheTopicLeft:) onTarget:self withObject:button animated:YES];
+    ImageCache * cache = [[ImageCache alloc]init];
+    if ([cache getLoginUserName]) {
+        if (touch.tapCount == 2) {
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"投票中...";
+            [self.view addSubview:HUD];
+            [HUD showWhileExecuting:@selector(voteTheTopicLeft:) onTarget:self withObject:button animated:YES];
+        }
+    }else{
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
+        [alertView show];
     }
 }
 

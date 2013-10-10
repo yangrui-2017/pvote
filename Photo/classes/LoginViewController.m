@@ -142,7 +142,6 @@
         NSLog(@"%@", userName);
         
         [cache setLoginUserName:_name.text];
-        
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self loginUser];
         } completionBlock:^{

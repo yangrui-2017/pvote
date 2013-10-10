@@ -19,6 +19,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import "QuestionViewController.h"
 
+static BOOL isExistingLeftImage;
+static BOOL isExistingRightImage;
+static UIImage * leftImage;
+static UIImage * rightImage;
 @interface PhotoViewController ()
 {
     BOOL isUpload;
@@ -30,6 +34,7 @@
     STreamFile *file2;
     UIToolbar* keyboardDoneButtonView;
 }
+
 @end
 
 @implementation PhotoViewController
@@ -104,21 +109,27 @@
         cell.backgroundView = backgrdView;
         
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 10, 150, 150)];
-       // self.imageView .backgroundColor = [UIColor lightGrayColor];
         self.imageView .userInteractionEnabled = YES;
-        [self.imageView setImage:[UIImage imageNamed:@"upload2.png"]];
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked:)];
         [ self.imageView  addGestureRecognizer:singleTap];
         [cell addSubview: self.imageView ];
         
         self.imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(165, 10, 150, 150)];
-        //self.imageView2 .backgroundColor = [UIColor lightGrayColor];
-        [self.imageView2 setImage:[UIImage imageNamed:@"upload2.png"]];
         self.imageView2 .userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageClicked2:)];
         [ self.imageView2  addGestureRecognizer:singleTap2];
         [cell addSubview: self.imageView2 ];
-        
+        if (isExistingLeftImage) {
+            self.imageView.image = leftImage;
+        }else{
+            [self.imageView setImage:[UIImage imageNamed:@"upload2.png"]];
+        }
+        if (isExistingRightImage) {
+            self.imageView2.image = rightImage;
+        }else{
+            [self.imageView2 setImage:[UIImage imageNamed:@"upload2.png"]];
+        }
+
         UIButton * button =[UIButton buttonWithType:UIButtonTypeCustom];
         [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [button setFrame:CGRectMake(5, 180, 310,120)];
@@ -135,6 +146,7 @@
         _message.inputAccessoryView =keyboardDoneButtonView;
         [button addSubview:_message];
         if (messages==nil) {
+            
             _message.textColor = [UIColor lightGrayColor];
             _message.text = @"请输入此刻想法40字之内";
         }else{
@@ -144,10 +156,11 @@
         registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [[registerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [[registerButton  layer] setBorderWidth:1];
-        [[registerButton layer] setCornerRadius:8];
+        [[registerButton layer] setCornerRadius:5];
         [registerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         registerButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
-        [registerButton setFrame:CGRectMake(5, 320, 310, 40)];
+        [registerButton setFrame:CGRectMake(55, 320, 210, 40)];
+//        [registerButton setImage:[UIImage imageNamed:@"submit.png"] forState:UIControlStateNormal];
         [registerButton setTitle:@"提交" forState:UIControlStateNormal];
         [registerButton addTarget:self action:@selector(selectRightAction:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:registerButton];
@@ -262,20 +275,7 @@
 }
 
 -(void) imageClicked:(UIImageView *)View{
-//    
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]==NO ) {
-//        
-//        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Camera Unavailable" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-//        [alertView show];
-//        return;
-//    }
-//    if (self.imagePicker == nil) {
-//        
-//        self.imagePicker = [[UIImagePickerController alloc]init];
-//        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        self.imagePicker.delegate = self;
-//   }
-//    [self presentViewController:self.imagePicker animated:YES completion:NULL];
+
     clicked1 = 1;
     isAddImage = YES;
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄", nil];
@@ -285,20 +285,6 @@
 }
 
 -(void) imageClicked2:(UIImageView *)View{
-    
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]==NO ) {
-//        
-//        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Camera Unavailable" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-//        [alertView show];
-//        return;
-//    }
-//    if (self.imagePicker == nil) {
-//        
-//        self.imagePicker = [[UIImagePickerController alloc]init];
-//        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        self.imagePicker.delegate = self;
-//    }
-//    [self presentViewController:self.imagePicker animated:YES completion:NULL];
     
     isAddImage = YES;
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄", nil];
@@ -340,21 +326,22 @@
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [picker dismissViewControllerAnimated:YES completion:NULL];
-    UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     if (clicked1 == 1){
        self.imageView.image = image;
+        leftImage =image;
+        isExistingLeftImage = YES;
        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(640, 640)];
       // imageData1 = UIImageJPEGRepresentation(image, 1);
        imageData1 = UIImageJPEGRepresentation(sImage, 0.5);
+     }else{
+        self.imageView2.image = image;
+        rightImage = image;
+        isExistingRightImage = YES;
+        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(640, 640)];
+        //  imageData2 = UIImageJPEGRepresentation(image, 1);
+        imageData2 = UIImageJPEGRepresentation(sImage, 0.5);
     }
-    else{
-       self.imageView2.image = image;
-       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(640, 640)];
-     //  imageData2 = UIImageJPEGRepresentation(image, 1);
-       imageData2 = UIImageJPEGRepresentation(sImage, 0.5);
-
-    }
-    
     clicked1 = 0;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -382,7 +369,12 @@
     }
     if (isUpload) {
         if (buttonIndex == 1) {
-            file1 = [[STreamFile alloc] init];
+           
+            if (([imageData1 length] == 0)&& ([imageData2 length]== 0)) {
+                UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"你还没有上传图片？" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+                [alertView show];
+            }else{
+                file1 = [[STreamFile alloc] init];
             [file1 postData:imageData1 finished:^(NSString *response){
                 NSLog(@"res: %@", response);
                 file2 = [[STreamFile alloc] init];
@@ -403,6 +395,7 @@
                 if ([file1 fileId] != nil && [file2 fileId] != nil)
                     [APPDELEGATE showLoginSucceedView];
             }];
+            }
         }
     }
     isAddImage = NO;

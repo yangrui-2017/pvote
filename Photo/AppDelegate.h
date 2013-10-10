@@ -12,6 +12,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
     BOOL loginSuccess;
+    UIImageView * imageview ;
 }
 @property (assign, nonatomic) BOOL loginSuccess;
 

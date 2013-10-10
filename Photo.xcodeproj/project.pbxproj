@@ -17,7 +17,6 @@
 		03C49AEF17E102FC00AE7E3B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03C49AED17E102FC00AE7E3B /* InfoPlist.strings */; };
 		03C49AF117E102FC00AE7E3B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49AF017E102FC00AE7E3B /* main.m */; };
 		03C49AF517E102FC00AE7E3B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C49AF417E102FC00AE7E3B /* AppDelegate.m */; };
-		03C49AF717E102FC00AE7E3B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C49AF617E102FC00AE7E3B /* Default.png */; };
 		03C49AF917E102FC00AE7E3B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C49AF817E102FC00AE7E3B /* Default@2x.png */; };
 		03C49AFB17E102FC00AE7E3B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C49AFA17E102FC00AE7E3B /* Default-568h@2x.png */; };
 		03C49B0317E102FC00AE7E3B /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49B0217E102FC00AE7E3B /* SenTestingKit.framework */; };
@@ -48,6 +47,13 @@
 		0EBB400217F0A6E2007E789E /* VoteResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBB400117F0A6E2007E789E /* VoteResults.m */; };
 		0ED0E89E17F53CA000B4B636 /* FollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */; };
 		0ED0E8A117F55B9A00B4B636 /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */; };
+		0EDC4EA218065276002E6E15 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDC4EA118065276002E6E15 /* SettingViewController.m */; };
+		0EDC4EA418065A77002E6E15 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDC4EA318065A77002E6E15 /* remove.png */; };
+		0EDC4EA618065CA2002E6E15 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDC4EA518065CA2002E6E15 /* QuartzCore.framework */; };
+		0EDC4EB618067786002E6E15 /* Default1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDC4EB518067786002E6E15 /* Default1.png */; };
+		0EDC4EB81806778B002E6E15 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDC4EB71806778B002E6E15 /* icon.png */; };
+		0EDC4EBB18068390002E6E15 /* submit.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDC4EBA18068390002E6E15 /* submit.png */; };
+		0EDC4EC118068740002E6E15 /* SetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDC4EC018068740002E6E15 /* SetDetailViewController.m */; };
 		0EDFB13617EEB8C500949081 /* YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13517EEB8C500949081 /* YIFullScreenScroll.m */; };
 		0EDFB13C17EEB95B00949081 /* UIView+YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFB13B17EEB95B00949081 /* UIView+YIFullScreenScroll.m */; };
 		0EDFB13E17EEBB4A00949081 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDFB13D17EEBB4A00949081 /* Placeholder.png */; };
@@ -96,7 +102,6 @@
 		03C49AF217E102FC00AE7E3B /* Photo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photo-Prefix.pch"; sourceTree = "<group>"; };
 		03C49AF317E102FC00AE7E3B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		03C49AF417E102FC00AE7E3B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		03C49AF617E102FC00AE7E3B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		03C49AF817E102FC00AE7E3B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		03C49AFA17E102FC00AE7E3B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		03C49B0117E102FC00AE7E3B /* PhotoTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +146,15 @@
 		0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FollowingViewController.m; path = classes/FollowingViewController.m; sourceTree = "<group>"; };
 		0ED0E89F17F55B9A00B4B636 /* FollowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FollowerViewController.h; path = classes/FollowerViewController.h; sourceTree = "<group>"; };
 		0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FollowerViewController.m; path = classes/FollowerViewController.m; sourceTree = "<group>"; };
+		0EDC4EA018065276002E6E15 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingViewController.h; path = classes/SettingViewController.h; sourceTree = "<group>"; };
+		0EDC4EA118065276002E6E15 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewController.m; path = classes/SettingViewController.m; sourceTree = "<group>"; };
+		0EDC4EA318065A77002E6E15 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
+		0EDC4EA518065CA2002E6E15 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0EDC4EB518067786002E6E15 /* Default1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default1.png; sourceTree = "<group>"; };
+		0EDC4EB71806778B002E6E15 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		0EDC4EBA18068390002E6E15 /* submit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = submit.png; sourceTree = "<group>"; };
+		0EDC4EBF18068740002E6E15 /* SetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetDetailViewController.h; sourceTree = "<group>"; };
+		0EDC4EC018068740002E6E15 /* SetDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetDetailViewController.m; sourceTree = "<group>"; };
 		0EDFB13417EEB8C500949081 /* YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YIFullScreenScroll.h; path = FullScreenScroll/YIFullScreenScroll.h; sourceTree = "<group>"; };
 		0EDFB13517EEB8C500949081 /* YIFullScreenScroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YIFullScreenScroll.m; path = FullScreenScroll/YIFullScreenScroll.m; sourceTree = "<group>"; };
 		0EDFB13A17EEB95B00949081 /* UIView+YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+YIFullScreenScroll.h"; path = "FullScreenScroll/UIView+YIFullScreenScroll.h"; sourceTree = "<group>"; };
@@ -175,6 +189,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EDC4EA618065CA2002E6E15 /* QuartzCore.framework in Frameworks */,
 				033F4F9B17E229530081DF34 /* libsqlite3.dylib in Frameworks */,
 				03C49B2B17E11CAA00AE7E3B /* CFNetwork.framework in Frameworks */,
 				03C49B2917E11CA000AE7E3B /* SystemConfiguration.framework in Frameworks */,
@@ -222,6 +237,7 @@
 		03C49AE317E102FC00AE7E3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EDC4EA518065CA2002E6E15 /* QuartzCore.framework */,
 				032A47091805B08C00BF4E2B /* arcstreamsdk.framework */,
 				033F4F9A17E229530081DF34 /* libsqlite3.dylib */,
 				03C49B2617E11C9900AE7E3B /* libz.dylib */,
@@ -240,7 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				0EDFB13317EEB86100949081 /* FullScreenScroll */,
-				03C49B1C17E1038C00AE7E3B /* classes */,
+				0EDC4EB918067C12002E6E15 /* setclass */,
 				03C49AF317E102FC00AE7E3B /* AppDelegate.h */,
 				03C49AF417E102FC00AE7E3B /* AppDelegate.m */,
 				03C49AEB17E102FC00AE7E3B /* Supporting Files */,
@@ -256,7 +272,6 @@
 				03C49AED17E102FC00AE7E3B /* InfoPlist.strings */,
 				03C49AF017E102FC00AE7E3B /* main.m */,
 				03C49AF217E102FC00AE7E3B /* Photo-Prefix.pch */,
-				03C49AF617E102FC00AE7E3B /* Default.png */,
 				03C49AF817E102FC00AE7E3B /* Default@2x.png */,
 				03C49AFA17E102FC00AE7E3B /* Default-568h@2x.png */,
 			);
@@ -333,6 +348,10 @@
 		03C49B1D17E11B8600AE7E3B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EDC4EBA18068390002E6E15 /* submit.png */,
+				0EDC4EB71806778B002E6E15 /* icon.png */,
+				0EDC4EB518067786002E6E15 /* Default1.png */,
+				0EDC4EA318065A77002E6E15 /* remove.png */,
 				0EE3C1EB180560760035BA74 /* question2.png */,
 				0EE2FC5F1803D4FB000761CF /* new */,
 				0EE2FC5D1803CC32000761CF /* clock.png */,
@@ -348,6 +367,18 @@
 				0EDFB13D17EEBB4A00949081 /* Placeholder.png */,
 			);
 			path = images;
+			sourceTree = "<group>";
+		};
+		0EDC4EB918067C12002E6E15 /* setclass */ = {
+			isa = PBXGroup;
+			children = (
+				0EDC4EA018065276002E6E15 /* SettingViewController.h */,
+				0EDC4EA118065276002E6E15 /* SettingViewController.m */,
+				0EDC4EBF18068740002E6E15 /* SetDetailViewController.h */,
+				0EDC4EC018068740002E6E15 /* SetDetailViewController.m */,
+				03C49B1C17E1038C00AE7E3B /* classes */,
+			);
+			name = setclass;
 			sourceTree = "<group>";
 		};
 		0EDFB13317EEB86100949081 /* FullScreenScroll */ = {
@@ -452,19 +483,22 @@
 				0E6680C117FD9ECF00EA292C /* infor.png in Resources */,
 				0EB4047B17F6B024009DD8FA /* tick.png in Resources */,
 				0EE2FC661803D4FB000761CF /* upload1.png in Resources */,
-				03C49AF717E102FC00AE7E3B /* Default.png in Resources */,
 				0EE672F3180400D700C7631D /* line.png in Resources */,
 				0EEFD0DE18040951007917B8 /* profile1.png in Resources */,
 				0EE672F5180402FE00C7631D /* upload2.png in Resources */,
 				0EE3C1EC180560760035BA74 /* question2.png in Resources */,
 				03C49AF917E102FC00AE7E3B /* Default@2x.png in Resources */,
 				03C49AFB17E102FC00AE7E3B /* Default-568h@2x.png in Resources */,
+				0EDC4EBB18068390002E6E15 /* submit.png in Resources */,
+				0EDC4EB618067786002E6E15 /* Default1.png in Resources */,
 				0E6680A517FD84E500EA292C /* home.png in Resources */,
 				0EE2FC641803D4FB000761CF /* follower.png in Resources */,
 				0EE2FC671803D4FB000761CF /* vote.png in Resources */,
 				0E6680BF17FD9E3900EA292C /* thumb.png in Resources */,
 				0EE23C4517F4198400F56F37 /* headImage.jpg in Resources */,
 				03CEA0F217F44D1800D36DAC /* ph.png in Resources */,
+				0EDC4EB81806778B002E6E15 /* icon.png in Resources */,
+				0EDC4EA418065A77002E6E15 /* remove.png in Resources */,
 				0E6680A717FD86BA00EA292C /* photo.png in Resources */,
 				0E6680C517FDA7B200EA292C /* trophy.png in Resources */,
 			);
@@ -511,10 +545,12 @@
 				0EE23C4117F3E66C00F56F37 /* CommentsViewController.m in Sources */,
 				0EE3708A17F7B73100E2E487 /* FireViewController.m in Sources */,
 				0EF9AE4818025DCF00E78732 /* FileCache.m in Sources */,
+				0EDC4EC118068740002E6E15 /* SetDetailViewController.m in Sources */,
 				03C49B3017E1209B00AE7E3B /* LoginViewController.m in Sources */,
 				03C49B3317E133B400AE7E3B /* MainViewController.m in Sources */,
 				0EF9AE4318017B8100E78732 /* UserDB.m in Sources */,
 				03C49B3617E145EE00AE7E3B /* RegisterViewController.m in Sources */,
+				0EDC4EA218065276002E6E15 /* SettingViewController.m in Sources */,
 				035E698517E13512001279F6 /* MBProgressHUD.m in Sources */,
 				0EDFB13C17EEB95B00949081 /* UIView+YIFullScreenScroll.m in Sources */,
 				03A33F3B17E7308A004459C5 /* ImageDataFile.m in Sources */,

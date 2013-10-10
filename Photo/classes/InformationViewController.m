@@ -17,6 +17,7 @@
 #import "AppDelegate.h"
 #import "UserDB.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SettingViewController.h"
 
 @interface InformationViewController ()
 {
@@ -73,6 +74,11 @@
     UITextView* view = (UITextView*)[self.view viewWithTag:1001];
     [view resignFirstResponder];
 }
+-(void)selectAction
+{
+    SettingViewController *setView = [[SettingViewController alloc]init];
+    [self.navigationController pushViewController:setView animated:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -93,7 +99,8 @@
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登出" style:UIBarButtonItemStyleDone target:self action:@selector(selectLogoutAction:)];
         self.navigationItem.leftBarButtonItem = leftItem;
     }
-
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(selectAction)];
+    self.navigationItem.rightBarButtonItem = rightItem;
 	// Do any additional setup after loading the view.
        myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     myTableView.dataSource = self;
