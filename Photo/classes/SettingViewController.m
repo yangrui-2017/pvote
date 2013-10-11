@@ -43,7 +43,7 @@
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     myTableView.backgroundView = backgrdView;
     dataArray = [[NSArray alloc]initWithObjects:@"删除上传",@"关于",@"注销登录", nil];
-    array = [[NSArray alloc]initWithObjects:@"修改昵称",@"修改密码",@"修改头像", nil];
+    array = [[NSArray alloc]initWithObjects:@"修改昵称",@"修改密码",@"修改头像",@"设置签名", nil];
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -53,7 +53,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 3;
+        return [array count];
     }else{
         return 1;
     }

@@ -13,6 +13,7 @@
 #import <arcstreamsdk/STreamFile.h>
 #import "UserDB.h"
 #import "MBProgressHUD.h"
+#import "InformationViewController.h"
 @interface SetDetailViewController ()
 
 {
@@ -36,6 +37,7 @@
 @synthesize doneButton;
 @synthesize repasswordTextFied;
 @synthesize repassworLabel;
+@synthesize signatureView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,7 +65,7 @@
     [doneButton setTitle:@"完成" forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(selectAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:doneButton];
-
+    
     if ([string isEqualToString:@"修改昵称"]) {
         self.title = @"修改昵称";
         nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 80, 60, 40)];
@@ -74,7 +76,7 @@
         nameTextFied.borderStyle = UITextBorderStyleRoundedRect;
         [self.view addSubview:nameTextFied];
         doneButton.tag = 1;
-         [doneButton setFrame:CGRectMake(100, 160, 120, 40)];
+        [doneButton setFrame:CGRectMake(100, 160, 120, 40)];
     }
     if ([string isEqualToString:@"修改密码"]) {
         self.title = @"修改密码";
@@ -107,7 +109,7 @@
         [self.view addSubview:repasswordTextFied];
         doneButton.tag = 2;
         [doneButton setFrame:CGRectMake(100, 240, 120, 40)];
-
+        
     }
     if ([string isEqualToString:@"修改头像"]) {
         self.title = @"修改头像";
@@ -122,6 +124,21 @@
         doneButton.tag = 3;
         [doneButton setFrame:CGRectMake(100, 300, 120, 40)];
     }
+    if ([string isEqualToString:@"设置签名"]) {
+        self.title = @"设置签名";
+        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 80, 60, 40)];
+        nameLabel.text = @"签名";
+        nameLabel.textAlignment = NSTextAlignmentRight;
+        [self.view addSubview:nameLabel];
+        signatureView = [[UITextView alloc]initWithFrame:CGRectMake(80, 80, 200, 40)];
+        signatureView.backgroundColor = [UIColor whiteColor];
+        signatureView.delegate = self;
+        signatureView.font = [UIFont systemFontOfSize:15.0f];
+        [self.view addSubview:signatureView];
+        doneButton.tag = 4;
+        [doneButton setFrame:CGRectMake(100, 180, 120, 40)];
+    }
+    
 }
 #pragma mark UITextFieldDelegate
 
@@ -133,62 +150,75 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     if ([nameTextFied.text isEqualToString:[cache getLoginPassword]]) {
-    
+        
     }else{
         nameTextFied.text = @"";
-        UIAlertView * alertView  =[[UIAlertView alloc]initWithTitle:@"" message:@"你输入的密码错误" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+        UIAlertView * alertView  =[[UIAlertView alloc]initWithTitle:@"" message:@"你输入的密码错误" delegate:self cancelButtonTitle:@"确定"otherButtonTitles:nil, nil];
         [alertView show];
     }
 }
-
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }else{
+        return YES;
+    }
+    
+}
 -(void)selectAction
 {
     UIAlertView *alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"你确定要更改信息吗" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
     alertView.delegate = self;
-       if (doneButton.tag == 1) {
-           [dict setValue:self.nameTextFied.text forKey:@"nickname"];
-           [alertView show];
-        }
-        if (doneButton.tag == 2) {
-            if (([passwordTextFied.text length]!=0)&&([nameTextFied.text length]!=0)&&([repasswordTextFied.text length]!=0) ) {
-                NSLog(@"%@  %@",passwordTextFied.text,repasswordTextFied.text);
+    if (doneButton.tag == 1) {
+        [dict setValue:self.nameTextFied.text forKey:@"nickname"];
+        [alertView show];
+    }
+    if (doneButton.tag == 2) {
+        if (([passwordTextFied.text length]!=0)&&([nameTextFied.text length]!=0)&&([repasswordTextFied.text length]!=0) ) {
+            NSLog(@"%@  %@",passwordTextFied.text,repasswordTextFied.text);
+            
+            if ([passwordTextFied.text isEqualToString:repasswordTextFied.text])
+            {
+                [dict setValue:self.passwordTextFied.text forKey:@"password"];
+                UserDB *db = [[UserDB alloc]init];
+                [db insertDB:0 name:[cache getLoginUserName] withPassword:passwordTextFied.text];
+                [alertView show];
                 
-                if ([passwordTextFied.text isEqualToString:repasswordTextFied.text])
-                {
-                    [dict setValue:self.passwordTextFied.text forKey:@"password"];
-                    UserDB *db = [[UserDB alloc]init];
-                    [db insertDB:0 name:[cache getLoginUserName] withPassword:passwordTextFied.text];
-                    [alertView show];
-                
-                }else{
-                    UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请输入密码" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
-                    alertView.delegate = self;
-                    [alertView2 show];
-                }
-
             }else{
-                UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请输入密码" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+                UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请输入密码" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 alertView.delegate = self;
                 [alertView2 show];
             }
+            
+        }else{
+            UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请输入密码" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            alertView.delegate = self;
+            [alertView2 show];
         }
-
-        if (doneButton.tag == 3) {
-            if ([imageData length]) {
-                  file = [[STreamFile alloc]init];
-                __block NSString *res;
-                [file postData:imageData finished:^(NSString *response){
-                    NSLog(@"res: %@", response);
-                    res = response;
-                }byteSent:^(float percentage){
-                    NSLog(@"total: %f", percentage);
-                }];
-                 [alertView show];
-                }else{
-                    UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请上传头像" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
-                    [alertView2 show];
-            }
+    }
+    
+    if (doneButton.tag == 3) {
+        if ([imageData length]) {
+            file = [[STreamFile alloc]init];
+            __block NSString *res;
+            [file postData:imageData finished:^(NSString *response){
+                NSLog(@"res: %@", response);
+                res = response;
+            }byteSent:^(float percentage){
+                NSLog(@"total: %f", percentage);
+            }];
+            [alertView show];
+        }else{
+            UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请上传头像" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView2 show];
         }
+    }
+    if (doneButton.tag == 4) {
+        [dict setValue:self.signatureView.text forKey:@"signature"];
+        [alertView show];
+    }
 }
 - (void)upload{
     sleep(5);
@@ -220,6 +250,7 @@
         
     }else{
         if (buttonIndex == 1) {
+            InformationViewController *inforView  = [[InformationViewController alloc]init];
             MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
             HUD.labelText = @"提交中...";
             [self.view addSubview:HUD];
@@ -230,6 +261,7 @@
                     if ([file fileId]){
                         [dict setValue:[file fileId] forKey:@"profileImageId"];
                         [user updateUserMetadata:[cache getLoginUserName] withMetadata:dict];
+                        [self.navigationController pushViewController:inforView animated:YES];
                         NSLog(@"dict= %@",dict);
                     }
                 }];
@@ -237,12 +269,13 @@
                 [HUD showAnimated:YES whileExecutingBlock:^{
                 } completionBlock:^{
                     [user updateUserMetadata:[cache getLoginUserName] withMetadata:dict];
+                     [self.navigationController pushViewController:inforView animated:YES];
                 }];
             }
         }
+        
     }
     isAddImage = NO;
-    
     
 }
 
@@ -263,12 +296,9 @@
 	imagePickerController.delegate = self;
 	imagePickerController.allowsEditing = NO;
 	[self presentViewController:imagePickerController animated:YES completion:NULL];
-    
-    
 }
 
-- (void)takePhoto
-{
+- (void)takePhoto{
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
@@ -277,19 +307,14 @@
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"好", nil];
         [alert show];
-    }
-    else
-    {
+    }else{
         UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
         imagePickerController.allowsEditing = NO;
         [self presentViewController:imagePickerController animated:YES completion:NULL];
-        
     }
 }
-
-
 #pragma mark - UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
@@ -298,7 +323,6 @@
     self.headImage.image = image;
     UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(300.0, 300.0)];
     imageData = UIImageJPEGRepresentation(sImage, 0.1);
-    
 }
 -(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
     UIGraphicsBeginImageContext(newSize);
@@ -307,7 +331,6 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -107,8 +107,8 @@
         [self loadVotes];
     }completionBlock:^{
         [self.myTableView reloadData];
-         [HUD removeFromSuperview];
-         HUD = nil;
+        [HUD removeFromSuperview];
+        HUD = nil;
     }];
 }
 - (NSString *)getTimeDiff:(long)diff{
@@ -267,7 +267,10 @@
     self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.oneImageView setFrame:CGRectMake(5, 130, 150, 150)];
     [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
-    [self.oneImageView addTarget:self action:@selector(fangdaLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
+    //长按事件放大
+    UILongPressGestureRecognizer *longpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fangdaLeftClicked:)];
+    longpress.minimumPressDuration = 0.5; //定义按的时间
+    [self.oneImageView addGestureRecognizer:longpress];;
     [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.oneImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.oneImageView];
@@ -282,7 +285,10 @@
     self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.twoImageView setFrame:CGRectMake(165, 130, 150, 150)];
     [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
-    [self.twoImageView addTarget:self action:@selector(fangdaRightClicked:) forControlEvents:UIControlEventTouchUpInside];
+      //长按事件放大
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fangdaRightClicked:)];
+    longPress.minimumPressDuration = 0.5; //定义按的时间
+    [self.twoImageView addGestureRecognizer:longPress];
     [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.twoImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.twoImageView];
@@ -613,7 +619,7 @@
         UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
         [alertView show];
     }
-    
+
 }
 - (void)reloadTable{
     [self.myTableView reloadData];
@@ -644,14 +650,21 @@
 }
 
 //fangda
--(void)fangdaLeftClicked:(UIButton *)button
+-(void)fangdaLeftClicked:(UILongPressGestureRecognizer*)gestureRecognizer
 {
-    [self fangda:button];
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        UIButton *btn = (UIButton*)gestureRecognizer.view;
+        [self fangda:btn];
+    }
 }
--(void)fangdaRightClicked:(UIButton *)button
+-(void)fangdaRightClicked:(UILongPressGestureRecognizer*)gestureRecognizer
 {
-    isRight = YES;
-    [self fangda:button];
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        isRight = YES;
+        UIButton *btn = (UIButton*)gestureRecognizer.view;
+        [self fangda:btn];
+    }
+    
 }
 - (void)fangda:(UIButton *)button
 {
@@ -680,7 +693,6 @@
     UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [closeBtn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(suoxiao) forControlEvents:UIControlEventTouchUpInside];
-    NSLog(@"borderview is %@",borderView);
     [closeBtn setFrame:CGRectMake(borderView.frame.origin.x+borderView.frame.size.width-20, borderView.frame.origin.y-6, 26, 27)];
     [bgView addSubview:closeBtn];
     //创建显示图像视图
@@ -760,5 +772,4 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SetDetailViewController : UIViewController<UITextFieldDelegate,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface SetDetailViewController : UIViewController<UITextFieldDelegate,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate>
 
 @property (copy ,nonatomic) NSString *string;
 @property (strong,nonatomic) UITextField *nameTextFied;
@@ -19,5 +19,5 @@
 @property (strong,nonatomic) UITextField *repasswordTextFied;
 @property (strong,nonatomic) UIImageView *headImage;
 @property (strong,nonatomic) UIButton *doneButton;
-
+@property (strong,nonatomic) UITextView *signatureView;
 @end

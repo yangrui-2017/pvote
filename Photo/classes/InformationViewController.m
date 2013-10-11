@@ -87,15 +87,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    keyboardDoneButtonView = [[UIToolbar alloc] init];
-//    keyboardDoneButtonView.barStyle = UIBarStyleDefault;
-//    keyboardDoneButtonView.translucent = YES;
-//    keyboardDoneButtonView.tintColor = nil;
-//    [keyboardDoneButtonView sizeToFit];
-//    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(pickerDoneClicked)];
-//    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:doneButton, nil]];
-        cache = [ImageCache sharedObject];
+    cache = [ImageCache sharedObject];
     if (userName != nil)
         pageUserName = userName;
     else
@@ -223,14 +215,11 @@
         [cell.contentView addSubview:image];
         
         lable = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 240, 50)];
-//        lable.textAlignment = NSTextAlignmentCenter;
-//        lable.font = [UIFont fontWithName:@"Arial" size:24];
         lable.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:lable];
         
         countLable = [[UILabel alloc]initWithFrame:CGRectMake(230, 0, 60, 50)];
         countLable.textAlignment = NSTextAlignmentRight;
-//        countLable.font = [UIFont fontWithName:@"Arial" size:24];
         countLable.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:countLable];
     }
@@ -474,7 +463,6 @@
     UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [closeBtn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(suoxiao) forControlEvents:UIControlEventTouchUpInside];
-    NSLog(@"borderview is %@",borderView);
     [closeBtn setFrame:CGRectMake(borderView.frame.origin.x+borderView.frame.size.width-20, borderView.frame.origin.y-6, 26, 27)];
     [bgView addSubview:closeBtn];
     //创建显示图像视图
