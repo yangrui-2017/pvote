@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		033F4F9B17E229530081DF34 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 033F4F9A17E229530081DF34 /* libsqlite3.dylib */; };
-		034248C21808108D00ED890B /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 034248C11808108D00ED890B /* arcstreamsdk.framework */; };
 		035E698517E13512001279F6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 035E698417E13512001279F6 /* MBProgressHUD.m */; };
+		036B8D8C180853BA00EADEB8 /* arcstreamsdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 036B8D8B180853BA00EADEB8 /* arcstreamsdk.framework */; };
 		03A33F3B17E7308A004459C5 /* ImageDataFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A33F3A17E7308A004459C5 /* ImageDataFile.m */; };
 		03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE417E102FC00AE7E3B /* UIKit.framework */; };
 		03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C49AE617E102FC00AE7E3B /* Foundation.framework */; };
@@ -87,9 +87,9 @@
 
 /* Begin PBXFileReference section */
 		033F4F9A17E229530081DF34 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		034248C11808108D00ED890B /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		035E698317E13506001279F6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		035E698417E13512001279F6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		036B8D8B180853BA00EADEB8 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
 		03A33F3917E7308A004459C5 /* ImageDataFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDataFile.h; sourceTree = "<group>"; };
 		03A33F3A17E7308A004459C5 /* ImageDataFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDataFile.m; sourceTree = "<group>"; };
 		03C49AE117E102FC00AE7E3B /* Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -199,7 +199,7 @@
 				03C49AE517E102FC00AE7E3B /* UIKit.framework in Frameworks */,
 				03C49AE717E102FC00AE7E3B /* Foundation.framework in Frameworks */,
 				03C49AE917E102FC00AE7E3B /* CoreGraphics.framework in Frameworks */,
-				034248C21808108D00ED890B /* arcstreamsdk.framework in Frameworks */,
+				036B8D8C180853BA00EADEB8 /* arcstreamsdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,7 +238,7 @@
 		03C49AE317E102FC00AE7E3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				034248C11808108D00ED890B /* arcstreamsdk.framework */,
+				036B8D8B180853BA00EADEB8 /* arcstreamsdk.framework */,
 				0EDC4EA518065CA2002E6E15 /* QuartzCore.framework */,
 				033F4F9A17E229530081DF34 /* libsqlite3.dylib */,
 				03C49B2617E11C9900AE7E3B /* libz.dylib */,
@@ -706,6 +706,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../Downloads\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photo/Photo-Prefix.pch";
@@ -721,6 +722,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../Downloads\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photo/Photo-Prefix.pch";

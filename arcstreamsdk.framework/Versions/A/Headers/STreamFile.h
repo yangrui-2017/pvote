@@ -35,6 +35,7 @@
 @property(retain) STreamAccessControl *accessControl;
 @property(retain) ASINetworkQueue *networkQueue;
 @property(retain) ASINetworkQueue *downloadNetwrokQueue;
+@property(strong, nonatomic)NSNumber *currentPostDataLength;
 @property(copy) NSString *errorMessage;
 
 typedef void (^DelegateCall)(float);
