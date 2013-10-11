@@ -69,6 +69,8 @@ typedef void (^FinishDownload)(NSData *, NSString *);
  */
 - (void)downloadAsData: (NSString *)objectId downloadedData: (FinishDownload)doStaff;
 
+- (NSData *)downloadAsData:(NSString *)objectId;
+
 - (void)convertJsonToMap: (NSArray *)jsonData;
 
 /*!
