@@ -236,54 +236,45 @@ static UIImage * rightImage;
 }
 
 - (void)upload{
-    sleep(5);
+    
+    file1 = [[STreamFile alloc] init];
+    file2 = [[STreamFile alloc] init];
+    [file1 postData:imageData1];
+    [file2 postData:imageData2];
     NSString *file1Id = [file1 fileId];
     NSString *file2Id = [file2 fileId];
-    int loopCount = 0;
-    while(file1Id == nil || file2Id == nil){
-        sleep(2);
-        loopCount++;
-        if (loopCount > 18)
-            break;
-        file1Id = [file1 fileId];
-        file2Id = [file2 fileId];
-    }
-    
-    if (file1Id == nil || file2Id == nil)
-        return;
-    
-    NSDate *now = [[NSDate alloc] init];
-    long millionsSecs = [now timeIntervalSince1970];
-    int i = arc4random();
-    long unique = millionsSecs + i;
-    
-    NSString *longValue = [NSString stringWithFormat:@"%lu", unique];
-    
-    ImageCache *cache = [[ImageCache alloc] init];
-    NSString *userName = [cache getLoginUserName];
-    
-    STreamObject *vote = [[STreamObject alloc] init];
-    [vote setObjectId:longValue];
-    [vote addStaff:@"file1" withObject:file1Id];
-    [vote addStaff:@"file2" withObject:file2Id];
-    [vote addStaff:@"message" withObject:_message.text];
-    [vote addStaff:@"userName" withObject:userName];
-    [vote addStaff:@"creationTime" withObject:[NSString stringWithFormat:@"%lu", millionsSecs]];
-    
-    STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
-    NSMutableArray *av = [[NSMutableArray alloc] init];
-    [av addObject:vote];
-    [scov updateStreamCategoryObjects:av];
-    
-    STreamObject *comments = [[STreamObject alloc] init];
-    [comments setObjectId:longValue];
-    [comments createNewObject:^(BOOL succeed, NSString *response){
+   
+    if (file1Id && file2Id && [[file1 errorMessage] isEqualToString:@""] && [[file2 errorMessage] isEqualToString:@""]){
         
-    }];
-    /*NSMutableDictionary *newComment = [[NSMutableDictionary alloc] init];
-    [newComment setObject:@"" forKey:@"content"];
-    [comments addStaff:longValue withObject:newComment];
-    [comments update];*/
+        NSDate *now = [[NSDate alloc] init];
+        long millionsSecs = [now timeIntervalSince1970];
+        int i = arc4random();
+        long unique = millionsSecs + i;
+        
+        NSString *longValue = [NSString stringWithFormat:@"%lu", unique];
+        
+        ImageCache *cache = [[ImageCache alloc] init];
+        NSString *userName = [cache getLoginUserName];
+        
+        STreamObject *vote = [[STreamObject alloc] init];
+        [vote setObjectId:longValue];
+        [vote addStaff:@"file1" withObject:file1Id];
+        [vote addStaff:@"file2" withObject:file2Id];
+        [vote addStaff:@"message" withObject:_message.text];
+        [vote addStaff:@"userName" withObject:userName];
+        [vote addStaff:@"creationTime" withObject:[NSString stringWithFormat:@"%lu", millionsSecs]];
+        
+        STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
+        NSMutableArray *av = [[NSMutableArray alloc] init];
+        [av addObject:vote];
+        [scov updateStreamCategoryObjects:av];
+        
+        STreamObject *comments = [[STreamObject alloc] init];
+        [comments setObjectId:longValue];
+        [comments createNewObject:^(BOOL succeed, NSString *response){
+            
+        }];        
+    }
     
 }
 
@@ -386,27 +377,23 @@ static UIImage * rightImage;
                 UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"你还没有上传图片？" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
                 [alertView show];
             }else{
-             file1 = [[STreamFile alloc] init];
-            [file1 postData:imageData1 finished:^(NSString *response){
-                NSLog(@"res: %@", response);
-                file2 = [[STreamFile alloc] init];
-                [file2 postData:imageData2 finished:^(NSString *response){
-                    NSLog(@"res: %@", response);
-                }byteSent:^(float percentage){
-                    NSLog(@"total: %f", percentage);
+               MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+               [self.view addSubview:HUD];
+               HUD.labelText = @"提交中...";
+               [HUD showAnimated:YES whileExecutingBlock:^{
+                   [self upload];
+               } completionBlock:^{
+                   NSString *file1Id = [file1 fileId];
+                   NSString *file2Id = [file2 fileId];
+                   if (file1Id && file2Id && [[file1 errorMessage] isEqualToString:@""] && [[file2 errorMessage] isEqualToString:@""]){
+                       [APPDELEGATE showLoginSucceedView];
+                       
+                   }else{
+                       NSLog(@"file1 error: %@", [file1 errorMessage]);
+                       NSLog(@"file2 error: %@", [file2 errorMessage]);
+                       //TODO show error alert view
+                   }
                 }];
-            }byteSent:^(float percentage){
-                NSLog(@"total: %f", percentage);
-            }];
-            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:HUD];
-            HUD.labelText = @"提交中...";
-            [HUD showAnimated:YES whileExecutingBlock:^{
-                [self upload];
-            } completionBlock:^{
-                if ([file1 fileId] != nil && [file2 fileId] != nil)
-                    [APPDELEGATE showLoginSucceedView];
-            }];
             }
         }
     }
