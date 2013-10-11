@@ -17,6 +17,12 @@
 
 + (ImageCache *)sharedObject;
 
+- (void)addUploadingItems:(NSString *)fileId;
+
+- (void)removeUploadingItem:(NSString *)fileId;
+
+- (BOOL)isUploading:(NSString *)fileId;
+
 -(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId;
 
 -(ImageDataFile *)getImages:(NSString *)objectId;

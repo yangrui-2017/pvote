@@ -182,35 +182,55 @@
 {
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
-    //download double image
-    if ([imageCache getImages:[so objectId]] != nil){
-        ImageDataFile *files = [imageCache getImages:[so objectId]];
-        [firstLeftButton setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
-        [firstRightButton setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
+    NSData *fData1 = [imageCache getImage:file1];
+    NSData *fData2 = [imageCache getImage:file2];
+    
+    if (fData1){
+        [firstLeftButton setImage:[UIImage imageWithData:fData1] forState:UIControlStateNormal];
         [firstLeftActivity startAnimating];
+     }else{
+         ImageDownload *imageDownload = [[ImageDownload alloc] init];
+         [imageDownload downloadFile:file1];
+         [imageDownload setMainRefesh:self];
+    }
+  
+    if (fData2){
+        [firstRightButton setImage:[UIImage imageWithData:fData2] forState:UIControlStateNormal];
         [firstRightActivity stopAnimating];
     }else{
         ImageDownload *imageDownload = [[ImageDownload alloc] init];
-        [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
+        [imageDownload downloadFile:file2];
         [imageDownload setMainRefesh:self];
     }
+
+    
 }
 -(void)loadRightImage:(STreamObject *)so
 {
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
-    //download double image
-    if ([imageCache getImages:[so objectId]] != nil){
-        ImageDataFile *files = [imageCache getImages:[so objectId]];
-        [secondLeftButton setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
-        [secondRightButton setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
+    
+    NSData *fData1 = [imageCache getImage:file1];
+    NSData *fData2 = [imageCache getImage:file2];
+    
+    if (fData1){
+        [secondLeftButton setImage:[UIImage imageWithData:fData1] forState:UIControlStateNormal];
         [secondLeftActivity stopAnimating];
+    }else{
+        ImageDownload *imageDownload = [[ImageDownload alloc] init];
+        [imageDownload downloadFile:file1];
+        [imageDownload setMainRefesh:self];
+    }
+    
+    if (fData2){
+        [secondRightButton setImage:[UIImage imageWithData:fData2] forState:UIControlStateNormal];
         [secondRightActivity stopAnimating];
     }else{
         ImageDownload *imageDownload = [[ImageDownload alloc] init];
-        [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
+        [imageDownload downloadFile:file2];
         [imageDownload setMainRefesh:self];
     }
+
 
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

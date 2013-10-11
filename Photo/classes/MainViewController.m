@@ -62,6 +62,13 @@
 @synthesize isPushFromVotesGiven;
 @synthesize selectOneImage;
 @synthesize selectTwoImage;
+
+
+CGPoint lastOffset;
+NSTimeInterval lastOffsetCapture;
+BOOL isScrollingFast;
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -442,24 +449,60 @@
 }
 
 - (void)downloadDoubleImage: (STreamObject *)so{
+  
+    ImageCache *imageCache = [ImageCache sharedObject];
     
     NSString *file1 = [so getValue:@"file1"];
     NSString *file2 = [so getValue:@"file2"];
-     ImageCache *imageCache = [ImageCache sharedObject];
-    //download double image
-    if ([imageCache getImages:[so objectId]] != nil){
-        ImageDataFile* files = [imageCache getImages:[so objectId]];
-        [self.oneImageView setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
-        [self.twoImageView setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
+    NSData *fData1 = [imageCache getImage:file1];
+    NSData *fData2 = [imageCache getImage:file2];
+    
+    
+    if (fData1){
+        [self.oneImageView setImage:[UIImage imageWithData:fData1] forState:UIControlStateNormal];
         [oneImageViewActivity stopAnimating];
+    }else{
+        ImageDownload *imageDownload = [[ImageDownload alloc] init];
+        [imageDownload downloadFile:file1];
+        [imageDownload setMainRefesh:self];
+    }
+    
+    if (fData2){
+        [self.twoImageView setImage:[UIImage imageWithData:fData2] forState:UIControlStateNormal];
         [twoImageViewActivity stopAnimating];
     }else{
         ImageDownload *imageDownload = [[ImageDownload alloc] init];
-        [imageDownload dowloadFile:file1 withFile2:file2 withObjectId:[so objectId]];
+        [imageDownload downloadFile:file2];
         [imageDownload setMainRefesh:self];
     }
+
 }
 
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGPoint currentOffset = self.myTableView.contentOffset;
+    NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
+    
+    NSTimeInterval timeDiff = currentTime - lastOffsetCapture;
+    if(timeDiff > 0.1) {
+        CGFloat distance = currentOffset.y - lastOffset.y;
+        //The multiply by 10, / 1000 isn't really necessary.......
+        CGFloat scrollSpeedNotAbs = (distance * 10) / 1000; //in pixels per millisecond
+        
+        CGFloat scrollSpeed = fabsf(scrollSpeedNotAbs);
+        if (scrollSpeed > 0.5) {
+            isScrollingFast = YES;
+      //      NSLog(@"Fast");
+        } else {
+            isScrollingFast = NO;
+        //    NSLog(@"Slow");
+        }
+        
+        lastOffset = currentOffset;
+        lastOffsetCapture = currentTime;
+    }
+    [_fullScreenDelegate scrollViewDidScroll:scrollView];
+    
+}
 
 - (void)loadUserMetadataAndDownloadUserProfileImage{
     
@@ -753,10 +796,10 @@
     [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+/*- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [_fullScreenDelegate scrollViewDidScroll:scrollView];
-}
+}*/
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {

@@ -26,17 +26,20 @@
     ImageCache *imageCache = [ImageCache sharedObject];
     FileCache *fileCache = [FileCache sharedObject];
     STreamFile *file = [[STreamFile alloc] init];
-    [file downloadAsData:fileId downloadedData:^(NSData *imageData, NSString *oId) {
-        if ([fileId isEqualToString:oId]){
-           NSLog(@"save image id %@", fileId);
-           [imageCache selfImageDownload:imageData withFileId:fileId];
-           [fileCache writeFile:fileId withData:imageData];
-           [mainRefesh reloadTable];
-        }
-    }];
+    if (![imageCache getImage:fileId]){
+        [file downloadAsData:fileId downloadedData:^(NSData *imageData, NSString *oId) {
+             if ([fileId isEqualToString:oId]){
+                 NSLog(@"save image id %@", fileId);
+                 [imageCache selfImageDownload:imageData withFileId:fileId];
+                 [fileCache writeFile:fileId withData:imageData];
+                 [mainRefesh reloadTable];
+             }
+         }];
+    }
+    
 }
 
-- (void)dowloadFile:(NSString *)file1 withFile2:(NSString *)file2 withObjectId:(NSString *)objectId{
+/*- (void)dowloadFile:(NSString *)file1 withFile2:(NSString *)file2 withObjectId:(NSString *)objectId{
     
     
     ImageCache *imageCache = [ImageCache sharedObject];
@@ -79,6 +82,6 @@
             }
         }];
     }
-}
+}*/
 
 @end

@@ -21,6 +21,7 @@ static NSString *password;
 static FileCache *fileCache;
 static NSMutableArray *_cachedSelfImageFiles;
 static NSMutableArray *_cachedFiles;
+static NSMutableSet *_uploadingItems;
 
 @implementation ImageCache
 
@@ -39,11 +40,26 @@ static NSMutableArray *_cachedFiles;
          _selfImageDictionary = [[NSMutableDictionary alloc] init];
          _userMetaData = [[NSMutableDictionary alloc] init];
          _voteResults = [[NSMutableDictionary alloc] init];
+         _uploadingItems = [[NSMutableSet alloc] init];
          
      });
     
     return sharedInstance;
     
+}
+
+- (void)addUploadingItems:(NSString *)fileId{
+    [_uploadingItems addObject:fileId];
+}
+
+- (void)removeUploadingItem:(NSString *)fileId{
+    [_uploadingItems removeObject:fileId];
+}
+
+- (BOOL)isUploading:(NSString *)fileId{
+    if ([_uploadingItems containsObject:fileId])
+        return YES;
+    return NO;
 }
 
 -(void)setLoginPassword:(NSString *)p{
@@ -92,7 +108,7 @@ static NSMutableArray *_cachedFiles;
 }
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId{
-    if ([_cachedSelfImageFiles count] >= 30){
+    if ([_cachedSelfImageFiles count] >= 50){
         NSString *fId = [_cachedSelfImageFiles objectAtIndex:0];
         [_selfImageDictionary removeObjectForKey:fId];
         [_cachedSelfImageFiles removeObjectAtIndex:0];
@@ -105,12 +121,14 @@ static NSMutableArray *_cachedFiles;
 -(NSData *)getImage:(NSString *)fileId{
     NSData *data =  [_selfImageDictionary objectForKey:fileId];
     if (data){
-   //     NSLog(@"read self image file from memory %d", [data length]);
+    //    NSLog(@"read self image file from memory %d", [data length]);
     }
     else{
         data = [fileCache readFromFile:fileId];
+        if (data)
+            [_selfImageDictionary setObject:data forKey:fileId];
      //   if (data)
-       //     NSLog(@"read self image file from file %d", [data length]);
+   //         NSLog(@"read self image file from file %d", [data length]);
     }
     
     return data;
