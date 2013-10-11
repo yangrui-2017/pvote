@@ -35,6 +35,8 @@
     UIActivityIndicatorView *imageViewActivity;
     UIActivityIndicatorView *oneImageViewActivity;
     UIActivityIndicatorView *twoImageViewActivity;
+    
+    NSString *currentSelectedMessage;
 }
 
 @end
@@ -317,6 +319,7 @@
     return [votesArray count];
   
 }
+
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

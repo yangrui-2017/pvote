@@ -23,6 +23,7 @@ static BOOL isExistingLeftImage;
 static BOOL isExistingRightImage;
 static UIImage * leftImage;
 static UIImage * rightImage;
+
 @interface PhotoViewController ()
 {
     BOOL isUpload;
@@ -33,6 +34,7 @@ static UIImage * rightImage;
     STreamFile *file1;
     STreamFile *file2;
     UIToolbar* keyboardDoneButtonView;
+
 }
 
 @end
@@ -168,11 +170,22 @@ static UIImage * rightImage;
     }
     return cell;
 }
+
+- (void)selectMessage:(NSString *)message{
+    messages = message;
+    _message.text = messages;
+}
+
 -(void)questionButtonClicked
 {
     QuestionViewController *questionView = [[QuestionViewController alloc]init];
+    [questionView setMessagePro:self];
+    
     [self.navigationController pushViewController:questionView animated:YES];
 }
+
+
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 400;//
@@ -369,7 +382,6 @@ static UIImage * rightImage;
     }
     if (isUpload) {
         if (buttonIndex == 1) {
-           
             if (([imageData1 length] == 0)|| ([imageData2 length]== 0)) {
                 UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"你还没有上传图片？" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
                 [alertView show];

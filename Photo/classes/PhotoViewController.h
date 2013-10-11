@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SelectMessageP.h"
 
-@interface PhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,UIAlertViewDelegate>
+@interface PhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UITextViewDelegate,SelectMessageP, UIAlertViewDelegate>
 {
     
 }

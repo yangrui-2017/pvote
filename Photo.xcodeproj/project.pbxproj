@@ -173,6 +173,7 @@
 		0EE3708817F7B73100E2E487 /* FireViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FireViewController.h; path = classes/FireViewController.h; sourceTree = "<group>"; };
 		0EE3708917F7B73100E2E487 /* FireViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FireViewController.m; path = classes/FireViewController.m; sourceTree = "<group>"; };
 		0EE3C1EB180560760035BA74 /* question2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = question2.png; sourceTree = "<group>"; };
+		0EE3FFFE1807B4A70017EE17 /* SelectMessageP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectMessageP.h; sourceTree = "<group>"; };
 		0EE585DF18054EA80012546B /* QuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuestionViewController.h; path = classes/QuestionViewController.h; sourceTree = "<group>"; };
 		0EE585E018054EA80012546B /* QuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QuestionViewController.m; path = classes/QuestionViewController.m; sourceTree = "<group>"; };
 		0EE672F2180400D700C7631D /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
@@ -341,6 +342,7 @@
 				0EF9AE4718025DCF00E78732 /* FileCache.m */,
 				03CF5DF1180579E30082CBC0 /* SingleImageViewController.h */,
 				03CF5DF2180579E40082CBC0 /* SingleImageViewController.m */,
+				0EE3FFFE1807B4A70017EE17 /* SelectMessageP.h */,
 			);
 			name = classes;
 			sourceTree = "<group>";

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MainViewTableViewRfresh.h"
+#import "SelectMessageP.h"
 
 @interface MainViewController : UIViewController <UITableViewDelegate,UITableViewDataSource, MainViewTableViewRfresh,UITextViewDelegate>
 {

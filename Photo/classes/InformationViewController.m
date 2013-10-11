@@ -248,15 +248,15 @@
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
     
-    userMetaData = [cache getUserMetadata:pageUserName];
-    pImageId = [userMetaData objectForKey:@"profileImageId"];
-    if ([cache getImage:pImageId]){
-        imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
-        [imageViewActivity stopAnimating];
-    }else{
-        [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-    }
-    
+//    userMetaData = [cache getUserMetadata:pageUserName];
+//    pImageId = [userMetaData objectForKey:@"profileImageId"];
+//    if ([cache getImage:pImageId]){
+//        imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
+//        [imageViewActivity stopAnimating];
+//    }else{
+//        [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+//    }
+    [self loadUserMetadataAndDownloadUserProfileImage];
         if ([loggedInUserFollowing containsObject:pageUserName]) {
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
     }else{
@@ -295,7 +295,34 @@
     nameLablel.text = pageUserName;
     return cell;
 }
-
+- (void)loadUserMetadataAndDownloadUserProfileImage{
+    
+    ImageCache *imageCache = [ImageCache sharedObject];
+    
+    //load user metadata and profile image
+    if ([cache getUserMetadata:pageUserName] != nil){
+        userMetaData = [imageCache getUserMetadata:pageUserName];
+        pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([imageCache getImage:pImageId] == nil && pImageId){
+            ImageDownload *imageDownload = [[ImageDownload alloc] init];
+            [imageDownload downloadFile:pImageId];
+            [imageDownload setMainRefesh:self];
+        }else{
+            [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
+        }
+        [imageViewActivity stopAnimating];
+    }else{
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:pageUserName response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:pageUserName]){
+                NSMutableDictionary *dic = [user userMetadata];
+                [imageCache saveUserMetadata:pageUserName withMetadata:dic];
+                [self.myTableView reloadData];
+            }
+        }];
+    }
+    
+}
 -(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {

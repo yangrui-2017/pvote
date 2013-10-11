@@ -16,6 +16,7 @@
 @implementation QuestionViewController
 @synthesize mTableView;
 @synthesize dataArray;
+@synthesize messagePro;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -67,10 +68,11 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PhotoViewController *photoView = [[PhotoViewController alloc]init];
-    photoView.messages= [dataArray objectAtIndex:indexPath.row];
+      //PhotoViewController *photoView = [[PhotoViewController alloc]init];
+    //photoView.messages= [dataArray objectAtIndex:indexPath.row];
+    [messagePro selectMessage:[dataArray objectAtIndex:indexPath.row]];
+    [self.navigationController popViewControllerAnimated:YES];
     
-    [self.navigationController pushViewController:photoView animated:YES];
 }
 - (void)didReceiveMemoryWarning
 {

@@ -167,12 +167,9 @@
         leftActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [leftActivity setCenter:CGPointMake(20, 22)];
         [leftActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        [cell addSubview:leftActivity];
-        [rightActivity startAnimating];
         rightActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [rightActivity setCenter:CGPointMake(300, 22)];
         [rightActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-      
         self.leftImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 2, 40, 40)];
         [cell.contentView addSubview:self.leftImage];
         
@@ -218,7 +215,9 @@
     ImageCache *cache = [ImageCache sharedObject];
     
     if (indexPath.row != 0) {
-            if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1)){
+        if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1)){
+            [cell addSubview:leftActivity];
+            [leftActivity startAnimating];
             [self.leftButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
             NSMutableDictionary *userMetaData = [cache getUserMetadata:[leftVoters objectAtIndex:(indexPath.row-1 )]];
             NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
