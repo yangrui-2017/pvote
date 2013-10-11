@@ -8,6 +8,7 @@
 
 #import "SetDetailViewController.h"
 #import "ImageCache.h"
+#import <QuartzCore/QuartzCore.h>
 #import <arcstreamsdk/STreamUser.h>
 #import <arcstreamsdk/STreamFile.h>
 #import "UserDB.h"

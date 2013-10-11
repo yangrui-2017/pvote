@@ -455,7 +455,7 @@
     if ([imageCache getUserMetadata:self.name.text] != nil){
         NSMutableDictionary *userMetaData = [imageCache getUserMetadata:self.name.text];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if ([imageCache getImage:pImageId] == nil){
+        if ([imageCache getImage:pImageId] == nil && pImageId){
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
             [imageDownload setMainRefesh:self];
