@@ -206,29 +206,20 @@
     UIImage *sImage = [self imageWithImageSimple:self.imageview.image scaledToSize:CGSizeMake(120.0, 120.0)];
     NSData *postData = UIImageJPEGRepresentation(sImage, 0.1);
     STreamFile *file = [[STreamFile alloc] init];
-    __block NSString *res;
-    [file postData:postData finished:^(NSString *response){
-        NSLog(@"res: %@", response);
-        res = response;
-    }byteSent:^(float percentage){
-        NSLog(@"total: %f", percentage);
-    }];
-
-    while (res== nil){
-        sleep(3);
-    }
-    if ([res isEqualToString:@"ok"]){
-        STreamUser *user = [[STreamUser alloc] init];
-        NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
-        [metaData setValue:self.nameText.text forKey:@"name"];
-        [metaData setValue:self.passwordText.text forKey:@"password"];
-        [metaData setValue:self.genderText.text forKey:@"gender"];
-        [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
-        [metaData setValue:[file fileId] forKey:@"profileImageId"];
-        [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData];
+    [file postData:postData];
     
-        NSString *error = [user errorMessage];
-        if ([error isEqualToString:@""]){
+    STreamUser *user = [[STreamUser alloc] init];
+    NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
+    [metaData setValue:self.nameText.text forKey:@"name"];
+    [metaData setValue:self.passwordText.text forKey:@"password"];
+    [metaData setValue:self.genderText.text forKey:@"gender"];
+    [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
+    if ([[file errorMessage] isEqualToString:@""] && [file fileId])
+        [metaData setValue:[file fileId] forKey:@"profileImageId"];
+    [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData];
+    
+    NSString *error = [user errorMessage];
+    if ([error isEqualToString:@""]){
             STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"Voted"];
             STreamObject *so = [[STreamObject alloc] init];
             [so setObjectId:self.nameText.text];
@@ -247,11 +238,14 @@
                 if (!succeed)
                     NSLog(@"res: %@", response);
             }];
-        }else{
         
-        }
+        
+    }else{
+     
+        //TODO alert show error message
         NSLog(@"%@", error);
         
+    
     }
    
 

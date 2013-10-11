@@ -86,5 +86,7 @@ typedef void (^FinishDownload)(NSData *, NSString *);
 - (void) postData:(NSData *)data finished:(FinishCall)doStaff byteSent:(DelegateCall)call;
 
 
+- (void) postData:(NSData *)data;
+
 
 @end
