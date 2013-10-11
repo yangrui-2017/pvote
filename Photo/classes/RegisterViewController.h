@@ -18,6 +18,7 @@
 @property (strong,nonatomic) UITextField *rePassword;
 @property (strong,nonatomic) UITextField *genderText;
 @property (strong,nonatomic) UITextField *dateOfBirthText;
+@property (strong,nonatomic) UITextField *nicknameText;
 @property (strong,nonatomic) UIButton *registerButton;
 @property (retain,nonatomic) NSArray *genderArray;
 @property (strong,nonatomic) UIImageView *imageview;

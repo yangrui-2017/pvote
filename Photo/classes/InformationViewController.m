@@ -21,6 +21,8 @@
 #import "ImageDownload.h"
 #import <arcstreamsdk/STreamUser.h>
 
+#define BIG_IMG_WIDTH  240.0
+#define BIG_IMG_HEIGHT 240.0
 @interface InformationViewController ()
 {
     ImageCache *cache;
@@ -43,6 +45,7 @@
     int fourCount;
     UIActivityIndicatorView *imageViewActivity;
     UIToolbar* keyboardDoneButtonView;
+    UIView *background;
 }
 @end
 
@@ -76,9 +79,9 @@
     UITextView* view = (UITextView*)[self.view viewWithTag:1001];
     [view resignFirstResponder];
 }
--(void)selectAction
+-(void)selectClickedAction
 {
-    SettingViewController *setView = [[SettingViewController alloc]init];
+    SettingViewController * setView= [[SettingViewController alloc]init];
     [self.navigationController pushViewController:setView animated:YES];
 }
 - (void)viewDidLoad
@@ -98,13 +101,12 @@
     else
         pageUserName = [cache getLoginUserName];
     if ([pageUserName isEqualToString:[cache getLoginUserName]]) {
-        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登出" style:UIBarButtonItemStyleDone target:self action:@selector(selectLogoutAction:)];
-        self.navigationItem.leftBarButtonItem = leftItem;
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(selectClickedAction)];
+        self.navigationItem.rightBarButtonItem = rightItem;
     }
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(selectAction)];
-    self.navigationItem.rightBarButtonItem = rightItem;
+    
 	// Do any additional setup after loading the view.
-       myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     myTableView.dataSource = self;
     myTableView.delegate = self;
     [self.view addSubview:myTableView];
@@ -247,15 +249,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
-    
-//    userMetaData = [cache getUserMetadata:pageUserName];
-//    pImageId = [userMetaData objectForKey:@"profileImageId"];
-//    if ([cache getImage:pImageId]){
-//        imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
-//        [imageViewActivity stopAnimating];
-//    }else{
-//        [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
-//    }
+
     [self loadUserMetadataAndDownloadUserProfileImage];
         if ([loggedInUserFollowing containsObject:pageUserName]) {
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
@@ -297,18 +291,16 @@
 }
 - (void)loadUserMetadataAndDownloadUserProfileImage{
     
-    ImageCache *imageCache = [ImageCache sharedObject];
-    
     //load user metadata and profile image
     if ([cache getUserMetadata:pageUserName] != nil){
-        userMetaData = [imageCache getUserMetadata:pageUserName];
+        userMetaData = [cache getUserMetadata:pageUserName];
         pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if ([imageCache getImage:pImageId] == nil && pImageId){
+        if ([cache getImage:pImageId] == nil && pImageId){
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
             [imageDownload setMainRefesh:self];
         }else{
-            [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]]];
+            [self.imageView setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
         }
         [imageViewActivity stopAnimating];
     }else{
@@ -316,7 +308,7 @@
         [user loadUserMetadata:pageUserName response:^(BOOL succeed, NSString *error){
             if ([error isEqualToString:pageUserName]){
                 NSMutableDictionary *dic = [user userMetadata];
-                [imageCache saveUserMetadata:pageUserName withMetadata:dic];
+                [cache saveUserMetadata:pageUserName withMetadata:dic];
                 [self.myTableView reloadData];
             }
         }];
@@ -399,6 +391,9 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath .row == 0) {
+        [self fangda];
+    }
     if (indexPath.row == 1) {
         if (count!=0)   {
             MainViewController * mainVC = [[MainViewController alloc]init];
@@ -451,6 +446,72 @@
         }
     }
 }
+//fangda
+- (void)fangda
+{
+    //创建灰色透明背景，使其背后内容不可操作
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
+    background = bgView;
+    [bgView setBackgroundColor:[UIColor colorWithRed:0.3
+                                               green:0.3
+                                                blue:0.3
+                                               alpha:0.7]];
+    [self.myTableView addSubview:bgView];
+    //创建边框视图
+    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,BIG_IMG_WIDTH+16, BIG_IMG_HEIGHT+16)];
+    //将图层的边框设置为圆脚
+    borderView.layer.cornerRadius = 8;
+    borderView.layer.masksToBounds = YES;
+    //给图层添加一个有色边框
+    borderView.layer.borderWidth = 8;
+    borderView.layer.borderColor = [[UIColor colorWithRed:0.9
+                                                    green:0.9
+                                                     blue:0.9
+                                                    alpha:0.7]CGColor];
+    [borderView setCenter:bgView.center];
+    [bgView addSubview:borderView];
+    //创建关闭按钮
+    UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [closeBtn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
+    [closeBtn addTarget:self action:@selector(suoxiao) forControlEvents:UIControlEventTouchUpInside];
+    NSLog(@"borderview is %@",borderView);
+    [closeBtn setFrame:CGRectMake(borderView.frame.origin.x+borderView.frame.size.width-20, borderView.frame.origin.y-6, 26, 27)];
+    [bgView addSubview:closeBtn];
+    //创建显示图像视图
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 8, BIG_IMG_WIDTH, BIG_IMG_HEIGHT)];
+    [imgView setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
+    [borderView addSubview:imgView];
+    [self shakeToShow:borderView];//放大过程中的动画
+
+    
+    //动画效果
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:context];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:2.6];//动画时间长度，单位秒，浮点数
+    [self.myTableView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
+    [UIView setAnimationDelegate:bgView];
+    // 动画完毕后调用animationFinished
+    [UIView setAnimationDidStopSelector:@selector(animationFinished)];
+    [UIView commitAnimations];
+}
+-(void)suoxiao
+{
+    [background removeFromSuperview];
+}
+//*************放大过程中出现的缓慢动画*************
+- (void) shakeToShow:(UIView*)aView{
+    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    animation.duration = 0.5;
+    
+    NSMutableArray *values = [NSMutableArray array];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.1, 0.1, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
+    animation.values = values;
+    [aView.layer addAnimation:animation forKey:nil];
+}
+
+#pragma mark -- UITextfieldDelegate
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textFied resignFirstResponder];

@@ -146,8 +146,7 @@
     UIAlertView *alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"你确定要更改信息吗" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
     alertView.delegate = self;
        if (doneButton.tag == 1) {
-//         [dic setValue:@"" forKey:];
-            NSLog(@"1");
+           [dict setValue:self.nameTextFied.text forKey:@"nickname"];
            [alertView show];
         }
         if (doneButton.tag == 2) {
@@ -236,7 +235,6 @@
                 }];
             }else{
                 [HUD showAnimated:YES whileExecutingBlock:^{
-                   
                 } completionBlock:^{
                     [user updateUserMetadata:[cache getLoginUserName] withMetadata:dict];
                 }];
@@ -298,8 +296,16 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
     UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     self.headImage.image = image;
-    imageData = UIImageJPEGRepresentation(image, 0.5);
+    UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(300.0, 300.0)];
+    imageData = UIImageJPEGRepresentation(sImage, 0.1);
     
+}
+-(UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 - (void)didReceiveMemoryWarning

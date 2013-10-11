@@ -93,7 +93,7 @@
     
     
     self.name.placeholder=@"登录名";
-    self.name.borderStyle = UITextBorderStyleLine;
+    self.name.borderStyle = UITextBorderStyleRoundedRect;
     self.name.contentVerticalAlignment= UIControlContentVerticalAlignmentCenter;
     self.name.autocorrectionType = UITextAutocorrectionTypeYes;
     self.name.delegate =self;
@@ -101,7 +101,7 @@
     
     
     self.password.placeholder=@"密码";
-    self.password.borderStyle = UITextBorderStyleLine;
+    self.password.borderStyle = UITextBorderStyleRoundedRect;
     [self.password setSecureTextEntry:YES];
     self.password.contentVerticalAlignment= UIControlContentVerticalAlignmentCenter;
     self.password.delegate =self;
@@ -158,7 +158,7 @@
            if ([[user errorMessage] length] == 0) {
                [APPDELEGATE showLoginSucceedView];
             }else{
-               UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"该用户不存在，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+               UIAlertView *alertview = [[UIAlertView alloc]initWithTitle:@"错误信息" message:@"用户不存在或密码不匹配，请先注册，谢谢" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertview show];
             }
             [HUD removeFromSuperview];

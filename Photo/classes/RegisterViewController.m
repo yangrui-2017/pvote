@@ -32,6 +32,7 @@
 @synthesize imageview =_imageview;
 @synthesize myTableView = _myTableView;
 @synthesize actionSheet = _actionSheet;
+@synthesize nicknameText;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -101,27 +102,27 @@
         
         self.nameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 140, self.view.frame.size.width - 40, 50)];
         self.nameText.placeholder = @"登录名";
-        self.nameText.borderStyle = UITextBorderStyleLine;
+        self.nameText.borderStyle = UITextBorderStyleRoundedRect;
         self.nameText.delegate = self;
         [cell.contentView addSubview:self.nameText];
         
         self.passwordText = [[UITextField alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width - 40,50)];
         self.passwordText.placeholder = @"密码";
-        self.passwordText.borderStyle =UITextBorderStyleLine;
+        self.passwordText.borderStyle =UITextBorderStyleRoundedRect;
         self.passwordText.delegate = self;
         [self.passwordText setSecureTextEntry:YES];//
         [cell.contentView addSubview:self.passwordText];
         
         self.rePassword = [[UITextField alloc]initWithFrame:CGRectMake(20, 260, self.view.frame.size.width - 40, 50)];
         self.rePassword.placeholder = @"确认密码";
-        self.rePassword.borderStyle = UITextBorderStyleLine;
+        self.rePassword.borderStyle = UITextBorderStyleRoundedRect;
         [self.rePassword setSecureTextEntry:YES];
         self.rePassword.delegate = self;
         [cell.contentView addSubview:self.rePassword];
         
         self.dateOfBirthText = [[UITextField alloc]initWithFrame:CGRectMake(20, 320, self.view.frame.size.width - 40, 50)];
         self.dateOfBirthText.placeholder = @"出生日期";
-        self.dateOfBirthText.borderStyle = UITextBorderStyleLine;
+        self.dateOfBirthText.borderStyle = UITextBorderStyleRoundedRect;
         self.dateOfBirthText.inputView = datePicker;
         self.dateOfBirthText.inputAccessoryView = toolBar;
         self.dateOfBirthText.delegate = self;
@@ -129,7 +130,7 @@
         
         self.genderText = [[UITextField alloc]initWithFrame:CGRectMake(20, 380, self.view.frame.size.width - 40, 50)];
         self.genderText.placeholder = @"性别";
-        self.genderText.borderStyle = UITextBorderStyleLine;
+        self.genderText.borderStyle = UITextBorderStyleRoundedRect;
         self.genderText.delegate = self;
         [cell.contentView addSubview:self.genderText];
         
@@ -138,13 +139,19 @@
         [dateButton addTarget:self action:@selector(dateButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:dateButton];
         
+        self.nicknameText = [[UITextField alloc]initWithFrame:CGRectMake(20, 440, self.view.frame.size.width - 40, 50)];
+        self.nicknameText.placeholder = @"昵称";
+        self.nicknameText.borderStyle = UITextBorderStyleRoundedRect;
+        self.nicknameText.delegate = self;
+        [cell.contentView addSubview:self.nicknameText];
+        
         self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [[self.registerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [[self.registerButton  layer] setBorderWidth:1];
         [[self.registerButton layer] setCornerRadius:8];
         [self.registerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         self.registerButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-        [self.registerButton setFrame:CGRectMake(20, 440, self.view.frame.size.width - 40, 40)];
+        [self.registerButton setFrame:CGRectMake(20, 500, self.view.frame.size.width - 40, 40)];
         [self.registerButton setTitle:@"注册" forState:UIControlStateNormal];
         [self.registerButton addTarget:self action:@selector(registerClicked:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:self.registerButton];
@@ -166,11 +173,11 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _myTableView.bounds.size.height+150;//416
+    return _myTableView.bounds.size.height+220;//416
 }
 //registerButton
 -(void) registerClicked:(UIButton *)button {
-    if ([self.passwordText.text isEqualToString:self.rePassword.text]) {
+    if ([self.passwordText.text isEqualToString:self.rePassword.text] && ([self.nameText.text length]!= 0)) {
         __block  MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         HUD.labelText = @"注册中...";
         [self.view addSubview:HUD];
@@ -203,7 +210,7 @@
 
 - (void)registerUser{
     
-    UIImage *sImage = [self imageWithImageSimple:self.imageview.image scaledToSize:CGSizeMake(120.0, 120.0)];
+    UIImage *sImage = [self imageWithImageSimple:self.imageview.image scaledToSize:CGSizeMake(300.0, 300.0)];
     NSData *postData = UIImageJPEGRepresentation(sImage, 0.1);
     STreamFile *file = [[STreamFile alloc] init];
     [file postData:postData];
@@ -214,6 +221,7 @@
     [metaData setValue:self.passwordText.text forKey:@"password"];
     [metaData setValue:self.genderText.text forKey:@"gender"];
     [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
+    [metaData setValue:self.nicknameText.text forKey:@"nickname"];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId])
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
     [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData];
@@ -270,7 +278,7 @@
 }
 //UITextFied
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [self.nameText resignFirstResponder];
+    [textField resignFirstResponder];
     [self.passwordText resignFirstResponder];
     [self.rePassword resignFirstResponder];
     return YES;

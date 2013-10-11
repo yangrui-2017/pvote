@@ -24,7 +24,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UserDB.h"
 #import "AppDelegate.h"
-
+#define BIG_IMG_WIDTH  300.0
+#define BIG_IMG_HEIGHT 300.0
 
 @interface MainViewController (){
     STreamCategoryObject *votes;   
@@ -37,6 +38,8 @@
     UIActivityIndicatorView *twoImageViewActivity;
     
     NSString *currentSelectedMessage;
+    UIView *background;
+    BOOL isRight;
 }
 
 @end
@@ -264,6 +267,7 @@
     self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.oneImageView setFrame:CGRectMake(5, 130, 150, 150)];
     [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
+    [self.oneImageView addTarget:self action:@selector(fangdaLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.oneImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.oneImageView];
@@ -278,6 +282,7 @@
     self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.twoImageView setFrame:CGRectMake(165, 130, 150, 150)];
     [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
+    [self.twoImageView addTarget:self action:@selector(fangdaRightClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
     [self.twoImageView setTag:indexPath.row];
     [cell.contentView addSubview:self.twoImageView];
@@ -437,7 +442,7 @@
      ImageCache *imageCache = [ImageCache sharedObject];
     //download double image
     if ([imageCache getImages:[so objectId]] != nil){
-        ImageDataFile *files = [imageCache getImages:[so objectId]];
+        ImageDataFile* files = [imageCache getImages:[so objectId]];
         [self.oneImageView setImage:[UIImage imageWithData:[files file1]] forState:UIControlStateNormal];
         [self.twoImageView setImage:[UIImage imageWithData:[files file2]] forState:UIControlStateNormal];
         [oneImageViewActivity stopAnimating];
@@ -603,6 +608,7 @@
             [self.view addSubview:HUD];
             [HUD showWhileExecuting:@selector(voteTheTopicRight:) onTarget:self withObject:button animated:YES];
         }
+
     }else{
         UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
         [alertView show];
@@ -635,6 +641,83 @@
         UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
         [alertView show];
     }
+}
+
+//fangda
+-(void)fangdaLeftClicked:(UIButton *)button
+{
+    [self fangda:button];
+}
+-(void)fangdaRightClicked:(UIButton *)button
+{
+    isRight = YES;
+    [self fangda:button];
+}
+- (void)fangda:(UIButton *)button
+{
+    //创建灰色透明背景，使其背后内容不可操作
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    background = bgView;
+    [bgView setBackgroundColor:[UIColor colorWithRed:0.3
+                                               green:0.3
+                                                blue:0.3
+                                               alpha:0.7]];
+    [self.view addSubview:bgView];
+    //创建边框视图
+    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,BIG_IMG_WIDTH+16, BIG_IMG_HEIGHT+16)];
+    //将图层的边框设置为圆脚
+    borderView.layer.cornerRadius = 8;
+    borderView.layer.masksToBounds = YES;
+    //给图层添加一个有色边框
+    borderView.layer.borderWidth = 8;
+    borderView.layer.borderColor = [[UIColor colorWithRed:0.9
+                                                    green:0.9
+                                                     blue:0.9
+                                                    alpha:0.7]CGColor];
+    [borderView setCenter:bgView.center];
+    [bgView addSubview:borderView];
+    //创建关闭按钮
+    UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [closeBtn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
+    [closeBtn addTarget:self action:@selector(suoxiao) forControlEvents:UIControlEventTouchUpInside];
+    NSLog(@"borderview is %@",borderView);
+    [closeBtn setFrame:CGRectMake(borderView.frame.origin.x+borderView.frame.size.width-20, borderView.frame.origin.y-6, 26, 27)];
+    [bgView addSubview:closeBtn];
+    //创建显示图像视图
+    UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(8, 8, BIG_IMG_WIDTH, BIG_IMG_HEIGHT)];
+    if (isRight) {
+        [imgview setImage: button.imageView.image];
+    }else{
+        [imgview setImage: button.imageView.image];
+    }
+    [borderView addSubview:imgview];
+    [self shakeToShow:borderView];//放大过程中的动画
+    
+    //动画效果
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:context];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:2.6];//动画时间长度，单位秒，浮点数
+    [self.myTableView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
+    [UIView setAnimationDelegate:bgView];
+    // 动画完毕后调用animationFinished
+    [UIView setAnimationDidStopSelector:@selector(animationFinished)];
+    [UIView commitAnimations];
+}
+-(void)suoxiao
+{
+    [background removeFromSuperview];
+}
+//*************放大过程中出现的缓慢动画*************
+- (void) shakeToShow:(UIView*)aView{
+    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    animation.duration = 0.5;
+    
+    NSMutableArray *values = [NSMutableArray array];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.1, 0.1, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
+    animation.values = values;
+    [aView.layer addAnimation:animation forKey:nil];
 }
 
 #pragma mark Full Screen

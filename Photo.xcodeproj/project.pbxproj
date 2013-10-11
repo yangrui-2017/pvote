@@ -48,7 +48,6 @@
 		0ED0E89E17F53CA000B4B636 /* FollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E89D17F53CA000B4B636 /* FollowingViewController.m */; };
 		0ED0E8A117F55B9A00B4B636 /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */; };
 		0EDC4EA218065276002E6E15 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDC4EA118065276002E6E15 /* SettingViewController.m */; };
-		0EDC4EA418065A77002E6E15 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDC4EA318065A77002E6E15 /* remove.png */; };
 		0EDC4EA618065CA2002E6E15 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDC4EA518065CA2002E6E15 /* QuartzCore.framework */; };
 		0EDC4EB618067786002E6E15 /* Default1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDC4EB518067786002E6E15 /* Default1.png */; };
 		0EDC4EB81806778B002E6E15 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDC4EB71806778B002E6E15 /* icon.png */; };
@@ -65,6 +64,7 @@
 		0EE2FC651803D4FB000761CF /* following.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE2FC611803D4FB000761CF /* following.png */; };
 		0EE2FC661803D4FB000761CF /* upload1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE2FC621803D4FB000761CF /* upload1.png */; };
 		0EE2FC671803D4FB000761CF /* vote.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE2FC631803D4FB000761CF /* vote.png */; };
+		0EE300081807E62C0017EE17 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE300071807E62C0017EE17 /* remove.png */; };
 		0EE3708A17F7B73100E2E487 /* FireViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3708917F7B73100E2E487 /* FireViewController.m */; };
 		0EE3C1EC180560760035BA74 /* question2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE3C1EB180560760035BA74 /* question2.png */; };
 		0EE585E118054EA80012546B /* QuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE585E018054EA80012546B /* QuestionViewController.m */; };
@@ -148,7 +148,6 @@
 		0ED0E8A017F55B9A00B4B636 /* FollowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FollowerViewController.m; path = classes/FollowerViewController.m; sourceTree = "<group>"; };
 		0EDC4EA018065276002E6E15 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingViewController.h; path = classes/SettingViewController.h; sourceTree = "<group>"; };
 		0EDC4EA118065276002E6E15 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewController.m; path = classes/SettingViewController.m; sourceTree = "<group>"; };
-		0EDC4EA318065A77002E6E15 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
 		0EDC4EA518065CA2002E6E15 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0EDC4EB518067786002E6E15 /* Default1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default1.png; sourceTree = "<group>"; };
 		0EDC4EB71806778B002E6E15 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -170,6 +169,7 @@
 		0EE2FC611803D4FB000761CF /* following.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = following.png; sourceTree = "<group>"; };
 		0EE2FC621803D4FB000761CF /* upload1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload1.png; sourceTree = "<group>"; };
 		0EE2FC631803D4FB000761CF /* vote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vote.png; sourceTree = "<group>"; };
+		0EE300071807E62C0017EE17 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
 		0EE3708817F7B73100E2E487 /* FireViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FireViewController.h; path = classes/FireViewController.h; sourceTree = "<group>"; };
 		0EE3708917F7B73100E2E487 /* FireViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FireViewController.m; path = classes/FireViewController.m; sourceTree = "<group>"; };
 		0EE3C1EB180560760035BA74 /* question2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = question2.png; sourceTree = "<group>"; };
@@ -310,8 +310,8 @@
 				0EDC4EBA18068390002E6E15 /* submit.png */,
 				0EDC4EB71806778B002E6E15 /* icon.png */,
 				0EDC4EB518067786002E6E15 /* Default1.png */,
-				0EDC4EA318065A77002E6E15 /* remove.png */,
 				0EE3C1EB180560760035BA74 /* question2.png */,
+				0EE300071807E62C0017EE17 /* remove.png */,
 				0EE2FC5F1803D4FB000761CF /* new */,
 				0EE2FC5D1803CC32000761CF /* clock.png */,
 				0EE672F4180402FE00C7631D /* upload2.png */,
@@ -530,6 +530,7 @@
 				0EE672F5180402FE00C7631D /* upload2.png in Resources */,
 				0EE3C1EC180560760035BA74 /* question2.png in Resources */,
 				03C49AF917E102FC00AE7E3B /* Default@2x.png in Resources */,
+				0EE300081807E62C0017EE17 /* remove.png in Resources */,
 				03C49AFB17E102FC00AE7E3B /* Default-568h@2x.png in Resources */,
 				0EDC4EBB18068390002E6E15 /* submit.png in Resources */,
 				0EDC4EB618067786002E6E15 /* Default1.png in Resources */,
@@ -540,7 +541,6 @@
 				0EE23C4517F4198400F56F37 /* headImage.jpg in Resources */,
 				03CEA0F217F44D1800D36DAC /* ph.png in Resources */,
 				0EDC4EB81806778B002E6E15 /* icon.png in Resources */,
-				0EDC4EA418065A77002E6E15 /* remove.png in Resources */,
 				0E6680A717FD86BA00EA292C /* photo.png in Resources */,
 				0E6680C517FDA7B200EA292C /* trophy.png in Resources */,
 			);
