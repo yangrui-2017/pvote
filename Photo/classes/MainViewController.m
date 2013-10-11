@@ -629,7 +629,7 @@
         informationView.isPush = YES;
         [self.navigationController pushViewController:informationView animated:YES];
     }else{
-        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您还没有登录，请先登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"登录", nil];
         [alertView show];
     }
 }

@@ -45,12 +45,20 @@
            
            char *userName = (char *)sqlite3_column_text(statement, 1);
            
+           char *password = (char *)sqlite3_column_text(statement, 2);
+           
+           
            NSString *name = [[NSString alloc]
                               initWithUTF8String:userName];
+           
+           NSString *password2 = [[NSString alloc]
+                             initWithUTF8String:password];
+           
 
            ImageCache *cache = [ImageCache sharedObject];
            
            [cache setLoginUserName:name];
+           [cache setLoginPassword:password2];
            
            if ([cache getLoginUserName]){
                

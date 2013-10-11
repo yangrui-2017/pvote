@@ -299,7 +299,7 @@
 - (void)dateButton:(UIButton *)btn {
 	self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
-    UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, 80)] ;
+    UIPickerView * pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 60)] ;
     pickerView.tag = 101;
     pickerView.delegate = self;
     pickerView.dataSource = self;

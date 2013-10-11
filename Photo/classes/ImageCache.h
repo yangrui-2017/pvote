@@ -37,4 +37,8 @@
 
 -(VoteResults *)getResults:(NSString *)objectId;
 
+-(void)setLoginPassword:(NSString *)p;
+
+-(NSString *)getLoginPassword;
+
 @end

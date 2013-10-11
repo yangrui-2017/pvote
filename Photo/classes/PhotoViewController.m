@@ -370,11 +370,11 @@ static UIImage * rightImage;
     if (isUpload) {
         if (buttonIndex == 1) {
            
-            if (([imageData1 length] == 0)&& ([imageData2 length]== 0)) {
+            if (([imageData1 length] == 0)|| ([imageData2 length]== 0)) {
                 UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"你还没有上传图片？" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
                 [alertView show];
             }else{
-                file1 = [[STreamFile alloc] init];
+             file1 = [[STreamFile alloc] init];
             [file1 postData:imageData1 finished:^(NSString *response){
                 NSLog(@"res: %@", response);
                 file2 = [[STreamFile alloc] init];

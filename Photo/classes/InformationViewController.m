@@ -18,6 +18,8 @@
 #import "UserDB.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SettingViewController.h"
+#import "ImageDownload.h"
+#import <arcstreamsdk/STreamUser.h>
 
 @interface InformationViewController ()
 {
@@ -254,7 +256,8 @@
     }else{
         [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }
-    if ([loggedInUserFollowing containsObject:pageUserName]) {
+    
+        if ([loggedInUserFollowing containsObject:pageUserName]) {
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
     }else{
         [followerButton setTitle:@"关注" forState:UIControlStateNormal];
@@ -292,6 +295,7 @@
     nameLablel.text = pageUserName;
     return cell;
 }
+
 -(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
@@ -300,7 +304,10 @@
         return 50;
     }
 }
-
+-(void)reloadTable
+{
+    [self.myTableView reloadData];
+}
 - (void)followAction{
  
     STreamObject *loggedInUser = [[STreamObject alloc] init];

@@ -12,6 +12,7 @@
 #import <arcstreamsdk/STreamUser.h>
 #import <arcstreamsdk/STreamFile.h>
 #import "UserDB.h"
+#import "MBProgressHUD.h"
 @interface SetDetailViewController ()
 
 {
@@ -20,7 +21,7 @@
     STreamUser * user;
     ImageCache * cache;
     NSMutableDictionary * dict;
-    
+    STreamFile *file;
 }
 @end
 
@@ -52,8 +53,7 @@
     
     cache = [ImageCache sharedObject];
     user = [[STreamUser alloc]init];
-    dict = [cache getUserMetadata:[cache getLoginUserName]];
-    NSLog(@"dict = %@",dict);
+    dict = [[NSMutableDictionary alloc]init];
     doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [[doneButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
     [[doneButton  layer] setBorderWidth:1];
@@ -132,7 +132,7 @@
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if ([nameTextFied.text isEqualToString:[dict objectForKey:@"password"]]) {
+    if ([nameTextFied.text isEqualToString:[cache getLoginPassword]]) {
     
     }else{
         nameTextFied.text = @"";
@@ -140,10 +140,7 @@
         [alertView show];
     }
 }
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    
-}
+
 -(void)selectAction
 {
     UIAlertView *alertView  = [[UIAlertView alloc]initWithTitle:@"" message:@"你确定要更改信息吗" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
@@ -179,7 +176,7 @@
 
         if (doneButton.tag == 3) {
             if ([imageData length]) {
-                  STreamFile *file = [[STreamFile alloc]init];
+                  file = [[STreamFile alloc]init];
                 __block NSString *res;
                 [file postData:imageData finished:^(NSString *response){
                     NSLog(@"res: %@", response);
@@ -187,19 +184,28 @@
                 }byteSent:^(float percentage){
                     NSLog(@"total: %f", percentage);
                 }];
-                
-                if ([res isEqualToString:@"ok"]) {
-                    [dict setValue:[file fileId] forKey:@"profileImageId"];
-                    [alertView show];
-                }
-            }else{
-                UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请上传头像" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
-                [alertView2 show];
-
+                 [alertView show];
+                }else{
+                    UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请上传头像" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:nil, nil];
+                    [alertView2 show];
             }
         }
+}
+- (void)upload{
+    sleep(5);
+    NSString *fileId = [file fileId];
+    int loopCount = 0;
+    while(fileId == nil ){
+        sleep(2);
+        loopCount++;
+        if (loopCount > 20)
+            break;
+        fileId = [file fileId];
     }
-
+    
+    if (fileId == nil)
+        return;
+}
 #pragma mark UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -213,13 +219,33 @@
             [self takePhoto];
         }
         
+    }else{
+        if (buttonIndex == 1) {
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            HUD.labelText = @"提交中...";
+            [self.view addSubview:HUD];
+            if (doneButton.tag == 3) {
+                [HUD showAnimated:YES whileExecutingBlock:^{
+                    [self upload];
+                } completionBlock:^{
+                    if ([file fileId]){
+                        [dict setValue:[file fileId] forKey:@"profileImageId"];
+                        [user updateUserMetadata:[cache getLoginUserName] withMetadata:dict];
+                        NSLog(@"dict= %@",dict);
+                    }
+                }];
+            }else{
+                [HUD showAnimated:YES whileExecutingBlock:^{
+                   
+                } completionBlock:^{
+                    [user updateUserMetadata:[cache getLoginUserName] withMetadata:dict];
+                }];
+            }
+        }
     }
     isAddImage = NO;
-    if (buttonIndex == 1) {
-         [user updateUserMetadata:[cache getLoginUserName] withMetadata:dict];
-        
-    }
-   
+    
+    
 }
 
 //image

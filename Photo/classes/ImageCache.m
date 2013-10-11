@@ -17,6 +17,7 @@ static NSMutableDictionary *_selfImageDictionary;
 static NSMutableDictionary *_userMetaData;
 static NSMutableDictionary *_voteResults;
 static NSMutableString *loginUserName;
+static NSString *password;
 static FileCache *fileCache;
 static NSMutableArray *_cachedSelfImageFiles;
 static NSMutableArray *_cachedFiles;
@@ -43,6 +44,14 @@ static NSMutableArray *_cachedFiles;
     
     return sharedInstance;
     
+}
+
+-(void)setLoginPassword:(NSString *)p{
+    password = p;
+}
+
+-(NSString *)getLoginPassword{
+    return password;
 }
 
 -(void)setLoginUserName:(NSString *)userName{

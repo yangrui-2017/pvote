@@ -57,6 +57,10 @@
         [APPDELEGATE showMainView];
     }
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.name becomeFirstResponder];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,6 +74,10 @@
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
+    UITextField *text = [[UITextField alloc]initWithFrame:CGRectMake(30, 10, 260, 50)];
+    text.enabled = NO;
+    [self.view addSubview:text];
+    
      if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
          
          self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 30, 260, 50)];
@@ -77,8 +85,8 @@
          [self.loginButton setFrame:CGRectMake(30, 150, 120, 40)];
          [self.registerButton setFrame:CGRectMake(170, 150, 120,40)];
      }else{
-         self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 60)];
-         self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 140, 260, 60)];
+         self.name = [[UITextField alloc]initWithFrame:CGRectMake(30, 70, 260, 50)];
+         self.password = [[UITextField alloc]initWithFrame:CGRectMake(30, 130, 260, 50)];
          [self.loginButton setFrame:CGRectMake(30, 220, 120, 40)];
          [self.registerButton setFrame:CGRectMake(170, 220, 120,40)];
      }
@@ -86,14 +94,16 @@
     
     self.name.placeholder=@"登录名";
     self.name.borderStyle = UITextBorderStyleLine;
+    self.name.contentVerticalAlignment= UIControlContentVerticalAlignmentCenter;
+    self.name.autocorrectionType = UITextAutocorrectionTypeYes;
     self.name.delegate =self;
-    [self.name becomeFirstResponder];
     [self.view addSubview: self.name];
     
     
     self.password.placeholder=@"密码";
     self.password.borderStyle = UITextBorderStyleLine;
     [self.password setSecureTextEntry:YES];
+    self.password.contentVerticalAlignment= UIControlContentVerticalAlignmentCenter;
     self.password.delegate =self;
     [self.view addSubview: self.password];
     //loginbutton 
@@ -176,9 +186,11 @@
     [self.navigationController pushViewController:registerVC animated:YES];
     
 }
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    return YES;
+}
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [textField becomeFirstResponder];
 }
 //UITextFied
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {

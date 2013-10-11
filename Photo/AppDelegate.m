@@ -124,11 +124,6 @@
     [self auth];
      ImageCache *cache = [[ImageCache alloc]init];
     if ([cache getLoginUserName]){
-        STreamUser *user = [[STreamUser alloc] init];
-        [user loadUserMetadata:[cache getLoginUserName] response:^(BOOL succeed, NSString *resposne) {
-            if (succeed)
-                [cache saveUserMetadata:[cache getLoginUserName] withMetadata:[user userMetadata]];
-        }];
         [self showLoginSucceedView];
     }
     else
