@@ -244,7 +244,7 @@
         cell.selectionStyle = UITableViewCellAccessoryNone;
     }
 
-    [self loadUserMetadataAndDownloadUserProfileImage];
+  
         if ([loggedInUserFollowing containsObject:pageUserName]) {
         [followerButton setTitle:@"取消关注" forState:UIControlStateNormal];
     }else{
@@ -253,6 +253,10 @@
     
     NSArray * dataArray =[[NSArray alloc]initWithObjects:@"上传数",@"投票数",@"关注数",@"粉丝数",nil];
     NSArray *imageArray = [[NSArray alloc]initWithObjects:@"upload1.png",@"vote.png",@"following.png",@"follower.png", nil];
+    if (indexPath.row == 0){
+        [self loadUserMetadataAndDownloadUserProfileImage];
+    }
+    
     if (indexPath.row ==1) {
         lable.text = [dataArray objectAtIndex:indexPath.row-1];
         image.image = [UIImage imageNamed:[imageArray objectAtIndex:indexPath.row-1]];
@@ -298,7 +302,7 @@
         if ([cache getImage:pImageId] == nil && pImageId){
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
-            [imageDownload setMainRefesh:self];
+     //       [imageDownload setMainRefesh:self];
         }else{
             [self.imageView setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
         }
@@ -309,7 +313,7 @@
             if ([error isEqualToString:pageUserName]){
                 NSMutableDictionary *dic = [user userMetadata];
                 [cache saveUserMetadata:pageUserName withMetadata:dic];
-                [self.myTableView reloadData];
+       //         [self.myTableView reloadData];
             }
         }];
     }
@@ -398,7 +402,7 @@
         if (count!=0)   {
             MainViewController * mainVC = [[MainViewController alloc]init];
             mainVC.isPush = YES;
-            mainVC.userName = nameLablel.text;
+            mainVC.userName = pageUserName;
            [self.navigationController pushViewController:mainVC animated:YES];
         }
     }

@@ -11,8 +11,10 @@
 #import "InformationViewController.h"
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
 #import "ImageCache.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ImageDownload.h"
 
 @interface UserInformationViewController ()
 {
@@ -113,6 +115,7 @@
         [imageViewActivity startAnimating];
         
         headImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 40, 40)];
+        [headImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [cell.contentView addSubview:headImage];
         
         nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 120, 40)];
@@ -152,14 +155,31 @@
         }
 
     }
-       NSMutableDictionary *userMetaData = [cache getUserMetadata:[nameArray objectAtIndex:indexPath.row]];
-    NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-    if ([cache getImage:pImageId]){
-        headImage.image = [UIImage imageWithData:[cache getImage:pImageId]];
-        [imageViewActivity stopAnimating];
+    
+    /*read metadata first, then load image data */
+    NSString *rowUserName = [nameArray objectAtIndex:indexPath.row];
+    NSMutableDictionary *userMetaData = [cache getUserMetadata:rowUserName];
+    if (!userMetaData){
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:rowUserName response:^(BOOL succeed, NSString *response){
+            if ([response isEqualToString:rowUserName]){
+                NSMutableDictionary *dic = [user userMetadata];
+                [cache saveUserMetadata:rowUserName withMetadata:dic];
+            }
+        }];
     }else{
-        [headImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if ([cache getImage:pImageId] == nil && pImageId){
+            ImageDownload *imageDownload = [[ImageDownload alloc] init];
+            [imageDownload downloadFile:pImageId];
+        }else{
+            [self.headImage setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
+            [imageViewActivity stopAnimating];
+        }
     }
+    
+    
+
     so =[sos objectAtIndex:indexPath.row];
     nickNameDict = [cache getUserMetadata:[nameArray objectAtIndex:indexPath.row]];
     NSString *nickname = [nickNameDict objectForKey:@"nickname"];

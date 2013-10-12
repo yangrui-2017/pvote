@@ -42,8 +42,7 @@
     BOOL isRight;
     int timeCount;
     int arrayCount;
-    
-    NSMutableDictionary *nickNameDict;
+
 }
 
 @end
@@ -96,7 +95,6 @@
 	// Do any additional setup after loading the view.
     self.title = @"主页";
     timeCount = 1;
-    nickNameDict = [[NSMutableDictionary alloc]init];
     [self initBarRefresh];
     
     loadMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -175,39 +173,10 @@
     [votesArray setArray:newArray];
 }
 
-- (void)loadVotes{
-    if (isPush) {
-        if (!isPushFromVotesGiven){
-            st = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
-            [st whereEqualsTo:@"userName" forValue:userName];
-            votesArray = [st find];
-        }
-    }else{
-        STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
-        NSDate *now = [[NSDate alloc] init];
-        long millionsSecs = [now timeIntervalSince1970];
-        long dayBefore = millionsSecs - (3600 *24*timeCount);
-     //   long twoDayBefore = dayBefore - (3600 * 12 );
-        
-        NSDate *dayBe = [[NSDate alloc] initWithTimeIntervalSince1970:dayBefore];
-     //   NSDate *twoDayBe = [[NSDate alloc] initWithTimeIntervalSince1970:twoDayBefore];
-        [sq afterDate:@"creationTime" after:dayBe];
-        votesArray = [sq find];
-        [votesArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            STreamObject *so1 = (STreamObject *)obj1;
-            STreamObject *so2 = (STreamObject *)obj2;
-            NSString *t1 = [so1 getValue:@"creationTime"];
-            NSString *t2 = [so2 getValue:@"creationTime"];
-
-            return [t2 compare:t1];
-
-        }];
-        st = [[STreamQuery alloc] initWithCategory:@"Voted"];
-    }
-    
+- (void)calculateVoteResults {
     ImageCache *imageCache = [ImageCache sharedObject];
-   
-   
+    
+    
     [st setQueryLogicAnd:FALSE];
     for (STreamObject *allVotes in votesArray){
         [st whereKeyExists:[allVotes objectId]];
@@ -238,7 +207,7 @@
             vote2count = ((float)f2/total)*100;
             NSString *vote1 = [NSString stringWithFormat:@"%d%%",vote1count];
             NSString *vote2 = [NSString stringWithFormat:@"%d%%",vote2count];
-           
+            
             [vo setObjectId:[allVotes objectId]];
             [vo setF1:vote1];
             [vo setF2:vote2];
@@ -251,6 +220,39 @@
         }
     }
 }
+
+- (void)loadVotes{
+    if (isPush) {
+        if (!isPushFromVotesGiven){
+            st = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
+            [st whereEqualsTo:@"userName" forValue:userName];
+            votesArray = [st find];
+        }
+    }else{
+        STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
+        NSDate *now = [[NSDate alloc] init];
+        long millionsSecs = [now timeIntervalSince1970];
+        long dayBefore = millionsSecs - (3600 *24*timeCount);
+        
+        NSDate *dayBe = [[NSDate alloc] initWithTimeIntervalSince1970:dayBefore];
+        [sq afterDate:@"creationTime" after:dayBe];
+        votesArray = [sq find];
+        [votesArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            STreamObject *so1 = (STreamObject *)obj1;
+            STreamObject *so2 = (STreamObject *)obj2;
+            NSString *t1 = [so1 getValue:@"creationTime"];
+            NSString *t2 = [so2 getValue:@"creationTime"];
+
+            return [t2 compare:t1];
+
+        }];
+        st = [[STreamQuery alloc] initWithCategory:@"Voted"];
+    }
+    
+    [self calculateVoteResults];
+}
+
+
 -(void)loadMoreButtonClicked
 {
     arrayCount = [votesArray count];
@@ -405,6 +407,50 @@
          return [votesArray count]+1;
     }
 }
+- (void)displayVoteResults:(STreamObject *)so timeDiff:(NSString *)timeDiff
+{
+    ImageCache *cache = [ImageCache sharedObject];
+    
+    NSMutableDictionary *userMetadata = [cache getUserMetadata:[so getValue:@"userName"]];
+    if (userMetadata){
+        NSString *nickname = [userMetadata objectForKey:@"nickname"];
+        if (!nickname)
+            self.name.text = [so getValue:@"userName"];
+        else
+            self.name.text = nickname;
+    }else{
+        self.name.text = [so getValue:@"userName"];
+    }
+    
+    self.timeLabel.text = timeDiff;
+    
+    VoteResults *vo = [cache getResults:[so objectId]];
+    if (vo){
+        self.vote1Lable.text = [vo f1];
+        self.vote2Lable.text = [vo f2];
+    }else{
+        self.vote1Lable.text = @"0%";
+        self.vote2Lable.text = @"0%";
+    }
+    if ([[vo f1] intValue]>= 50) {
+        self.vote1Lable.textColor = [UIColor greenColor];
+    }
+    if ([[vo f2] intValue] >= 50) {
+        self.vote2Lable.textColor = [UIColor greenColor];
+    }
+    
+    STreamObject *voted = [loggedInUserVotesResults objectForKey:[so objectId]];
+    if (voted != nil && [[voted objectId] isEqualToString:[cache getLoginUserName]]){
+        NSString *voteResult = [voted getValue:[so objectId]];
+        if ([voteResult isEqualToString: @"f1voted"]){
+            selectOneImage.image = [UIImage imageNamed:@"tick.png"];
+        }
+        if ([voteResult isEqualToString: @"f2voted"]){
+            selectTwoImage.image = [UIImage imageNamed:@"tick.png"];
+        }
+    }
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellName = @"cellName";
@@ -434,50 +480,13 @@
         long millionsSecs = [now timeIntervalSince1970];
         long diff = millionsSecs - lastModifiedTime;
         NSString *timeDiff = [self getTimeDiff:diff];
-        
         NSString *message = [so getValue:@"message"];
         self.message.text = message;
-        NSString * username = [so getValue:@"userName"];
-        ImageCache *cache = [ImageCache sharedObject];
-        nickNameDict = [cache getUserMetadata:username];
-        NSString *nickname = [nickNameDict objectForKey:@"nickname"];
-        if (!nickname)
-             self.name.text = username ;
-        else
-            self.name.text = nickname;
-       
-        self.timeLabel.text = timeDiff;
-        ImageCache *imageCache = [ImageCache sharedObject];
-        VoteResults *vo = [imageCache getResults:[so objectId]];
-        if (vo){
-            self.vote1Lable.text = [vo f1];
-            self.vote2Lable.text = [vo f2];
-        }else{
-            self.vote1Lable.text = @"0%";
-            self.vote2Lable.text = @"0%";
-        }
-        if ([[vo f1] intValue]>= 50) {
-            self.vote1Lable.textColor = [UIColor greenColor];
-        }
-        if ([[vo f2] intValue] >= 50) {
-            self.vote2Lable.textColor = [UIColor greenColor];
-        }
+        [self displayVoteResults:so timeDiff:timeDiff];
         [self downloadDoubleImage:so];
-        [self loadUserMetadataAndDownloadUserProfileImage];
-        
-        STreamObject *voted = [loggedInUserVotesResults objectForKey:[so objectId]];
-        if (voted != nil && [[voted objectId] isEqualToString:[imageCache getLoginUserName]]){
-            NSString *voteResult = [voted getValue:[so objectId]];
-            if ([voteResult isEqualToString: @"f1voted"]){
-                selectOneImage.image = [UIImage imageNamed:@"tick.png"];
-            }
-            if ([voteResult isEqualToString: @"f2voted"]){
-                selectTwoImage.image = [UIImage imageNamed:@"tick.png"];
-            }
-        }
-
+        [self loadUserMetadataAndDownloadUserProfileImage:so];
     }
-           return cell;
+    return cell;
 }
 //查看投票
 -(void)clickedButton:(UIButton *)sender
@@ -552,29 +561,28 @@
  
 }
 
-- (void)loadUserMetadataAndDownloadUserProfileImage{
+- (void)loadUserMetadataAndDownloadUserProfileImage : (STreamObject *) so{
     
     ImageCache *imageCache = [ImageCache sharedObject];
 
+    NSString *currentRowUserName = [so getValue:@"userName"];
     //load user metadata and profile image
-    if ([imageCache getUserMetadata:self.name.text] != nil){
-        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:self.name.text];
+    if ([imageCache getUserMetadata:currentRowUserName] != nil){
+        NSMutableDictionary *userMetaData = [imageCache getUserMetadata:currentRowUserName];
         NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
         if ([imageCache getImage:pImageId] == nil && pImageId){
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
-          //  [imageDownload setMainRefesh:self];
         }else{
             [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]] forState:UIControlStateNormal];
         }
         [imageViewActivity stopAnimating];
     }else{
         STreamUser *user = [[STreamUser alloc] init];
-        [user loadUserMetadata:self.name.text response:^(BOOL succeed, NSString *error){
-            if ([error isEqualToString:self.name.text]){
+        [user loadUserMetadata:currentRowUserName response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:currentRowUserName]){
                 NSMutableDictionary *dic = [user userMetadata];
-                [imageCache saveUserMetadata:self.name.text withMetadata:dic];
-             //   [self.myTableView reloadData];
+                [imageCache saveUserMetadata:currentRowUserName withMetadata:dic];
             }
         }];
     }
