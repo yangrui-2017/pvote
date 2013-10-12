@@ -241,6 +241,7 @@ static UIImage * rightImage;
     file2 = [[STreamFile alloc] init];
     [file1 postData:imageData1];
     [file2 postData:imageData2];
+    sleep(2);
     NSString *file1Id = [file1 fileId];
     NSString *file2Id = [file2 fileId];
    
@@ -335,16 +336,16 @@ static UIImage * rightImage;
        self.imageView.image = image;
         leftImage =image;
         isExistingLeftImage = YES;
-       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(640, 640)];
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(480, 480)];
       // imageData1 = UIImageJPEGRepresentation(image, 1);
-       imageData1 = UIImageJPEGRepresentation(sImage, 0.5);
+       imageData1 = UIImageJPEGRepresentation(sImage, 0.3);
      }else{
         self.imageView2.image = image;
         rightImage = image;
         isExistingRightImage = YES;
-        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(640, 640)];
+        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(480, 480)];
         //  imageData2 = UIImageJPEGRepresentation(image, 1);
-        imageData2 = UIImageJPEGRepresentation(sImage, 0.5);
+        imageData2 = UIImageJPEGRepresentation(sImage, 0.3);
     }
     clicked1 = 0;
     [self dismissViewControllerAnimated:YES completion:NULL];
