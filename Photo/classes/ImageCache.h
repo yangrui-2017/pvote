@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ImageDataFile.h"
 #import "VoteResults.h"
 
 @interface ImageCache : NSObject
@@ -22,10 +21,6 @@
 - (void)removeUploadingItem:(NSString *)fileId;
 
 - (BOOL)isUploading:(NSString *)fileId;
-
--(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId;
-
--(ImageDataFile *)getImages:(NSString *)objectId;
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId;
 

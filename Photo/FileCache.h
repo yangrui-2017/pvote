@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ImageDataFile.h"
 
 @interface FileCache : NSObject{
     

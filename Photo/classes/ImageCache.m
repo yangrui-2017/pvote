@@ -8,7 +8,6 @@
 
 #import "ImageCache.h"
 #import <arcstreamsdk/STreamFile.h>
-#import "ImageDataFile.h"
 #import "VoteResults.h"
 #import "FileCache.h"
 
@@ -85,26 +84,6 @@ static NSMutableSet *_uploadingItems;
 
 -(void)saveUserMetadata:(NSString *)userName withMetadata:(NSMutableDictionary *)metaData{
     [_userMetaData setObject:metaData forKey:userName];
-}
-
--(void)imageDownload:(ImageDataFile *)imageFiles withObjectId:(NSString *)objectId
-{
-    if ([_cachedFiles count] >= 40){
-        NSString *oId = [_cachedFiles objectAtIndex:0];
-        [_imageDictionary removeObjectForKey:oId];
-        [_cachedFiles removeObjectAtIndex:0];
-    }
-    
-    [_cachedFiles addObject:objectId];
-    [_imageDictionary setObject:imageFiles forKey:objectId];
-    
-}
-
--(ImageDataFile *)getImages:(NSString *)objectId{
-    ImageDataFile *dataFile = [_imageDictionary objectForKey:objectId];
-    if (dataFile){
-    }
-    return dataFile;
 }
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId{

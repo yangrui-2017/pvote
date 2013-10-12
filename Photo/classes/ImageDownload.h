@@ -16,9 +16,6 @@
 @property (nonatomic, weak) NSData *data1;
 @property (nonatomic, weak) NSData *data2;
 
-
-- (void)dowloadFile: (NSString *)file1 withFile2:(NSString *)file2 withObjectId:(NSString *)objectId;
-
 - (void)downloadFile:(NSString *)fileId;
 
 @end

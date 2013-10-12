@@ -209,9 +209,12 @@
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
     }
     ImageCache *cache = [ImageCache sharedObject];
-    ImageDataFile *dataFile = [cache getImages:[rowObject objectId]];
-    self.oneImageView.image = [UIImage imageWithData:[dataFile file1]];
-    self.twoImageView.image = [UIImage imageWithData:[dataFile file2]];
+    NSString *file1 = [rowObject getValue:@"file1"];
+    NSString *file2 = [rowObject getValue:@"file2"];
+    
+    
+    self.oneImageView.image = [UIImage imageWithData:[cache getImage:file1]];
+    self.twoImageView.image = [UIImage imageWithData:[cache getImage:file2]];
     if (indexPath.row !=0) {
         nameLable.text = [userNameArray objectAtIndex:indexPath.row-1];
         contentView.text = [contentsArray objectAtIndex:indexPath.row-1];

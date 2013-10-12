@@ -243,9 +243,10 @@
         }
 }
    
-    ImageDataFile *dataFile = [cache getImages:[rowObject objectId]];
-    self.oneImageView.image = [UIImage imageWithData:[dataFile file1]];
-    self.twoImageView.image = [UIImage imageWithData:[dataFile file2]];
+    NSString *file1 = [rowObject getValue:@"file1"];
+    NSString *file2 = [rowObject getValue:@"file2"];
+    self.oneImageView.image = [UIImage imageWithData:[cache getImage:file1]];
+    self.twoImageView.image = [UIImage imageWithData:[cache getImage:file2]];
     self.countLable.text=[NSString stringWithFormat:@"投票数:%d", [result count]];
     return cell;
 }
