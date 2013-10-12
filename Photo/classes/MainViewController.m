@@ -42,6 +42,8 @@
     BOOL isRight;
     int timeCount;
     int arrayCount;
+    
+    NSMutableDictionary *nickNameDict;
 }
 
 @end
@@ -66,9 +68,6 @@
 @synthesize selectTwoImage;
 @synthesize loadMoreButton;
 
-CGPoint lastOffset;
-NSTimeInterval lastOffsetCapture;
-BOOL isScrollingFast;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -85,14 +84,21 @@ BOOL isScrollingFast;
     NSLog(@"");
 }
 
+- (void) initBarRefresh{
+    
+    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    self.navigationItem.rightBarButtonItem = refreshItem;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = @"主页";
     timeCount = 1;
-    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
-    self.navigationItem.rightBarButtonItem = refreshItem;
+    nickNameDict = [[NSMutableDictionary alloc]init];
+    [self initBarRefresh];
+    
     loadMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [loadMoreButton setFrame:CGRectMake(10, 2, 300, 40)];
     [loadMoreButton setTitle:@"加载更多" forState:UIControlStateNormal];
@@ -393,8 +399,11 @@ BOOL isScrollingFast;
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [votesArray count]+1;
-  
+    if (isPush || isPushFromVotesGiven) {
+        return  [votesArray count];
+    }else{
+         return [votesArray count]+1;
+    }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -404,7 +413,7 @@ BOOL isScrollingFast;
     if (cell == nil) {
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
@@ -428,7 +437,15 @@ BOOL isScrollingFast;
         
         NSString *message = [so getValue:@"message"];
         self.message.text = message;
-        self.name.text = [so getValue:@"userName"];
+        NSString * username = [so getValue:@"userName"];
+        ImageCache *cache = [ImageCache sharedObject];
+        nickNameDict = [cache getUserMetadata:username];
+        NSString *nickname = [nickNameDict objectForKey:@"nickname"];
+        if (!nickname)
+             self.name.text = username ;
+        else
+            self.name.text = nickname;
+       
         self.timeLabel.text = timeDiff;
         ImageCache *imageCache = [ImageCache sharedObject];
         VoteResults *vo = [imageCache getResults:[so objectId]];
@@ -546,7 +563,7 @@ BOOL isScrollingFast;
         if ([imageCache getImage:pImageId] == nil && pImageId){
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
-            [imageDownload setMainRefesh:self];
+          //  [imageDownload setMainRefesh:self];
         }else{
             [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]] forState:UIControlStateNormal];
         }
@@ -557,7 +574,7 @@ BOOL isScrollingFast;
             if ([error isEqualToString:self.name.text]){
                 NSMutableDictionary *dic = [user userMetadata];
                 [imageCache saveUserMetadata:self.name.text withMetadata:dic];
-                [self.myTableView reloadData];
+             //   [self.myTableView reloadData];
             }
         }];
     }
@@ -696,7 +713,7 @@ BOOL isScrollingFast;
 
 }
 - (void)reloadTable{
-    [self.myTableView reloadData];
+   [self.myTableView reloadData];
 }
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

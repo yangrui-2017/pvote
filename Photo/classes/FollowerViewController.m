@@ -77,11 +77,6 @@
     return [followerArray count];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 60;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -90,7 +85,8 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
+        cell.selectionStyle = UITableViewCellAccessoryNone;
+
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
@@ -106,12 +102,11 @@
         
         nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 44)];
         nameLabel.font = [UIFont fontWithName:@"Arial" size:14.0f];
-        nameLabel.textAlignment = NSTextAlignmentCenter;
         nameLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLabel];
         
         followerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [followerButton setFrame:CGRectMake(210, 10, 75, 30)];
+        [followerButton setFrame:CGRectMake(210, 7, 75, 30)];
         followerButton.tag = indexPath.row;
         [followerButton.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
         [followerButton addTarget:self action:@selector(followerButton:) forControlEvents:UIControlEventTouchUpInside];

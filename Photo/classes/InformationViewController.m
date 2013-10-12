@@ -44,8 +44,8 @@
     int threeCount;
     int fourCount;
     UIActivityIndicatorView *imageViewActivity;
-    UIToolbar* keyboardDoneButtonView;
     UIView *background;
+    NSMutableDictionary * nickNameDict;
 }
 @end
 
@@ -59,7 +59,6 @@
 @synthesize userName;
 @synthesize isPush;
 @synthesize followerButton;
-@synthesize textFied;
 @synthesize image;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -84,6 +83,20 @@
     SettingViewController * setView= [[SettingViewController alloc]init];
     [self.navigationController pushViewController:setView animated:YES];
 }
+-(void)referen
+{
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"读取中...";
+    [self.view addSubview:HUD];
+    
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadDetails];
+    }completionBlock:^{
+        [self.myTableView reloadData];
+        [HUD removeFromSuperview];
+        HUD = nil;
+    }];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -92,11 +105,13 @@
         pageUserName = userName;
     else
         pageUserName = [cache getLoginUserName];
+    nickNameDict = [cache getUserMetadata:pageUserName];
     if ([pageUserName isEqualToString:[cache getLoginUserName]]) {
-        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(selectClickedAction)];
-        self.navigationItem.rightBarButtonItem = rightItem;
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(selectClickedAction)];
+        self.navigationItem.leftBarButtonItem = leftItem;
     }
-    
+    UIBarButtonItem *refrenItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(referen)];
+    self.navigationItem.rightBarButtonItem = refrenItem;
 	// Do any additional setup after loading the view.
     myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     myTableView.dataSource = self;
@@ -118,7 +133,6 @@
           [HUD removeFromSuperview];
          HUD = nil;
      }];
-
 }
 -(void)selectLogoutAction:(id)sender{
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您确定要退出吗？" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
@@ -177,28 +191,19 @@
         imageView.image = [UIImage imageNamed:@"headImage.jpg"];
         [cell.contentView addSubview:imageView];
         
-        nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 120, 40)];
+        nameLablel = [[UILabel alloc]initWithFrame:CGRectMake(102, 20, 120, 40)];
         nameLablel.textColor = [UIColor blackColor];
 //        nameLablel.textAlignment = NSTextAlignmentCenter;
 //        nameLablel.font = [UIFont fontWithName:@"Arial" size:20];
         nameLablel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:nameLablel];
-        
-        textFied = [[UITextField alloc]initWithFrame:CGRectMake(100, 50, 200, 50)];
-        textFied.textColor = [UIColor blackColor];
-        textFied.placeholder= @"点击这里描述您的心情";
-        textFied.delegate = self;
-        textFied.backgroundColor = [UIColor clearColor];
-        textFied.inputAccessoryView = keyboardDoneButtonView;
-        textFied.tag = 1001;
-        [cell.contentView addSubview:textFied];
 
         followerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [[followerButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
         [[followerButton  layer] setBorderWidth:1];
         [[followerButton layer] setCornerRadius:8];
         [followerButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [followerButton setFrame:CGRectMake(225, 20, 75, 30)];
+        [followerButton setFrame:CGRectMake(225, 40, 75, 30)];
         [followerButton.titleLabel setFont:[UIFont fontWithName:@"Arial" size:14.0f]];
         [followerButton addTarget:self action:@selector(followButton:) forControlEvents:UIControlEventTouchUpInside];
         if (isPush && ![userName isEqualToString:[cache getLoginUserName]]) {
@@ -234,9 +239,9 @@
     static NSString *cellName = @"cellName";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell==nil) {
-        
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
+        cell.selectionStyle = UITableViewCellAccessoryNone;
     }
 
     [self loadUserMetadataAndDownloadUserProfileImage];
@@ -275,7 +280,13 @@
         countLable.text =[NSString stringWithFormat:@"%d",[allFollowerKey count]];
         fourCount = [countLable.text intValue];
     }
-    nameLablel.text = pageUserName;
+    NSString * nickname = [nickNameDict objectForKey:@"nickname"];
+
+    if (!nickname){
+         nameLablel.text = pageUserName;
+    }else{
+        nameLablel.text = nickname;
+    }
     return cell;
 }
 - (void)loadUserMetadataAndDownloadUserProfileImage{
@@ -497,21 +508,6 @@
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
     animation.values = values;
     [aView.layer addAnimation:animation forKey:nil];
-}
-
-#pragma mark -- UITextfieldDelegate
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textFied resignFirstResponder];
-    return YES;
-}
--(void)textFieldDidBeginEditing:(UITextField *)textField{
-
-}
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-
-    return YES;
 }
 - (void)didReceiveMemoryWarning
 {

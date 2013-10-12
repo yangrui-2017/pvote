@@ -26,6 +26,7 @@
     NSString *pageUserName;
     STreamObject *loggedInUser;
     STreamObject *follower;
+    NSMutableDictionary * nickNameDict;
 }
 @end
 
@@ -52,7 +53,7 @@
     cache = [ImageCache sharedObject];
     nameArray = [[NSMutableArray alloc]init];
     sos = [[NSMutableArray alloc]init];
-   
+    nickNameDict  = [[NSMutableDictionary alloc]init];
     //background
     UIView *backgrdView = [[UIView alloc] initWithFrame:self.tableView.frame];
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
@@ -98,8 +99,9 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellAccessoryNone;
+
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
         cell.backgroundView = backgrdView;
@@ -159,7 +161,14 @@
         [headImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }
     so =[sos objectAtIndex:indexPath.row];
-    nameLabel.text = [nameArray objectAtIndex:indexPath.row];
+    nickNameDict = [cache getUserMetadata:[nameArray objectAtIndex:indexPath.row]];
+    NSString *nickname = [nickNameDict objectForKey:@"nickname"];
+    if (!nickname)
+        nameLabel.text = [nameArray objectAtIndex:indexPath.row];
+    else
+        nameLabel.text = nickname;
+   // nameLabel.text = [nameArray objectAtIndex:indexPath.row];
+
     votesLabel.text = [NSString stringWithFormat:@"%d",[so size]];
     return cell;
 }

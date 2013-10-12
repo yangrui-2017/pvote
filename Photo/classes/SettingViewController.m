@@ -42,13 +42,13 @@
     UIView *backgrdView = [[UIView alloc] initWithFrame:myTableView.frame];
     backgrdView.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     myTableView.backgroundView = backgrdView;
-    dataArray = [[NSArray alloc]initWithObjects:@"删除上传",@"关于",@"注销登录", nil];
-    array = [[NSArray alloc]initWithObjects:@"修改昵称",@"修改密码",@"修改头像",@"设置签名", nil];
+    dataArray = [[NSArray alloc]initWithObjects:@"关于",@"注销登录", nil];
+    array = [[NSArray alloc]initWithObjects:@"修改昵称",@"修改密码",@"修改头像", nil];
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 3;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -81,7 +81,7 @@
         [detailView setString:[array objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:detailView animated:YES];
     }
-    if (indexPath.section == 3) {
+    if (indexPath.section == 2) {
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您确定要退出吗？" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
         alertView.delegate = self;
         [alertView show];

@@ -222,7 +222,6 @@
     [metaData setValue:self.genderText.text forKey:@"gender"];
     [metaData setValue:self.dateOfBirthText.text forKey:@"dateOfBirth"];
     [metaData setValue:self.nicknameText.text forKey:@"nickname"];
-    [metaData setValue:@"" forKey:@"signature"];
     if ([[file errorMessage] isEqualToString:@""] && [file fileId])
         [metaData setValue:[file fileId] forKey:@"profileImageId"];
     [user signUp:self.nameText.text withPassword:self.passwordText.text withMetadata:metaData];

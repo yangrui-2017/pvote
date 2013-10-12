@@ -9,8 +9,12 @@
 #import "SingleImageViewController.h"
 #import <arcstreamsdk/STreamObject.h>
 #import <arcstreamsdk/STreamQuery.h>
+#import <arcstreamsdk/STreamUser.h>
+
 #import "VoteResults.h"
 #import "ImageCache.h"
+#import "ImageDownload.h"
+
 @interface SingleImageViewController ()
 
 @end
@@ -41,6 +45,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [votesArray count];
+}
+
+- (void) initBarRefresh{
+    
+}
+
 - (void)loadVotes{
     
     ImageCache *imageCache = [ImageCache sharedObject];
@@ -53,10 +66,10 @@
     
     VoteResults *vo = [[VoteResults alloc] init];
     for (STreamObject *so1 in sos){
-        NSString *voteUserName = [so1 objectId];
-        if ([so1 getValue:@"f1voted"])
+        NSString *voted = [so1 getValue:[so objectId]];
+        if (voted != nil && [voted isEqualToString:@"f1voted"])
             f1++;
-        if ([so1 getValue:@"f2voted"])
+        if (voted != nil && [voted isEqualToString:@"f2voted"])
             f2++;
     }
     
@@ -79,7 +92,6 @@
         vote1count=0;
         vote2count=0;
     }
-  
 
     
 }

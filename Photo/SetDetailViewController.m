@@ -37,7 +37,6 @@
 @synthesize doneButton;
 @synthesize repasswordTextFied;
 @synthesize repassworLabel;
-@synthesize signatureView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -124,21 +123,6 @@
         doneButton.tag = 3;
         [doneButton setFrame:CGRectMake(100, 300, 120, 40)];
     }
-    if ([string isEqualToString:@"设置签名"]) {
-        self.title = @"设置签名";
-        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 80, 60, 40)];
-        nameLabel.text = @"签名";
-        nameLabel.textAlignment = NSTextAlignmentRight;
-        [self.view addSubview:nameLabel];
-        signatureView = [[UITextView alloc]initWithFrame:CGRectMake(80, 80, 200, 40)];
-        signatureView.backgroundColor = [UIColor whiteColor];
-        signatureView.delegate = self;
-        signatureView.font = [UIFont systemFontOfSize:15.0f];
-        [self.view addSubview:signatureView];
-        doneButton.tag = 4;
-        [doneButton setFrame:CGRectMake(100, 180, 120, 40)];
-    }
-    
 }
 #pragma mark UITextFieldDelegate
 
@@ -156,16 +140,6 @@
         UIAlertView * alertView  =[[UIAlertView alloc]initWithTitle:@"" message:@"你输入的密码错误" delegate:self cancelButtonTitle:@"确定"otherButtonTitles:nil, nil];
         [alertView show];
     }
-}
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if ([text isEqualToString:@"\n"]) {
-        [textView resignFirstResponder];
-        return NO;
-    }else{
-        return YES;
-    }
-    
 }
 -(void)selectAction
 {
@@ -214,10 +188,6 @@
             UIAlertView *alertView2  = [[UIAlertView alloc]initWithTitle:@"" message:@"请上传头像" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView2 show];
         }
-    }
-    if (doneButton.tag == 4) {
-        [dict setValue:self.signatureView.text forKey:@"signature"];
-        [alertView show];
     }
 }
 - (void)upload{
