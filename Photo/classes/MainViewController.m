@@ -40,6 +40,8 @@
     NSString *currentSelectedMessage;
     UIView *background;
     BOOL isRight;
+    int timeCount;
+    int arrayCount;
 }
 
 @end
@@ -62,7 +64,7 @@
 @synthesize isPushFromVotesGiven;
 @synthesize selectOneImage;
 @synthesize selectTwoImage;
-
+@synthesize loadMoreButton;
 
 CGPoint lastOffset;
 NSTimeInterval lastOffsetCapture;
@@ -87,7 +89,16 @@ BOOL isScrollingFast;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"主 页";
+    self.title = @"主页";
+    timeCount = 1;
+    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    self.navigationItem.rightBarButtonItem = refreshItem;
+    loadMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [loadMoreButton setFrame:CGRectMake(10, 2, 300, 40)];
+    [loadMoreButton setTitle:@"加载更多" forState:UIControlStateNormal];
+    [loadMoreButton addTarget:self action:@selector(loadMoreButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [loadMoreButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    loadMoreButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
     if ([[[UIDevice currentDevice] systemVersion] floatValue]>= 7.0) {
@@ -141,6 +152,22 @@ BOOL isScrollingFast;
    
 }
 
+- (void)refresh{
+    
+    STreamObject *latest = [votesArray objectAtIndex:0];
+    NSString *time = [latest getValue:@"creationTime"];
+    
+    NSDate *latestDay = [[NSDate alloc] initWithTimeIntervalSince1970:[time longLongValue]];
+    
+    STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
+    [sq afterDate:@"creationTime" after:latestDay];
+    
+    NSMutableArray *newVote = [sq find];
+    
+    NSArray *newArray = [newVote arrayByAddingObjectsFromArray:votesArray];
+
+    [votesArray setArray:newArray];
+}
 
 - (void)loadVotes{
     if (isPush) {
@@ -152,7 +179,13 @@ BOOL isScrollingFast;
     }else{
         STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
         NSDate *now = [[NSDate alloc] init];
-        [sq beforeDate:@"creationTime" before:now];
+        long millionsSecs = [now timeIntervalSince1970];
+        long dayBefore = millionsSecs - (3600 *24*timeCount);
+     //   long twoDayBefore = dayBefore - (3600 * 12 );
+        
+        NSDate *dayBe = [[NSDate alloc] initWithTimeIntervalSince1970:dayBefore];
+     //   NSDate *twoDayBe = [[NSDate alloc] initWithTimeIntervalSince1970:twoDayBefore];
+        [sq afterDate:@"creationTime" after:dayBe];
         votesArray = [sq find];
         [votesArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             STreamObject *so1 = (STreamObject *)obj1;
@@ -212,144 +245,159 @@ BOOL isScrollingFast;
         }
     }
 }
+-(void)loadMoreButtonClicked
+{
+    arrayCount = [votesArray count];
+    timeCount++;
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"加载中...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self loadVotes];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+         HUD = nil;
+        [self.myTableView reloadData];
+        if (arrayCount == [votesArray count]) {
+            [loadMoreButton setTitle:@"没有更多内容" forState:UIControlStateNormal];
+        }else{
+            [loadMoreButton setTitle:@"加载更多" forState:UIControlStateNormal];
+        }
+       
+    }];
+
+}
 //创建cell上控件
 -(void)createUIControls:(UITableViewCell *)cell withCellRowAtIndextPath:(NSIndexPath *)indexPath
 {
-    imageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [imageViewActivity setCenter:CGPointMake(35, 44)];
-    [imageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    [cell addSubview:imageViewActivity];
-    [imageViewActivity startAnimating];
-    
-    oneImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [oneImageViewActivity setCenter:CGPointMake(77, 200)];
-    [oneImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [cell addSubview:oneImageViewActivity];
-    [oneImageViewActivity startAnimating];
-    
-    twoImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [twoImageViewActivity setCenter:CGPointMake(240, 200)];
-    [twoImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [cell addSubview:twoImageViewActivity];
-    [twoImageViewActivity startAnimating];
-    
-
-    self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.imageView setFrame:CGRectMake(5, 15, 60, 60)];
-    [self.imageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
-    [self.imageView setTag:indexPath.row];
-    [self.imageView addTarget:self action:@selector(headImageClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:self.imageView];
-    
-    self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 10, 200, 30)];
-    self.name.enabled = NO;
-    [cell.contentView addSubview:self.name];
-    
-    self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 40)];
-    self.message.font =[UIFont systemFontOfSize:15.0f];
-    self.message .backgroundColor = [UIColor clearColor];
-    //自动折行设置
-    self.message.lineBreakMode = NSLineBreakByCharWrapping;
-    self.message.numberOfLines = 0;
-    [cell.contentView addSubview:self.message];
-    
-    self.timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(268, 70, 50, 40)];
-    self.timeLabel.backgroundColor = [UIColor clearColor];
-    self.timeLabel.textAlignment = NSTextAlignmentLeft;
-    self.timeLabel.font =[UIFont systemFontOfSize:10.0f];
-    self.timeLabel.textColor = [UIColor blueColor];
-    [cell.contentView addSubview:self.timeLabel];
-    self.timeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"clock.png"]];
-    [self.timeImage setFrame:CGRectMake(250, 83, 16, 16)];
-    self.timeImage.backgroundColor = [UIColor clearColor];
-    [cell.contentView addSubview:self.timeImage];
-    
-    self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 110, 40, 20)];
-    self.vote1Lable.textColor = [UIColor redColor];
-    self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
-    self.vote1Lable.textAlignment = NSTextAlignmentCenter;
-    self.vote1Lable.backgroundColor = [UIColor whiteColor];
-    [cell.contentView addSubview:self.vote1Lable];
-    
-    self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.oneImageView setFrame:CGRectMake(5, 130, 150, 150)];
-    [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
-    //长按事件放大
-    UILongPressGestureRecognizer *longpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fangdaLeftClicked:)];
-    longpress.minimumPressDuration = 0.5; //定义按的时间
-    [self.oneImageView addGestureRecognizer:longpress];;
-    [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
-    [self.oneImageView setTag:indexPath.row];
-    [cell.contentView addSubview:self.oneImageView];
-    
-    self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 110, 40, 20)];
-    self.vote2Lable.textColor = [UIColor redColor];
-    self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
-    self.vote2Lable.textAlignment = NSTextAlignmentCenter;
-    self.vote2Lable.backgroundColor = [UIColor whiteColor];
-    [cell.contentView addSubview:self.vote2Lable];
-    
-    self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.twoImageView setFrame:CGRectMake(165, 130, 150, 150)];
-    [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
-      //长按事件放大
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fangdaRightClicked:)];
-    longPress.minimumPressDuration = 0.5; //定义按的时间
-    [self.twoImageView addGestureRecognizer:longPress];
-    [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
-    [self.twoImageView setTag:indexPath.row];
-    [cell.contentView addSubview:self.twoImageView];
-    
-    clickButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    clickButton.tag = indexPath.row;
-    [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
-    [clickButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    clickButton.titleLabel.font = [UIFont systemFontOfSize:11.0f];
-    [clickButton setFrame:CGRectMake(245, 285, 70, 25)];
-    [[clickButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
-    [[clickButton  layer] setBorderWidth:1];
-    [[clickButton layer] setCornerRadius:8];
-    [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:clickButton];
-    
-    commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    commentButton.tag = indexPath.row;
-    [commentButton setTitle:@"评论" forState:UIControlStateNormal];
-    [commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    commentButton.titleLabel.font = [UIFont systemFontOfSize:11.0f];
-    [commentButton setFrame:CGRectMake(5, 285, 50, 25)];
-    [[commentButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
-    [[commentButton  layer] setBorderWidth:1];
-    [[commentButton layer] setCornerRadius:8];
-    [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:commentButton];
-    
-    selectOneImage = [[UIImageView alloc] initWithFrame:CGRectMake(115, 240, 40, 40)];
-    [cell.contentView addSubview:selectOneImage];
-    
-    selectTwoImage = [[UIImageView alloc] initWithFrame:CGRectMake(275, 240, 40, 40)];
-    [cell.contentView addSubview:selectTwoImage];
+    if (indexPath.row == [votesArray count]) {
+        [cell addSubview:loadMoreButton];
+    }else{
+        imageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [imageViewActivity setCenter:CGPointMake(35, 44)];
+        [imageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [cell addSubview:imageViewActivity];
+        [imageViewActivity startAnimating];
+        
+        oneImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [oneImageViewActivity setCenter:CGPointMake(77, 200)];
+        [oneImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [cell addSubview:oneImageViewActivity];
+        [oneImageViewActivity startAnimating];
+        
+        twoImageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [twoImageViewActivity setCenter:CGPointMake(240, 200)];
+        [twoImageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [cell addSubview:twoImageViewActivity];
+        [twoImageViewActivity startAnimating];
+        
+        
+        self.imageView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.imageView setFrame:CGRectMake(5, 15, 60, 60)];
+        [self.imageView setImage:[UIImage imageNamed:@"headImage.jpg"] forState:UIControlStateNormal];
+        [self.imageView setTag:indexPath.row];
+        [self.imageView addTarget:self action:@selector(headImageClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:self.imageView];
+        
+        self.name = [[UITextField alloc]initWithFrame:CGRectMake(90, 10, 200, 30)];
+        self.name.enabled = NO;
+        [cell.contentView addSubview:self.name];
+        
+        self.message = [[UILabel alloc]initWithFrame:CGRectMake(90, 40, 200, 40)];
+        self.message.font =[UIFont systemFontOfSize:15.0f];
+        self.message .backgroundColor = [UIColor clearColor];
+        //自动折行设置
+        self.message.lineBreakMode = NSLineBreakByCharWrapping;
+        self.message.numberOfLines = 0;
+        [cell.contentView addSubview:self.message];
+        
+        self.timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(268, 70, 50, 40)];
+        self.timeLabel.backgroundColor = [UIColor clearColor];
+        self.timeLabel.textAlignment = NSTextAlignmentLeft;
+        self.timeLabel.font =[UIFont systemFontOfSize:10.0f];
+        self.timeLabel.textColor = [UIColor blueColor];
+        [cell.contentView addSubview:self.timeLabel];
+        self.timeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"clock.png"]];
+        [self.timeImage setFrame:CGRectMake(250, 83, 16, 16)];
+        self.timeImage.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:self.timeImage];
+        
+        self.vote1Lable = [[UILabel alloc]initWithFrame:CGRectMake(110, 110, 40, 20)];
+        self.vote1Lable.textColor = [UIColor redColor];
+        self.vote1Lable.font = [UIFont fontWithName:@"Arial" size:12];
+        self.vote1Lable.textAlignment = NSTextAlignmentCenter;
+        self.vote1Lable.backgroundColor = [UIColor whiteColor];
+        [cell.contentView addSubview:self.vote1Lable];
+        
+        self.oneImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.oneImageView setFrame:CGRectMake(5, 130, 150, 150)];
+        [self.oneImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
+        //长按事件放大
+        UILongPressGestureRecognizer *longpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fangdaLeftClicked:)];
+        longpress.minimumPressDuration = 0.5; //定义按的时间
+        [self.oneImageView addGestureRecognizer:longpress];;
+        [self.oneImageView addTarget:self action:@selector(buttonClickedLeft:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
+        [self.oneImageView setTag:indexPath.row];
+        [cell.contentView addSubview:self.oneImageView];
+        
+        self.vote2Lable = [[UILabel alloc]initWithFrame:CGRectMake(170, 110, 40, 20)];
+        self.vote2Lable.textColor = [UIColor redColor];
+        self.vote2Lable.font = [UIFont fontWithName:@"Arial" size:12];
+        self.vote2Lable.textAlignment = NSTextAlignmentCenter;
+        self.vote2Lable.backgroundColor = [UIColor whiteColor];
+        [cell.contentView addSubview:self.vote2Lable];
+        
+        self.twoImageView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.twoImageView setFrame:CGRectMake(165, 130, 150, 150)];
+        [self.twoImageView setImage:[UIImage imageNamed:@"ph.png"] forState:UIControlStateNormal];
+        //长按事件放大
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fangdaRightClicked:)];
+        longPress.minimumPressDuration = 0.5; //定义按的时间
+        [self.twoImageView addGestureRecognizer:longPress];
+        [self.twoImageView addTarget:self action:@selector(buttonClickedRight:withEvent:) forControlEvents:UIControlEventTouchDownRepeat];
+        [self.twoImageView setTag:indexPath.row];
+        [cell.contentView addSubview:self.twoImageView];
+        
+        clickButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        clickButton.tag = indexPath.row;
+        [clickButton setTitle:@"查看投票" forState:UIControlStateNormal];
+        [clickButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        clickButton.titleLabel.font = [UIFont systemFontOfSize:11.0f];
+        [clickButton setFrame:CGRectMake(245, 285, 70, 25)];
+        [[clickButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[clickButton  layer] setBorderWidth:1];
+        [[clickButton layer] setCornerRadius:8];
+        [clickButton addTarget:self action:@selector(clickedButton:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:clickButton];
+        
+        commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        commentButton.tag = indexPath.row;
+        [commentButton setTitle:@"评论" forState:UIControlStateNormal];
+        [commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        commentButton.titleLabel.font = [UIFont systemFontOfSize:11.0f];
+        [commentButton setFrame:CGRectMake(5, 285, 50, 25)];
+        [[commentButton  layer] setBorderColor:[[UIColor blueColor] CGColor]];
+        [[commentButton  layer] setBorderWidth:1];
+        [[commentButton layer] setCornerRadius:8];
+        [commentButton addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:commentButton];
+        
+        selectOneImage = [[UIImageView alloc] initWithFrame:CGRectMake(115, 240, 40, 40)];
+        [cell.contentView addSubview:selectOneImage];
+        
+        selectTwoImage = [[UIImageView alloc] initWithFrame:CGRectMake(275, 240, 40, 40)];
+        [cell.contentView addSubview:selectTwoImage];
+    }
 
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [votesArray count];
+    return [votesArray count]+1;
   
 }
-
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    STreamObject *so = [votesArray objectAtIndex:indexPath.row];
-    
-    NSString *creationTimeStr = [so getValue:@"creationTime"];
-    long lastModifiedTime = [creationTimeStr longLongValue];
-    NSDate *now = [[NSDate alloc] init];
-    long millionsSecs = [now timeIntervalSince1970];
-    long diff = millionsSecs - lastModifiedTime;
-    NSString *timeDiff = [self getTimeDiff:diff];
-    
     static NSString *cellName = @"cellName";
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
@@ -369,40 +417,50 @@ BOOL isScrollingFast;
         [self createUIControls:cell withCellRowAtIndextPath:indexPath];
         
     }
-    NSString *message = [so getValue:@"message"];
-    self.message.text = message;
-    self.name.text = [so getValue:@"userName"];
-    self.timeLabel.text = timeDiff;
-    ImageCache *imageCache = [ImageCache sharedObject];
-    VoteResults *vo = [imageCache getResults:[so objectId]];
-    if (vo){
-        self.vote1Lable.text = [vo f1];
-        self.vote2Lable.text = [vo f2];
-    }else{
-        self.vote1Lable.text = @"0%";
-        self.vote2Lable.text = @"0%";
-    }
-    if ([[vo f1] intValue]>= 50) {
-        self.vote1Lable.textColor = [UIColor greenColor];
-    }
-    if ([[vo f2] intValue] >= 50) {
-        self.vote2Lable.textColor = [UIColor greenColor];
-    }
-    [self downloadDoubleImage:so];
-    [self loadUserMetadataAndDownloadUserProfileImage];
-    
-    STreamObject *voted = [loggedInUserVotesResults objectForKey:[so objectId]];
-    if (voted != nil && [[voted objectId] isEqualToString:[imageCache getLoginUserName]]){
-        NSString *voteResult = [voted getValue:[so objectId]];
-        if ([voteResult isEqualToString: @"f1voted"]){
-            selectOneImage.image = [UIImage imageNamed:@"tick.png"];
+    if (indexPath.row != [votesArray count]) {
+        STreamObject *so = [votesArray objectAtIndex:indexPath.row];
+        NSString *creationTimeStr = [so getValue:@"creationTime"];
+        long lastModifiedTime = [creationTimeStr longLongValue];
+        NSDate *now = [[NSDate alloc] init];
+        long millionsSecs = [now timeIntervalSince1970];
+        long diff = millionsSecs - lastModifiedTime;
+        NSString *timeDiff = [self getTimeDiff:diff];
+        
+        NSString *message = [so getValue:@"message"];
+        self.message.text = message;
+        self.name.text = [so getValue:@"userName"];
+        self.timeLabel.text = timeDiff;
+        ImageCache *imageCache = [ImageCache sharedObject];
+        VoteResults *vo = [imageCache getResults:[so objectId]];
+        if (vo){
+            self.vote1Lable.text = [vo f1];
+            self.vote2Lable.text = [vo f2];
+        }else{
+            self.vote1Lable.text = @"0%";
+            self.vote2Lable.text = @"0%";
         }
-        if ([voteResult isEqualToString: @"f2voted"]){
-            selectTwoImage.image = [UIImage imageNamed:@"tick.png"];
+        if ([[vo f1] intValue]>= 50) {
+            self.vote1Lable.textColor = [UIColor greenColor];
         }
+        if ([[vo f2] intValue] >= 50) {
+            self.vote2Lable.textColor = [UIColor greenColor];
+        }
+        [self downloadDoubleImage:so];
+        [self loadUserMetadataAndDownloadUserProfileImage];
+        
+        STreamObject *voted = [loggedInUserVotesResults objectForKey:[so objectId]];
+        if (voted != nil && [[voted objectId] isEqualToString:[imageCache getLoginUserName]]){
+            NSString *voteResult = [voted getValue:[so objectId]];
+            if ([voteResult isEqualToString: @"f1voted"]){
+                selectOneImage.image = [UIImage imageNamed:@"tick.png"];
+            }
+            if ([voteResult isEqualToString: @"f2voted"]){
+                selectTwoImage.image = [UIImage imageNamed:@"tick.png"];
+            }
+        }
+
     }
-    
-    return cell;
+           return cell;
 }
 //查看投票
 -(void)clickedButton:(UIButton *)sender
@@ -410,7 +468,7 @@ BOOL isScrollingFast;
     if ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0) {
         [self tableView:self.myTableView];
     }
-    ImageCache * cache = [[ImageCache alloc]init];
+    ImageCache * cache = [ImageCache sharedObject];
     if ([cache getLoginUserName]) {
         VotesShowViewController *votesView = [[VotesShowViewController alloc]init];
         [votesView setRowObject:[votesArray objectAtIndex:sender.tag]];
@@ -428,7 +486,7 @@ BOOL isScrollingFast;
     if ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0) {
         [self tableView:self.myTableView];
     }
-    ImageCache * cache = [[ImageCache alloc]init];
+    ImageCache * cache = [ImageCache sharedObject];
     if ([cache getLoginUserName]){
         CommentsViewController *commentsView = [[CommentsViewController alloc]init];
         [commentsView setRowObject:[votesArray objectAtIndex:button.tag]];
@@ -457,7 +515,6 @@ BOOL isScrollingFast;
     NSData *fData1 = [imageCache getImage:file1];
     NSData *fData2 = [imageCache getImage:file2];
     
-    
     if (fData1){
         [self.oneImageView setImage:[UIImage imageWithData:fData1] forState:UIControlStateNormal];
         [oneImageViewActivity stopAnimating];
@@ -475,33 +532,7 @@ BOOL isScrollingFast;
         [imageDownload downloadFile:file2];
         [imageDownload setMainRefesh:self];
     }
-
-}
-
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGPoint currentOffset = self.myTableView.contentOffset;
-    NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
-    
-    NSTimeInterval timeDiff = currentTime - lastOffsetCapture;
-    if(timeDiff > 0.1) {
-        CGFloat distance = currentOffset.y - lastOffset.y;
-        //The multiply by 10, / 1000 isn't really necessary.......
-        CGFloat scrollSpeedNotAbs = (distance * 10) / 1000; //in pixels per millisecond
-        
-        CGFloat scrollSpeed = fabsf(scrollSpeedNotAbs);
-        if (scrollSpeed > 0.5) {
-            isScrollingFast = YES;
-      //      NSLog(@"Fast");
-        } else {
-            isScrollingFast = NO;
-        //    NSLog(@"Slow");
-        }
-        
-        lastOffset = currentOffset;
-        lastOffsetCapture = currentTime;
-    }
-    [_fullScreenDelegate scrollViewDidScroll:scrollView];
-    
+ 
 }
 
 - (void)loadUserMetadataAndDownloadUserProfileImage{
@@ -649,7 +680,7 @@ BOOL isScrollingFast;
         [self tableView:self.myTableView];
     }
     UITouch* touch = [[event allTouches] anyObject];
-    ImageCache * cache = [[ImageCache alloc]init];
+    ImageCache * cache = [ImageCache sharedObject];
     if ([cache getLoginUserName]) {
         if (touch.tapCount == 2) {
             MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -670,7 +701,12 @@ BOOL isScrollingFast;
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 330;
+    if (indexPath.row == [votesArray count]) {
+        return 44;
+    }else{
+        return 330;
+    }
+    
 }
 -(void)tableView:(UITableView *)tableView
 {

@@ -34,4 +34,6 @@
 @property (strong,nonatomic) NSString * userName;
 @property (strong,nonatomic) UIImageView *selectOneImage;
 @property (strong,nonatomic) UIImageView *selectTwoImage;
+
+@property (strong,nonatomic) UIButton *loadMoreButton;
 @end

@@ -394,6 +394,8 @@ static UIImage * rightImage;
                        NSLog(@"file2 error: %@", [file2 errorMessage]);
                        //TODO show error alert view
                    }
+                   isExistingLeftImage = NO;
+                   isExistingRightImage = NO;
                 }];
             }
         }
