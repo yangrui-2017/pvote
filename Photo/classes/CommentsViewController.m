@@ -9,9 +9,11 @@
 #import "CommentsViewController.h"
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
 #import "ImageCache.h"
 #import "MBProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ImageDownload.h"
 
 #define TOOLBARTAG		200
 #define TABLEVIEWTAG	300
@@ -218,13 +220,32 @@
     if (indexPath.row !=0) {
         nameLable.text = [userNameArray objectAtIndex:indexPath.row-1];
         contentView.text = [contentsArray objectAtIndex:indexPath.row-1];
-        NSMutableDictionary *userMetaData = [cache getUserMetadata:[userNameArray objectAtIndex:indexPath.row-1]];
-        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-        if ([cache getImage:pImageId]){
-            headImageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
+        
+        NSString *currentRowUserName = [userNameArray objectAtIndex:indexPath.row-1];
+        NSMutableDictionary *userMetaData = [cache getUserMetadata:currentRowUserName];
+        //download usermeta data and user image
+        if (userMetaData){
+            NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+            if (pImageId && ![cache getImage:pImageId]){
+                ImageDownload *imageDownload = [[ImageDownload alloc] init];
+                [imageDownload downloadFile:pImageId];
+                [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+            }else{
+              if (pImageId)
+                  [headImageView setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
+            }
+        
         }else{
+            STreamUser *user = [[STreamUser alloc] init];
+            [user loadUserMetadata:currentRowUserName response:^(BOOL succeed, NSString *error){
+                if ([error isEqualToString:currentRowUserName]){
+                    NSMutableDictionary *dic = [user userMetadata];
+                    [cache saveUserMetadata:currentRowUserName withMetadata:dic];
+                }
+            }];
             [headImageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         }
+
     }
     return cell;
 }
@@ -306,7 +327,7 @@
 -(void)senderClicker{
     
     __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"读取中...";
+    HUD.labelText = @"添加评论...";
     [self.view addSubview:HUD];
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self addComments];

@@ -11,7 +11,9 @@
 #import "ImageCache.h"
 #import "MBProgressHUD.h"
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
 #import <QuartzCore/QuartzCore.h>
+#import "ImageDownload.h"
 
 @interface FollowerViewController ()
 {
@@ -41,7 +43,6 @@
 @synthesize nameLabel;
 @synthesize followerButton;
 @synthesize followerArray;
-@synthesize pImageId;
 @synthesize userName;
 - (void)viewDidLoad
 {
@@ -94,10 +95,11 @@
         imageViewActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [imageViewActivity setCenter:CGPointMake(30,22)];
         [imageViewActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        [cell addSubview:imageViewActivity];
-        [imageViewActivity startAnimating];
+       // [cell addSubview:imageViewActivity];
+       // [imageViewActivity startAnimating];
         
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 2, 40, 40)];
+        [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
         [cell.contentView addSubview:imageView];
         
         nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 100, 44)];
@@ -112,15 +114,43 @@
         [followerButton addTarget:self action:@selector(followerButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:followerButton];
     }
-    userMetaData = [cache getUserMetadata:[followerArray objectAtIndex:indexPath.row]];
-    pImageId = [userMetaData objectForKey:@"profileImageId"];
-    if ([cache getImage:pImageId]){
-        imageView.image = [UIImage imageWithData:[cache getImage:pImageId]];
-        [imageViewActivity stopAnimating];
+    
+    NSString *currentRowUserName = [followerArray objectAtIndex:indexPath.row];
+    userMetaData = [cache getUserMetadata:currentRowUserName];
+    
+    //download usermeta data and user image
+    nameLabel.text = currentRowUserName;
+    if (userMetaData){
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if (pImageId && ![cache getImage:pImageId]){
+            ImageDownload *imageDownload = [[ImageDownload alloc] init];
+            [imageDownload downloadFile:pImageId];
+            [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
+        }else{
+            if (pImageId)
+                [imageView setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
+        }
+        
     }else{
+        
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:currentRowUserName response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:currentRowUserName]){
+                NSMutableDictionary *dic = [user userMetadata];
+                [cache saveUserMetadata:currentRowUserName withMetadata:dic];
+            }
+        }];
         [imageView setImage:[UIImage imageNamed:@"headImage.jpg"]];
     }
-    nameLabel.text = [followerArray objectAtIndex:indexPath.row];
+
+    
+    //assign nicky name
+    if (userMetaData){
+        NSString *nickyName = [userMetaData objectForKey:@"nickname"];
+        if (nickyName && ![nickyName isEqualToString:@""])
+            nameLabel.text = nickyName;
+    }
+ 
     
     if ([loggedInUserFollowing containsObject:[followerArray objectAtIndex:indexPath.row]]) {
         [[followerButton  layer] setBorderColor:[[UIColor blackColor] CGColor]];
@@ -162,18 +192,18 @@
     [follower removeKey:[cache getLoginUserName] forObjectId:[NSString stringWithFormat:@"%@Follower",pageUserName]];
     //for table view update
     [loggedInUserFollowing removeObject:pageUserName];
-    [loggedInUser loadAll:[NSString stringWithFormat:@"%@Following", [cache getLoginUserName]]];
 }
+
 -(void)followerButton:(UIButton *)button
 {
     pageUserName = [followerArray objectAtIndex:button.tag];
     loggedInUser = [[STreamObject alloc] init];
     follower = [[STreamObject alloc]init];
-    [follower loadAll:[NSString stringWithFormat:@"%@Follower", pageUserName]];
+    [follower setObjectId:[NSString stringWithFormat:@"%@Follower", pageUserName]];
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"取消关注";
+        HUD.labelText = @"取消关注...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self unFollowAction];
@@ -185,7 +215,7 @@
     }
     if ([button.titleLabel.text isEqualToString:@"关注"]) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"关注";
+        HUD.labelText = @"关注...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self followerAction];

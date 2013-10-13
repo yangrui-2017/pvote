@@ -32,7 +32,8 @@
                  NSLog(@"save image id %@", fileId);
                  [imageCache selfImageDownload:imageData withFileId:fileId];
                  [fileCache writeFile:fileId withData:imageData];
-                 [mainRefesh reloadTable];
+                 if (mainRefesh)
+                     [mainRefesh reloadTable];
              }
          }];
     }

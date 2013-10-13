@@ -81,7 +81,7 @@
     for (NSString *lId in top20){
         [votes addLimitId:lId];
     }
-    
+    //TODO CHECK query no connection
     votesArray = [votes find];
     
 }

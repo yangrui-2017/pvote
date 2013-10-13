@@ -9,12 +9,15 @@
 #import "VotesShowViewController.h"
 #import <arcstreamsdk/STreamQuery.h>
 #import <arcstreamsdk/STreamObject.h>
+#import <arcstreamsdk/STreamUser.h>
 #import "ImageCache.h"
 #import "MainViewController.h"
 #import "MBProgressHUD.h"
 #import "ImageDownload.h"
 #import "InformationViewController.h"
 #import "CommentsViewController.h"
+
+
 @interface VotesShowViewController (){
     NSMutableArray *result;
     NSMutableArray *leftVoters;
@@ -24,8 +27,6 @@
     int vote1count;
     int vote2count;
     UIView *cellView;
-    UIActivityIndicatorView *leftActivity;
-    UIActivityIndicatorView *rightActivity;
 }
 
 @end
@@ -164,12 +165,6 @@
         UIImageView *imageview  = [[UIImageView alloc]initWithFrame:CGRectMake(159, 0, 2, 50)];
         imageview.image = [UIImage imageNamed:@"line.png"];
         [cell addSubview:imageview];
-        leftActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-        [leftActivity setCenter:CGPointMake(20, 22)];
-        [leftActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        rightActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-        [rightActivity setCenter:CGPointMake(300, 22)];
-        [rightActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         self.leftImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 2, 40, 40)];
         [cell.contentView addSubview:self.leftImage];
         
@@ -196,6 +191,37 @@
     return [leftVoters count] > [rightVoters count] ? [leftVoters count] + 1 : [rightVoters count] + 1;
 }
 
+
+- (void)loadUserMetadata:(NSString *)userName withImage:(UIImageView *)image{
+    
+    ImageCache *cache = [ImageCache sharedObject];
+    NSMutableDictionary *userMetaData = [cache getUserMetadata:userName];
+    
+    if (userMetaData){
+        NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
+        if (pImageId && ![cache getImage:pImageId]){
+            ImageDownload *imageDownload = [[ImageDownload alloc] init];
+            [imageDownload downloadFile:pImageId];
+            [image setImage:[UIImage imageNamed:@"headImage.jpg"]];
+        }else{
+           if (pImageId)
+               [image setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
+        }
+        
+    }else{
+        STreamUser *user = [[STreamUser alloc] init];
+        [user loadUserMetadata:userName response:^(BOOL succeed, NSString *error){
+            if ([error isEqualToString:userName]){
+                NSMutableDictionary *dic = [user userMetadata];
+                [cache saveUserMetadata:userName withMetadata:dic];
+            }
+        }];
+        [image setImage:[UIImage imageNamed:@"headImage.jpg"]];
+    }
+
+    
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -216,30 +242,12 @@
     
     if (indexPath.row != 0) {
         if ([leftVoters count]!=0 && [leftVoters count] - 1 >= (indexPath.row - 1)){
-            [cell addSubview:leftActivity];
-            [leftActivity startAnimating];
             [self.leftButton setTitle:[leftVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
-            NSMutableDictionary *userMetaData = [cache getUserMetadata:[leftVoters objectAtIndex:(indexPath.row-1 )]];
-            NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-            if ([cache getImage:pImageId]){
-                leftImage.image = [UIImage imageWithData:[cache getImage:pImageId]];
-                [leftActivity stopAnimating];
-            }else{
-                [leftImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
-            }
+            [self loadUserMetadata:[leftVoters objectAtIndex:(indexPath.row-1 )] withImage:leftImage];
         }
         if ([rightVoters count]!=0 &&[rightVoters count] - 1 >= (indexPath.row - 1)){
-            [cell addSubview:rightActivity];
-            [rightActivity startAnimating];
             [self.rightButton setTitle:[rightVoters objectAtIndex:(indexPath.row-1 )] forState:UIControlStateNormal];
-            NSMutableDictionary *userMetaData = [cache getUserMetadata:[rightVoters objectAtIndex:(indexPath.row-1 )]];
-            NSString *pImageId = [userMetaData objectForKey:@"profileImageId"];
-            if ([cache getImage:pImageId]){
-                rightImage.image = [UIImage imageWithData:[cache getImage:pImageId]];
-                [rightActivity stopAnimating];
-            }else{
-                [rightImage setImage:[UIImage imageNamed:@"headImage.jpg"]];
-            }
+            [self loadUserMetadata:[rightVoters objectAtIndex:(indexPath.row-1 )] withImage:rightImage];
         }
 }
    
@@ -262,15 +270,9 @@
 }
 //
 -(void)buttonClicked:(UIButton *)button{
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    HUD.labelText = @"读取中...";
-    [self.view addSubview:HUD];
-    [HUD showAnimated:YES whileExecutingBlock:^{    } completionBlock:^{
-        InformationViewController * informationVC = [[InformationViewController alloc]init];
-        informationVC.userName = button.titleLabel.text;
-        informationVC.isPush = YES;
-      [self.navigationController pushViewController:informationVC animated:YES];
-    }];
-
+    InformationViewController * informationVC = [[InformationViewController alloc]init];
+    informationVC.userName = button.titleLabel.text;
+    informationVC.isPush = YES;
+    [self.navigationController pushViewController:informationVC animated:YES];
 }
 @end

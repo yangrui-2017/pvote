@@ -42,6 +42,7 @@
     BOOL isRight;
     int timeCount;
     int arrayCount;
+    NSString *userNameToBeChecked;
 
 }
 
@@ -173,10 +174,10 @@
     [votesArray setArray:newArray];
 }
 
-- (void)calculateVoteResults {
+- (void)calculateVoteResults:(NSString *)userNameTobeChecked {
     ImageCache *imageCache = [ImageCache sharedObject];
     
-    
+    st = [[STreamQuery alloc] initWithCategory:@"Voted"];
     [st setQueryLogicAnd:FALSE];
     for (STreamObject *allVotes in votesArray){
         [st whereKeyExists:[allVotes objectId]];
@@ -189,7 +190,7 @@
         int saved = 0;
         for (STreamObject *vote in results){
             NSString *voted = [vote getValue:[allVotes objectId]];
-            if (voted != nil && ([[imageCache getLoginUserName] isEqualToString:[vote objectId]]) && saved != 1){
+            if (voted != nil && ([userNameTobeChecked isEqualToString:[vote objectId]]) && saved != 1){
                 [loggedInUserVotesResults setObject:vote forKey:[allVotes objectId]];
                 saved = 1;
             }
@@ -222,7 +223,9 @@
 }
 
 - (void)loadVotes{
+    
     if (isPush) {
+        userNameToBeChecked = userName;
         if (!isPushFromVotesGiven){
             st = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
             [st whereEqualsTo:@"userName" forValue:userName];
@@ -236,6 +239,7 @@
         
         NSDate *dayBe = [[NSDate alloc] initWithTimeIntervalSince1970:dayBefore];
         [sq afterDate:@"creationTime" after:dayBe];
+        //TODO CHECK query no connection
         votesArray = [sq find];
         [votesArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             STreamObject *so1 = (STreamObject *)obj1;
@@ -247,9 +251,11 @@
 
         }];
         st = [[STreamQuery alloc] initWithCategory:@"Voted"];
+        ImageCache *cache = [ImageCache sharedObject];
+        userNameToBeChecked  = [cache getLoginUserName];
     }
     
-    [self calculateVoteResults];
+    [self calculateVoteResults:userNameToBeChecked];
 }
 
 
@@ -440,7 +446,7 @@
     }
     
     STreamObject *voted = [loggedInUserVotesResults objectForKey:[so objectId]];
-    if (voted != nil && [[voted objectId] isEqualToString:[cache getLoginUserName]]){
+    if (voted != nil && [[voted objectId] isEqualToString:userNameToBeChecked]){
         NSString *voteResult = [voted getValue:[so objectId]];
         if ([voteResult isEqualToString: @"f1voted"]){
             selectOneImage.image = [UIImage imageNamed:@"tick.png"];
@@ -574,7 +580,8 @@
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
         }else{
-            [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]] forState:UIControlStateNormal];
+            if (pImageId)
+                [self.imageView setImage:[UIImage imageWithData:[imageCache getImage:pImageId]] forState:UIControlStateNormal];
         }
         [imageViewActivity stopAnimating];
     }else{

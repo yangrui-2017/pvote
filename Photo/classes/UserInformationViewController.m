@@ -173,7 +173,8 @@
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
         }else{
-            [self.headImage setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
+           if (pImageId)
+               [self.headImage setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
             [imageViewActivity stopAnimating];
         }
     }

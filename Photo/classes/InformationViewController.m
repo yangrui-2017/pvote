@@ -134,21 +134,10 @@
          HUD = nil;
      }];
 }
--(void)selectLogoutAction:(id)sender{
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"您确定要退出吗？" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-    alertView.delegate = self;
-    [alertView show];
-   
-}
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1) {
-        UserDB *userDB = [[UserDB alloc] init];
-        [userDB logout];
-        [APPDELEGATE showLoginView];
-    }
-}
+
 - (void)loadDetails{
    
+    //TODO CHECK query no connection
     sq = [[STreamQuery alloc] initWithCategory:@"Voted"];
     [sq addLimitId:pageUserName];
     arrayCount = [sq find];
@@ -302,9 +291,9 @@
         if ([cache getImage:pImageId] == nil && pImageId){
             ImageDownload *imageDownload = [[ImageDownload alloc] init];
             [imageDownload downloadFile:pImageId];
-     //       [imageDownload setMainRefesh:self];
         }else{
-            [self.imageView setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
+           if (pImageId)
+               [self.imageView setImage:[UIImage imageWithData:[cache getImage:pImageId]]];
         }
         [imageViewActivity stopAnimating];
     }else{
@@ -313,7 +302,6 @@
             if ([error isEqualToString:pageUserName]){
                 NSMutableDictionary *dic = [user userMetadata];
                 [cache saveUserMetadata:pageUserName withMetadata:dic];
-       //         [self.myTableView reloadData];
             }
         }];
     }
@@ -365,7 +353,7 @@
 {
     if ([button.titleLabel.text isEqualToString:@"关注"]){
             __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            HUD.labelText = @"读取中...";
+            HUD.labelText = @"关注...";
             [self.view addSubview:HUD];
         
             [HUD showAnimated:YES whileExecutingBlock:^{
@@ -381,7 +369,7 @@
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"读取中...";
+        HUD.labelText = @"取消关注...";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self unFollowAction];
@@ -425,6 +413,7 @@
                 [mainVC setVotesArray:resultVotes];
                 mainVC.isPush = YES;
                 mainVC.isPushFromVotesGiven = YES;
+                mainVC.userName = pageUserName;
             } completionBlock:^{
                 [self.navigationController pushViewController:mainVC animated:YES];
                  [HUD removeFromSuperview];

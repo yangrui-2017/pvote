@@ -75,9 +75,12 @@ static NSMutableArray *_cachedSelfImageFiles;
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId{
     if ([_cachedSelfImageFiles count] >= 40){
-        NSString *fId = [_cachedSelfImageFiles objectAtIndex:0];
-        [_selfImageDictionary removeObjectForKey:fId];
-        [_cachedSelfImageFiles removeObjectAtIndex:0];
+        
+        for (int i=0; i < 1; i++){
+            NSString *fId = [_cachedSelfImageFiles objectAtIndex:i];
+            [_selfImageDictionary removeObjectForKey:fId];
+            [_cachedSelfImageFiles removeObjectAtIndex:i];
+        }
         
     }
     [_cachedSelfImageFiles addObject:fileId];

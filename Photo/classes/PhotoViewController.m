@@ -336,14 +336,14 @@ static UIImage * rightImage;
        self.imageView.image = image;
         leftImage =image;
         isExistingLeftImage = YES;
-       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(480, 480)];
+       UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(380, 380)];
       // imageData1 = UIImageJPEGRepresentation(image, 1);
        imageData1 = UIImageJPEGRepresentation(sImage, 0.3);
      }else{
         self.imageView2.image = image;
         rightImage = image;
         isExistingRightImage = YES;
-        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(480, 480)];
+        UIImage *sImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(380, 380)];
         //  imageData2 = UIImageJPEGRepresentation(image, 1);
         imageData2 = UIImageJPEGRepresentation(sImage, 0.3);
     }

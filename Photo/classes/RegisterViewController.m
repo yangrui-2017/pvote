@@ -18,6 +18,7 @@
 {
     BOOL isAddImage;
     UIAlertView *alertview;
+    bool picked;
 }
 @end
 
@@ -210,10 +211,14 @@
 
 - (void)registerUser{
     
+    STreamFile *file = [[STreamFile alloc] init];
+    
     UIImage *sImage = [self imageWithImageSimple:self.imageview.image scaledToSize:CGSizeMake(300.0, 300.0)];
     NSData *postData = UIImageJPEGRepresentation(sImage, 0.1);
-    STreamFile *file = [[STreamFile alloc] init];
-    [file postData:postData];
+    if (picked){
+        [file postData:postData];
+        sleep(1);
+    }
     
     STreamUser *user = [[STreamUser alloc] init];
     NSMutableDictionary *metaData = [[NSMutableDictionary alloc] init];
@@ -391,10 +396,10 @@
 #pragma mark - UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    picked = TRUE;
     [picker dismissViewControllerAnimated:YES completion:NULL];
     UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     self.imageview.image = image;
-    
     
 }
 
