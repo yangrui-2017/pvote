@@ -10,6 +10,7 @@
 #import "SetDetailViewController.h"
 #import "AppDelegate.h"
 #import "UserDB.h"
+#import "ImageCache.h"
 
 @interface SettingViewController ()
 {
@@ -93,6 +94,8 @@
     if (buttonIndex == 1) {
         UserDB *userDB = [[UserDB alloc] init];
         [userDB logout];
+        ImageCache *cache = [ImageCache sharedObject];
+        [cache resetUserNamePassword];
         [APPDELEGATE showLoginView];
         
     }

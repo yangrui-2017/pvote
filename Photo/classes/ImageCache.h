@@ -16,11 +16,7 @@
 
 + (ImageCache *)sharedObject;
 
-- (void)addUploadingItems:(NSString *)fileId;
-
-- (void)removeUploadingItem:(NSString *)fileId;
-
-- (BOOL)isUploading:(NSString *)fileId;
+-(void)resetUserNamePassword;
 
 -(void)selfImageDownload:(NSData *)file withFileId:(NSString *)fileId;
 

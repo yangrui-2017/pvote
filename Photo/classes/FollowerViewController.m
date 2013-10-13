@@ -173,7 +173,7 @@
     
     if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"读取中...";
+        HUD.labelText = @"取消关注";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self unFollowAction];
@@ -185,7 +185,7 @@
     }
     if ([button.titleLabel.text isEqualToString:@"关注"]) {
         __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        HUD.labelText = @"读取中...";
+        HUD.labelText = @"关注";
         [self.view addSubview:HUD];
         [HUD showAnimated:YES whileExecutingBlock:^{
             [self followerAction];
