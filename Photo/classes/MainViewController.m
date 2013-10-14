@@ -106,12 +106,18 @@
     loadMoreButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     votes = [[STreamCategoryObject alloc] initWithCategory:@"AllVotes"];
     loggedInUserVotesResults = [[NSMutableDictionary alloc] init];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue]>= 7.0) {
-        self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-        _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
+    ImageCache *cache = [ImageCache sharedObject];
+    if ([cache getLoginUserName]) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue]>= 7.0) {
+            self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+            _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+            _fullScreenDelegate.shouldShowUIBarsOnScrollUp = YES;
+        }else{
+            self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-44-49)];
+        }
     }else{
-        self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-44)];
+        self.myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-44)];
+
     }
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;

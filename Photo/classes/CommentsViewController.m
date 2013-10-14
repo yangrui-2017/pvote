@@ -57,18 +57,20 @@
     rightImageId = [rowObject getValue:@"file2"];
     userNameArray = [[NSMutableArray alloc]init];
     contentsArray = [[NSMutableArray alloc]init];
-    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-40)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
+        toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-80, self.view.frame.size.width, 40)];
+        myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-86)];
+
+    }else{
+        toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
+        myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-40)];
+    }
+
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.tag =TABLEVIEWTAG;
     myTableView.separatorStyle=YES;//UITableView每个cell之间的默认分割线隐藏掉sel
     [self.view addSubview:myTableView];
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
-        toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-80, self.view.frame.size.width, 40)];
-    }else{
-        toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
-    }
     
     toolBar.backgroundColor= [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     toolBar.tag = TOOLBARTAG;
