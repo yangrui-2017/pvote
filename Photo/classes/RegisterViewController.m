@@ -13,7 +13,9 @@
 #import <arcstreamsdk/STreamFile.h>
 #import <QuartzCore/QuartzCore.h>
 #import "LoginViewController.h"
-
+#import "AppDelegate.h"
+#import "ImageCache.h"
+#import "UserDB.h"
 @interface RegisterViewController ()
 {
     BOOL isAddImage;
@@ -174,7 +176,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _myTableView.bounds.size.height+220;//416
+    return _myTableView.bounds.size.height+248;
 }
 //registerButton
 -(void) registerClicked:(UIButton *)button {
@@ -187,9 +189,11 @@
             [self registerUser];
          } completionBlock:^{
              [HUD removeFromSuperview];
-             LoginViewController *loginView = [[LoginViewController alloc]init];
-             [self.navigationController pushViewController:loginView animated:YES];
-             HUD=nil;
+              HUD=nil;
+             [APPDELEGATE showLoginSucceedView];
+//             LoginViewController *loginView = [[LoginViewController alloc]init];
+//             [self.navigationController pushViewController:loginView animated:YES];
+            
         }];
        
     }else{
@@ -233,26 +237,31 @@
     
     NSString *error = [user errorMessage];
     if ([error isEqualToString:@""]){
-            STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"Voted"];
-            STreamObject *so = [[STreamObject alloc] init];
-            [so setObjectId:self.nameText.text];
-            NSMutableArray *allvoted = [[NSMutableArray alloc] init];
-            [allvoted addObject:so];
-            [scov updateStreamCategoryObjects:allvoted];
-            STreamObject *follower = [[STreamObject alloc]init];
-            STreamObject *following = [[STreamObject alloc]init];
-            [follower setObjectId:[NSString stringWithFormat:@"%@Follower",self.nameText.text]];
-            [following setObjectId:[NSString stringWithFormat:@"%@Following",self.nameText.text]];
-            [follower createNewObject:^(BOOL succeed, NSString *response){
-                if (!succeed)
-                    NSLog(@"res: %@", response);
-            }];
-            [following createNewObject:^(BOOL succeed, NSString *response){
-                if (!succeed)
-                    NSLog(@"res: %@", response);
-            }];
         
+        ImageCache * cache = [ImageCache sharedObject];
+        [cache setLoginUserName:self.nameText.text];
+        UserDB *userDB = [[UserDB alloc] init];
+        [userDB insertDB:0 name:self.nameText.text withPassword:self.passwordText.text];
         
+        STreamCategoryObject *scov = [[STreamCategoryObject alloc] initWithCategory:@"Voted"];
+        STreamObject *so = [[STreamObject alloc] init];
+        [so setObjectId:self.nameText.text];
+        NSMutableArray *allvoted = [[NSMutableArray alloc] init];
+        [allvoted addObject:so];
+        [scov updateStreamCategoryObjects:allvoted];
+        STreamObject *follower = [[STreamObject alloc]init];
+        STreamObject *following = [[STreamObject alloc]init];
+        [follower setObjectId:[NSString stringWithFormat:@"%@Follower",self.nameText.text]];
+        [following setObjectId:[NSString stringWithFormat:@"%@Following",self.nameText.text]];
+        [follower createNewObject:^(BOOL succeed, NSString *response){
+            if (!succeed)
+                NSLog(@"res: %@", response);
+        }];
+        [following createNewObject:^(BOOL succeed, NSString *response){
+            if (!succeed)
+                NSLog(@"res: %@", response);
+        }];
+
     }else{
      
         //TODO alert show error message

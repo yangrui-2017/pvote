@@ -86,7 +86,7 @@
 
 - (void) initBarRefresh{
     
-    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshiClicked)];
     self.navigationItem.rightBarButtonItem = refreshItem;
 }
 
@@ -155,6 +155,18 @@
     int years = months / 12;
     return [NSString stringWithFormat:@"%d年", years];
    
+}
+-(void)refreshiClicked{
+    __block MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    HUD.labelText = @"加载中...";
+    [self.view addSubview:HUD];
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self refresh];
+    }completionBlock:^{
+        [HUD removeFromSuperview];
+        HUD = nil;
+        [self.myTableView reloadData];
+    }];
 }
 
 - (void)refresh{
@@ -864,10 +876,10 @@
     [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
 }
 
-/*- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [_fullScreenDelegate scrollViewDidScroll:scrollView];
-}*/
+}
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {

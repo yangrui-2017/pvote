@@ -20,4 +20,5 @@
 @property (strong,nonatomic) UITextView *contentView;
 @property (strong,nonatomic) UILabel *nameLable;
 @property (strong,nonatomic) STreamObject *rowObject;
+@property (strong,nonatomic) UILabel * messageLabel;
 @end

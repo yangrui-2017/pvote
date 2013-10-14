@@ -38,6 +38,7 @@
 @synthesize headImageView;
 @synthesize nameLable;
 @synthesize contentView;
+@synthesize messageLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,7 +57,7 @@
     rightImageId = [rowObject getValue:@"file2"];
     userNameArray = [[NSMutableArray alloc]init];
     contentsArray = [[NSMutableArray alloc]init];
-    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-80)];
+    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-40)];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.tag =TABLEVIEWTAG;
@@ -155,11 +156,20 @@
     
     if (indexPath.row == 0) {
         
-        self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 30, 150, 150)];
+        self.messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(60,0, 200, 40)];
+        self.messageLabel.font =[UIFont systemFontOfSize:15.0f];
+        self.messageLabel .backgroundColor = [UIColor clearColor];
+        self.messageLabel.textAlignment = NSTextAlignmentCenter;
+        //自动折行设置
+        self.messageLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        self.messageLabel.numberOfLines = 0;
+        [cell.contentView addSubview:self.messageLabel];
+        
+        self.oneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 50, 150, 150)];
         [self.oneImageView setImage:[UIImage imageNamed:@"headImage.jpg"] ];
         [cell addSubview:self.oneImageView];
         
-        self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 30, 150, 150)];
+        self.twoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(165, 50, 150, 150)];
         [self.twoImageView setImage:[UIImage imageNamed:@"headImage.jpg"] ];
         [cell addSubview:self.twoImageView];
         
@@ -213,7 +223,7 @@
     ImageCache *cache = [ImageCache sharedObject];
     NSString *file1 = [rowObject getValue:@"file1"];
     NSString *file2 = [rowObject getValue:@"file2"];
-    
+    self.messageLabel.text = [rowObject getValue:@"message"];
     
     self.oneImageView.image = [UIImage imageWithData:[cache getImage:file1]];
     self.twoImageView.image = [UIImage imageWithData:[cache getImage:file2]];
@@ -281,7 +291,7 @@
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
-        return 200;
+        return 220;
     }else{
         return  [self getCellHeight:indexPath.row];
     }
