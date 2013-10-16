@@ -148,22 +148,22 @@
     
     int seconds = (int)(diff);
     if (seconds <= 60)
-        return [NSString stringWithFormat:@"%d秒", seconds];
+        return [NSString stringWithFormat:@"%d秒前", seconds];
     int mins = seconds / 60;
     if (mins <= 60)
-        return [NSString stringWithFormat:@"%d分", mins];
+        return [NSString stringWithFormat:@"%d分前", mins];
     int hours = seconds / 3600;
     if (hours <= 24)
-        return [NSString stringWithFormat:@"%d小时", hours];
+        return [NSString stringWithFormat:@"%d小时前", hours];
     int days = hours / 24;
     if (days <= 30)
-        return [NSString stringWithFormat:@"%d天", days];
+        return [NSString stringWithFormat:@"%d天前", days];
     int months = days / 365;
     if (months <= 12)
-        return [NSString stringWithFormat:@"%d月", months];
+        return [NSString stringWithFormat:@"%d月前", months];
     
     int years = months / 12;
-    return [NSString stringWithFormat:@"%d年", years];
+    return [NSString stringWithFormat:@"%d年前", years];
    
 }
 -(void)refreshiClicked{

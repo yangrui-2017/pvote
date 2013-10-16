@@ -89,7 +89,7 @@
 		035E698317E13506001279F6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		035E698417E13512001279F6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		036B8D9C18088A5D00EADEB8 /* arcstreamsdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = arcstreamsdk.framework; sourceTree = "<group>"; };
-		03C49AE117E102FC00AE7E3B /* Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		03C49AE117E102FC00AE7E3B /* 我问我选.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "我问我选.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C49AE417E102FC00AE7E3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03C49AE617E102FC00AE7E3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03C49AE817E102FC00AE7E3B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -226,7 +226,7 @@
 		03C49AE217E102FC00AE7E3B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				03C49AE117E102FC00AE7E3B /* Photo.app */,
+				03C49AE117E102FC00AE7E3B /* 我问我选.app */,
 				03C49B0117E102FC00AE7E3B /* PhotoTests.octest */,
 			);
 			name = Products;
@@ -459,7 +459,7 @@
 			);
 			name = Photo;
 			productName = Photo;
-			productReference = 03C49AE117E102FC00AE7E3B /* Photo.app */;
+			productReference = 03C49AE117E102FC00AE7E3B /* 我问我选.app */;
 			productType = "com.apple.product-type.application";
 		};
 		03C49B0017E102FC00AE7E3B /* PhotoTests */ = {
@@ -490,7 +490,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = wangshuai;
 			};
-			buildConfigurationList = 03C49ADC17E102FC00AE7E3B /* Build configuration list for PBXProject "Photo" */;
+			buildConfigurationList = 03C49ADC17E102FC00AE7E3B /* Build configuration list for PBXProject "我问我选" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -705,7 +705,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photo/Photo-Prefix.pch";
 				INFOPLIST_FILE = "Photo/Photo-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "我问我选";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -721,7 +721,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photo/Photo-Prefix.pch";
 				INFOPLIST_FILE = "Photo/Photo-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "我问我选";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -763,7 +763,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		03C49ADC17E102FC00AE7E3B /* Build configuration list for PBXProject "Photo" */ = {
+		03C49ADC17E102FC00AE7E3B /* Build configuration list for PBXProject "我问我选" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				03C49B1117E102FC00AE7E3B /* Debug */,

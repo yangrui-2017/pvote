@@ -69,6 +69,7 @@
         self.title = @"修改昵称";
         nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 80, 60, 40)];
         nameLabel.text = @"昵称";
+        nameLabel.backgroundColor = [UIColor clearColor];
         nameLabel.textAlignment = NSTextAlignmentRight;
         [self.view addSubview:nameLabel];
         nameTextFied = [[UITextField alloc]initWithFrame:CGRectMake(80, 80, 200, 40)];
@@ -81,6 +82,7 @@
         self.title = @"修改密码";
         nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 80, 60, 40)];
         nameLabel.text = @"原密码";
+        nameLabel.backgroundColor = [UIColor clearColor];
         nameLabel.textAlignment = NSTextAlignmentRight;
         [self.view addSubview:nameLabel];
         nameTextFied = [[UITextField alloc]initWithFrame:CGRectMake(80, 80, 200, 40)];
@@ -90,6 +92,7 @@
         [self.view addSubview:nameTextFied];
         passworLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 130, 60, 40)];
         passworLabel.text = @"新密码";
+        passworLabel.backgroundColor = [UIColor clearColor];
         passworLabel.textAlignment = NSTextAlignmentRight;
         [self.view addSubview:passworLabel];
         passwordTextFied = [[UITextField alloc]initWithFrame:CGRectMake(80, 130, 200, 40)];
@@ -99,6 +102,7 @@
         [self.view addSubview:passwordTextFied];
         repassworLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 180, 75, 40)];
         repassworLabel.text = @"确认密码";
+        repassworLabel.backgroundColor = [UIColor clearColor];
         repassworLabel.textAlignment = NSTextAlignmentRight;
         [self.view addSubview:repassworLabel];
         repasswordTextFied = [[UITextField alloc]initWithFrame:CGRectMake(80, 180, 200, 40)];

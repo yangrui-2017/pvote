@@ -66,6 +66,9 @@
     if (cell == nil) {
         
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellName];
+        cell.selectionStyle = UITableViewCellAccessoryNone;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     }
     if (indexPath.section == 0) {
         cell.textLabel.text = [array objectAtIndex:indexPath.row];

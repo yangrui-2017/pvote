@@ -80,35 +80,51 @@
     [self.window setRootViewController:nav];
 }
 
--(void)auth{
+-(NSString *)auth{
     
     //test@gmail.com
   //  NSString *res = [STreamSession authenticate:@"0093D2FD61600099DE1027E50C6C3F8D" secretKey:@"4EF482C15D849D04BA5D7BC940526EA3" clientKey:@"01D901D6EFBA42145E54F52E465F407B" ];
    //NSLog(@"%@", res);
     
     //test1@gmail.com
-    NSString *res = [STreamSession authenticate:@"6CA747AF6D517C687A68520850C6571A" secretKey:@"6D1CA3A6F875B8C749C3B889780C5F44" clientKey:@"F1A01B41500DBAA4189EAD022A9EED02" ];
-     NSLog(@"%@", res);
+    //NSString *res = [STreamSession authenticate:@"6CA747AF6D517C687A68520850C6571A" secretKey:@"6D1CA3A6F875B8C749C3B889780C5F44" clientKey:@"F1A01B41500DBAA4189EAD022A9EED02" ];
+   // NSLog(@"%@", res);
+    
+    //production
+    NSString *res = nil;
+    for (int i=0; i < 5; i++){
+         res = [STreamSession authenticate:@"3297CA2319EDF8668CE934A08BC5E5E" secretKey:@"D39667AFEA71201D009A3E930915090" clientKey:@"6435DC8724FE98FD89EA1958ABD50C6" ];
+        if ([res isEqualToString:@"auth ok"]){
+            NSLog(@"%@", res);
+            [self showLoginView];
+            break;
+        }else{
+            sleep(5);
+        }
+    }
+    
+    return res;
+}
+
+#pragma mark UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0){
+        exit(0);
+    }
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-//    客户key: 01D901D6EFBA42145E54F52E465F407B
-//    安全key: 4EF482C15D849D04BA5D7BC940526EA3
-//    应用ID/key: 0093D2FD61600099DE1027E50C6C3F8D
-
-    /*[STreamSession authenticate:@"9E6DA8D4057467427D0797BC2B12AFCE" secretKey:@"270740EE21B6F02F0FE69007F86E5B1D" clientKey:@"04869E41CCA70DD5F3500F00B6D83ACA" response:^(BOOL succeed, NSString *response){
-        
-    }];*/
     
     imageview  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
     imageview.image = [UIImage imageNamed:@"Default1.png"];
     [self.window addSubview:imageview];
     //初始化timmer
-    [NSTimer scheduledTimerWithTimeInterval: 5 target: self selector: @selector(logo:) userInfo: nil repeats: YES];
-
+   [NSTimer scheduledTimerWithTimeInterval: 1 target: self selector: @selector(logo:) userInfo: nil repeats: NO];
+    
+    
     [[UITabBar appearance] setBackgroundColor:[UIColor blackColor]];
     [[UITabBar appearance]setTintColor:[UIColor blackColor]];
     UserDB *userDB = [[UserDB alloc] init];
@@ -117,23 +133,32 @@
     
     self.window.backgroundColor = [UIColor colorWithRed:218.0/255.0 green:242.0/255.0 blue:230.0/255.0 alpha:1.0];
     [self.window makeKeyAndVisible];
+    
+    
     return YES;
 }
+
 -(void)logo:(NSTimer *)timer
 {
-    [self auth];
-     ImageCache *cache = [[ImageCache alloc]init];
-    if ([cache getLoginUserName]){
-        [self showLoginSucceedView];
+    NSString *res = [self auth];
+    if ([res isEqualToString:@"auth ok"]){
+        ImageCache *cache = [[ImageCache alloc]init];
+        if ([cache getLoginUserName]){
+            [self showLoginSucceedView];
+        }
+        else
+            [self showMainView];
+        [imageview removeFromSuperview];
+        [timer invalidate];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络错误" message:@"网络没有信号" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+        [alert show];
     }
-    else
-        [self showMainView];
-    [imageview removeFromSuperview];
-    [timer invalidate];
-    
+        
 }
+
 - (void)applicationWillResignActive:(UIApplication *)application
-{
+{ 
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }

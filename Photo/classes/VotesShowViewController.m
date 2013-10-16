@@ -89,30 +89,30 @@
     [sqq whereEqualsTo:objectId forValue:@"f1voted"];
     [sqq whereEqualsTo:objectId forValue:@"f2voted"];
     result = [sqq find];
-    for (STreamObject *so in result){
-        NSString *vote = [so getValue:objectId];
-        if ([vote isEqualToString:@"f1voted"])
-            [leftVoters addObject:[so objectId]];
-        if ([vote isEqualToString:@"f2voted"])
-            [rightVoters addObject:[so objectId]];
+    if (result && [result count] > 0){
+        for (STreamObject *so in result){
+            NSString *vote = [so getValue:objectId];
+            if ([vote isEqualToString:@"f1voted"])
+                [leftVoters addObject:[so objectId]];
+            if ([vote isEqualToString:@"f2voted"])
+                [rightVoters addObject:[so objectId]];
+        }
+        int leftCount = [leftVoters count];
+        int rightCount = [rightVoters count];
+        
+        int total = [leftVoters count] + [rightVoters count];
+        
+        vote1count = ((float)leftCount/total)*100;
+        vote2count = ((float)rightCount/total)*100;
+        
+        NSString *vote1 = [NSString stringWithFormat:@"%d%%",vote1count];
+        NSString *vote2 = [NSString stringWithFormat:@"%d%%",vote2count];
+        VoteResults *vo = [[VoteResults alloc] init];
+        [vo setObjectId:[rowObject objectId]];
+        [vo setF1:vote1];
+        [vo setF2:vote2];
+        [imageCache addVotesResults:[rowObject objectId] withVoteResult:vo];
     }
-    int leftCount = [leftVoters count];
-    int rightCount = [rightVoters count];
-    
-    int total = [leftVoters count] + [rightVoters count];
-    
-    vote1count = ((float)leftCount/total)*100;
-    vote2count = ((float)rightCount/total)*100;
-    
-    NSString *vote1 = [NSString stringWithFormat:@"%d%%",vote1count];
-    NSString *vote2 = [NSString stringWithFormat:@"%d%%",vote2count];
-    VoteResults *vo = [[VoteResults alloc] init];
-    [vo setObjectId:[rowObject objectId]];
-    [vo setF1:vote1];
-    [vo setF2:vote2];
-    [imageCache addVotesResults:[rowObject objectId] withVoteResult:vo];
-    
-   
 
 }
 - (void)didReceiveMemoryWarning

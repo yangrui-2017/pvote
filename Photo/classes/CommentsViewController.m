@@ -131,7 +131,7 @@
     [test loadAll:[rowObject objectId]];
     NSArray *temp = [NSMutableArray arrayWithArray:[test getAllKeys]];
     temp = [temp sortedArrayUsingComparator:^NSComparisonResult(NSString *a, NSString *b){
-        return [b compare:a];
+        return [a compare:b];
     }];
     allKeys = [NSMutableArray arrayWithArray:temp];
 
@@ -330,9 +330,10 @@
     [dic setObject:contentsText.text forKey:[cache getLoginUserName]];
     [comment addStaff:longValue withObject:dic];
     [comment update];
-    [contentsArray insertObject:contentsText.text atIndex:0];
-    [userNameArray insertObject:[cache getLoginUserName] atIndex:0];
-    [allKeys insertObject:[rowObject objectId] atIndex:0];
+    int length =  [contentsArray count];
+    [contentsArray insertObject:contentsText.text atIndex:length];
+    [userNameArray insertObject:[cache getLoginUserName] atIndex:length];
+    [allKeys insertObject:[rowObject objectId] atIndex:length];
     
 }
 

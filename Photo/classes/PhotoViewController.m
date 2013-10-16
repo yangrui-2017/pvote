@@ -150,7 +150,7 @@ static UIImage * rightImage;
         if (messages==nil) {
             
             _message.textColor = [UIColor lightGrayColor];
-            _message.text = @"请输入此刻想法40字之内";
+            _message.text = @"描述(限40个字)";
         }else{
             _message.text = messages;
         }
@@ -217,15 +217,23 @@ static UIImage * rightImage;
 }
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-//    _message.text=@"";
+    if ([_message.text isEqualToString:@"描述(限40个字)"])
+         _message.text=@"";
     _message.textColor = [UIColor blackColor];
-    CGRect frame =CGRectMake(0,-130, 320, 400);
+    CGRect frame= CGRectMake(0, -130, 320, 400);
     self.myTableView.frame = frame;
     return YES;
 }
 -(void)textViewDidEndEditing:(UITextView *)textView
 {
-    CGRect frame =CGRectMake(0,0, 320, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
+    CGRect frame;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]< 7.0) {
+        frame =CGRectMake(0,0, 320,400);
+
+    }else{
+        frame =CGRectMake(0,0, 320, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
+
+    }
     self.myTableView.frame = frame;
 }
 -(void) selectRightAction:(UIButton *)button{
