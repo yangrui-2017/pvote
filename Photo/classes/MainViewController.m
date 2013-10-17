@@ -147,7 +147,7 @@
 - (NSString *)getTimeDiff:(long)diff{
     
     int seconds = (int)(diff);
-    if (seconds <= 60)
+    if (seconds <= 60) 
         return [NSString stringWithFormat:@"%d秒前", seconds];
     int mins = seconds / 60;
     if (mins <= 60)

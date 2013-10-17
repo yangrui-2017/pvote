@@ -19,7 +19,7 @@
 {
     ImageCache * cache;
     NSMutableDictionary *userMetaData;
-    NSMutableArray *loggedInUserFollowing;
+    NSMutableArray *loggedInUserFollowing; 
     NSMutableArray *userFollowing;
     UIActivityIndicatorView *imageViewActivity;
     NSString * key;
