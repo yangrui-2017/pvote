@@ -240,7 +240,7 @@
         [followerButton setTitle:@"关注" forState:UIControlStateNormal];
     }
     
-    NSArray * dataArray =[[NSArray alloc]initWithObjects:@"上传数",@"投票数",@"关注数",@"粉丝数",nil];
+    NSArray * dataArray =[[NSArray alloc]initWithObjects:@"上传信息",@"投票数",@"关注的人",@"您的粉丝",nil];
     NSArray *imageArray = [[NSArray alloc]initWithObjects:@"upload1.png",@"vote.png",@"following.png",@"follower.png", nil];
     if (indexPath.row == 0){
         [self loadUserMetadataAndDownloadUserProfileImage];

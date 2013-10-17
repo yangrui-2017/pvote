@@ -93,7 +93,7 @@
     //production
     NSString *res = nil;
     for (int i=0; i < 5; i++){
-         res = [STreamSession authenticate:@"3297CA2319EDF8668CE934A08BC5E5E" secretKey:@"D39667AFEA71201D009A3E930915090" clientKey:@"6435DC8724FE98FD89EA1958ABD50C6" ];
+         res = [STreamSession authenticate:@"B3297CA2319EDF8668CE934A08BC5E5E" secretKey:@"CD39667AFEA71201D009A3E930915090" clientKey:@"A6435DC8724FE98FD89EA1958ABD50C6" ];
         if ([res isEqualToString:@"auth ok"]){
             NSLog(@"%@", res);
             [self showLoginView];
@@ -117,13 +117,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    imageview  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height)];
-    imageview.image = [UIImage imageNamed:@"Default1.png"];
-    [self.window addSubview:imageview];
-    //初始化timmer
-   [NSTimer scheduledTimerWithTimeInterval: 1 target: self selector: @selector(logo:) userInfo: nil repeats: NO];
-    
+    [self doAuth];
     
     [[UITabBar appearance] setBackgroundColor:[UIColor blackColor]];
     [[UITabBar appearance]setTintColor:[UIColor blackColor]];
@@ -138,7 +132,7 @@
     return YES;
 }
 
--(void)logo:(NSTimer *)timer
+-(void)doAuth
 {
     NSString *res = [self auth];
     if ([res isEqualToString:@"auth ok"]){
@@ -148,8 +142,6 @@
         }
         else
             [self showMainView];
-        [imageview removeFromSuperview];
-        [timer invalidate];
     }else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络错误" message:@"网络没有信号" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
         [alert show];
