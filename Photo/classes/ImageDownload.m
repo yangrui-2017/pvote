@@ -29,7 +29,6 @@
     if (![imageCache getImage:fileId]){
         [file downloadAsData:fileId downloadedData:^(NSData *imageData, NSString *oId) {
              if ([fileId isEqualToString:oId]){
-                 NSLog(@"save image id %@", fileId);
                  [imageCache selfImageDownload:imageData withFileId:fileId];
                  [fileCache writeFile:fileId withData:imageData];
                  if (mainRefesh)

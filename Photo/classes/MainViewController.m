@@ -257,7 +257,7 @@
         STreamQuery *sq = [[STreamQuery alloc] initWithCategory:@"AllVotes"];
         NSDate *now = [[NSDate alloc] init];
         long millionsSecs = [now timeIntervalSince1970];
-        long dayBefore = millionsSecs - (3600 *24*timeCount);
+        long dayBefore = millionsSecs - (3600 *72*timeCount);
         
         NSDate *dayBe = [[NSDate alloc] initWithTimeIntervalSince1970:dayBefore];
         [sq afterDate:@"creationTime" after:dayBe];

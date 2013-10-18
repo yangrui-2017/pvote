@@ -148,8 +148,6 @@
        // [userDB logout];
         
         ImageCache *cache = [ImageCache sharedObject];
-        NSString *userName = [cache getLoginUserName];
-        NSLog(@"%@", userName);
         
         [cache setLoginUserName:_name.text];
         [HUD showAnimated:YES whileExecutingBlock:^{
@@ -169,14 +167,10 @@
 }
 -(void)loginUser
 {
-    NSLog(@"name = %@,pass= %@",self.name.text,self.password.text);
     [user logIn:self.name.text withPassword:self.password.text];
     UserDB *userDB = [[UserDB alloc] init];
     [userDB insertDB:0 name:self.name.text withPassword:self.password.text];
     
-    NSString *error = [user errorMessage];
-    NSLog(@"error = %@",error);
-
 }
 
 //registerButtonClicked

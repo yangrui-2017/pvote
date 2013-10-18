@@ -71,7 +71,6 @@
 }
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTableView reloadData];
-    NSLog(@"");
 }
 -(void)pickerDoneClicked
 {

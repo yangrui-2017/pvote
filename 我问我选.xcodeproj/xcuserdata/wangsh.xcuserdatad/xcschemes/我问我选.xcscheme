@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "03C49AE017E102FC00AE7E3B"
-               BuildableName = "Photo.app"
+               BuildableName = "&#25105;&#38382;&#25105;&#36873;.app"
                BlueprintName = "Photo"
-               ReferencedContainer = "container:Photo.xcodeproj">
+               ReferencedContainer = "container:&#25105;&#38382;&#25105;&#36873;.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,24 +28,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "03C49B0017E102FC00AE7E3B"
-               BuildableName = "PhotoTests.octest"
-               BlueprintName = "PhotoTests"
-               ReferencedContainer = "container:Photo.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "03C49AE017E102FC00AE7E3B"
-            BuildableName = "Photo.app"
+            BuildableName = "&#25105;&#38382;&#25105;&#36873;.app"
             BlueprintName = "Photo"
-            ReferencedContainer = "container:Photo.xcodeproj">
+            ReferencedContainer = "container:&#25105;&#38382;&#25105;&#36873;.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "03C49AE017E102FC00AE7E3B"
-            BuildableName = "Photo.app"
+            BuildableName = "&#25105;&#38382;&#25105;&#36873;.app"
             BlueprintName = "Photo"
-            ReferencedContainer = "container:Photo.xcodeproj">
+            ReferencedContainer = "container:&#25105;&#38382;&#25105;&#36873;.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "03C49AE017E102FC00AE7E3B"
-            BuildableName = "Photo.app"
+            BuildableName = "&#25105;&#38382;&#25105;&#36873;.app"
             BlueprintName = "Photo"
-            ReferencedContainer = "container:Photo.xcodeproj">
+            ReferencedContainer = "container:&#25105;&#38382;&#25105;&#36873;.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

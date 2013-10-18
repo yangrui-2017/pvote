@@ -143,7 +143,6 @@
             NSString *dicKey = [con nextObject];
             if (dicKey){
                 NSString *contents  = [comme objectForKey:dicKey];
-                NSLog(@"%@", contents);
                 [contentsArray addObject:contents];
                 [userNameArray addObject:dicKey];
             }
