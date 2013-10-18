@@ -400,6 +400,8 @@ static UIImage * rightImage;
                    }else{
                        NSLog(@"file1 error: %@", [file1 errorMessage]);
                        NSLog(@"file2 error: %@", [file2 errorMessage]);
+                       UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:@"" message:@"网络连接错误，请重试" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                       [alertView show];
                        //TODO show error alert view
                    }
                    isExistingLeftImage = NO;

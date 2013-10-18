@@ -311,11 +311,11 @@
 		03C49B1D17E11B8600AE7E3B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EE2FC5F1803D4FB000761CF /* new */,
 				0EDC4EBA18068390002E6E15 /* submit.png */,
 				0EDC4EB71806778B002E6E15 /* icon.png */,
 				0EE3C1EB180560760035BA74 /* question2.png */,
 				0EE300071807E62C0017EE17 /* remove.png */,
-				0EE2FC5F1803D4FB000761CF /* new */,
 				0EE2FC5D1803CC32000761CF /* clock.png */,
 				0EE672F4180402FE00C7631D /* upload2.png */,
 				0EE23C4417F4198400F56F37 /* headImage.jpg */,
@@ -495,6 +495,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = wangshuai;
+				TargetAttributes = {
+					03C49AE017E102FC00AE7E3B = {
+						DevelopmentTeam = C63799N3QU;
+					};
+				};
 			};
 			buildConfigurationList = 03C49ADC17E102FC00AE7E3B /* Build configuration list for PBXProject "我问我选" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -712,6 +717,8 @@
 		03C49B1417E102FC00AE7E3B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: shuai wang (N96W62GJ82)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shuai wang (N96W62GJ82)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -722,6 +729,8 @@
 				INFOPLIST_FILE = "Photo/Photo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "我问我选";
+				PROVISIONING_PROFILE = "356819ED-278A-4399-8CFF-DED37F0E1340";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -729,6 +738,8 @@
 		03C49B1517E102FC00AE7E3B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: shuai wang (C63799N3QU)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: shuai wang (C63799N3QU)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -739,6 +750,8 @@
 				INFOPLIST_FILE = "Photo/Photo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "我问我选";
+				PROVISIONING_PROFILE = "356819ED-278A-4399-8CFF-DED37F0E1340";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
