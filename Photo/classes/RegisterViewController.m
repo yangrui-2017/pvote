@@ -264,8 +264,6 @@
 
     }else{
      
-        //TODO alert show error message
-        NSLog(@"%@", error);
         UIAlertView * view  = [[UIAlertView alloc]initWithTitle:@"" message:@"用户名重名了" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [view show];
     }
